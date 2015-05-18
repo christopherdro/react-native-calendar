@@ -14,13 +14,14 @@ var {
 
 const DAYS = ['S', 'M', 'T', 'W', 'T', 'F', 'S'],
   MAX_COLUMNS = 7,
-  MAX_ROWS = 7
+  MAX_ROWS = 7,
+  DEVICE_WIDTH = Dimensions.get('window').width;
 
 class CalendarSwiper extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      calendarDates: [moment().subtract(3, 'months').format()],
+      calendarDates: [moment().subtract(3, 'months').format(),moment().subtract(3, 'months').format()],
       selectedDate: null,
       currentView: null,
     }
@@ -103,7 +104,7 @@ class CalendarSwiper extends React.Component {
   }
   _prependMonth() {
     var calendarDates = this.state.calendarDates;
-    calendarDates.unshift(moment(calendarDates[0]).subtract(1, 'month').format());
+    calendarDates.unshift(moment(calendarDates[0]).add(1, 'month').format());
     this.setState({calendarDates: calendarDates});
   }
   _appendMonth() {
@@ -122,7 +123,6 @@ class CalendarSwiper extends React.Component {
           horizontal={true}
           bounces={false}
           pagingEnabled={true}
-          removeClippedSubviews={true}
           scrollEventThrottle={300}
           showsHorizontalScrollIndicator={false}
           onMomentumScrollEnd={() => { console.dir(this.refs.calendar)}}>
@@ -142,7 +142,7 @@ class CalendarSwiper extends React.Component {
 };
   var styles = StyleSheet.create({
     calendarContainer: {
-      width: Dimensions.get('window').width,
+      width: DEVICE_WIDTH
     },
     title: {
       textAlign: 'center',
