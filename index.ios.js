@@ -20,7 +20,7 @@ class CalendarSwiper extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      calendarDates: [moment().add(5, 'month').format(), moment().add(6, 'month').format(),moment().add(7, 'month').format(), moment().add(8, 'month').format()],
+      calendarDates: [moment().subtract(3, 'months').format()],
       selectedDate: null,
     }
   }
@@ -31,14 +31,15 @@ class CalendarSwiper extends React.Component {
       daysInMonth = moment(dayStart).daysInMonth(),
       offset = moment(dayStart).get('day'),
       preFiller = 0,
-      postFiller = 7 - (moment(dayStart).endOf('month').get('day') + 1),
       currentDay = 0,
       weekRows = [];
 
     for (var i = 0; i < MAX_COLUMNS; i++) {
       var days = [];
       for (var j = 0; j < MAX_ROWS; j++) {  
-        if (preFiller >= offset) {
+        if (preFiller < offset) {
+          days.push(<TouchableWithoutFeedback><Text style={styles.dayListDay}></Text></TouchableWithoutFeedback>);
+        } else {
           if(currentDay < daysInMonth) {
             days.push((
               <TouchableOpacity
@@ -48,24 +49,22 @@ class CalendarSwiper extends React.Component {
             ));
             currentDay++; 
           } 
-        } else {
-            days.push(<TouchableWithoutFeedback><Text style={styles.dayListDay}></Text></TouchableWithoutFeedback>);
-          }
+        } 
         preFiller++;  
-      }
+      } // row
 
-      if(weekRows.length < Math.ceil((daysInMonth + offset) / 7) && days.length < 7) {
-        for (var x = 0; x < postFiller; x++) {
+      if(days.length > 0 && days.length < 7) {
+        for (var x = days.length; x < 7; x++) {
           days.push(<TouchableWithoutFeedback><Text style={styles.dayListDay}></Text></TouchableWithoutFeedback>);
         }        
-        weekRows.push(<View style={[styles.dayList, styles.lastRow]}>{days}</View>);
+        weekRows.push(<View style={styles.dayList}>{days}</View>);
       } else {
         weekRows.push(<View style={styles.dayList}>{days}</View>);
       }
-    }
+    } // column
     
     return (
-      <View ref="InnerScrollView" style={styles.calendarContainer} ref={moment(dayStart).format('YYYY-MM')}>
+      <View ref="InnerScrollView" style={styles.calendarContainer}>
 
         <View style={styles.calendarControls}>
           <TouchableOpacity style={styles.controlButton}>
@@ -94,24 +93,44 @@ class CalendarSwiper extends React.Component {
   _selectDate(date) {
     console.log(date.format());
   }
+  _prependMonth(){
+    var calendarDates = this.state.calendarDates;
+    calendarDates.unshift(moment(calendarDates[0]).subtract(1, 'month').format());
+    this.setState({calendarDates: calendarDates});
+  }
+  _appendMonth(){
+    var calendarDates = this.state.calendarDates;
+    calendarDates.push(moment(calendarDates[calendarDates.length - 1]).add(1, 'month').format());
+    this.setState({calendarDates: calendarDates});
+  }
 
   render() {
     return (
-      <ScrollView
-        horizontal={true}
-        bounces={false}
-        pagingEnabled={true}
-        scrollEventThrottle={300}
-        onMomentumScrollEnd={() => { console.log(this.refs)}}>
-        {this.state.calendarDates.map((date) => { return this.renderMonthView(date) })}
-      </ScrollView>
+      <View>
+        <ScrollView
+          ref='calendar'
+          horizontal={true}
+          bounces={false}
+          pagingEnabled={true}
+          scrollEventThrottle={300}
+          showsHorizontalScrollIndicator={false}
+          onMomentumScrollEnd={() => { console.dir(this.refs.calendar)}}>
+          {this.state.calendarDates.map((date) => { return this.renderMonthView(date) })}
+        </ScrollView>
+        <TouchableOpacity onPress={this._prependMonth.bind(this)}>
+          <Text>Prepend</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={this._appendMonth.bind(this)}>
+          <Text>Append</Text>
+        </TouchableOpacity>
+      </View>
     )
   }
 };
   var styles = StyleSheet.create({
     calendarContainer: {
       marginTop: 20,
-      width: Dimensions.get('window').width
+      width: Dimensions.get('window').width,
     },
     title: {
       textAlign: 'center',
@@ -140,9 +159,6 @@ class CalendarSwiper extends React.Component {
       flex: 1,
       flexDirection: 'row',
       alignItems: 'center'
-    },
-    lastRow: {
-      backgroundColor: 'red'
     },
     dayListDay: {
       padding: 5,
