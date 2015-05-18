@@ -16,13 +16,14 @@ const DAYS = ['S', 'M', 'T', 'W', 'T', 'F', 'S'],
   MAX_COLUMNS = 7,
   MAX_ROWS = 7
 
+var _currentMonthIndex;
+
 class CalendarSwiper extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       calendarDates: [moment().subtract(3, 'months').format()],
-      selectedDate: null,
-      currentView: null,
+      selectedDate: null
     }
   }
   renderHeading() {
@@ -48,7 +49,16 @@ class CalendarSwiper extends React.Component {
       </View>
     )
   }
+
+  componentDidMount() {
+    _currentMonthIndex = 1;
+    this._prependMonth();
+    this._appendMonth();
+    this._scrollToItem(_currentMonthIndex);
+  }
+
   renderMonthView(date) {
+  
     var dayStart = moment(date).startOf('month').format(),
       daysInMonth = moment(dayStart).daysInMonth(),
       offset = moment(dayStart).get('day'),
@@ -84,11 +94,17 @@ class CalendarSwiper extends React.Component {
         weekRows.push(<View style={styles.dayList}>{days}</View>);
       }
     } // column
+    
     return (
       <View ref="InnerScrollView" style={styles.calendarContainer}>
       {weekRows}
       </View>
     );
+  }
+
+  _scrollToItem(itemIndex) {
+      var scrollToX = itemIndex * Dimensions.get('window').width;
+      this.refs.calendar.scrollWithoutAnimationTo(0, scrollToX);
   }
 
   _selectDate(date) {
@@ -106,10 +122,16 @@ class CalendarSwiper extends React.Component {
     calendarDates.unshift(moment(calendarDates[0]).subtract(1, 'month').format());
     this.setState({calendarDates: calendarDates});
   }
-  _appendMonth() {
+
+  _appendMonth(){
     var calendarDates = this.state.calendarDates;
     calendarDates.push(moment(calendarDates[calendarDates.length - 1]).add(1, 'month').format());
     this.setState({calendarDates: calendarDates});
+  }
+
+  _scrollEnded() {
+    this._prependMonth();
+    this._scrollToItem(_currentMonthIndex);
   }
 
   render() {
@@ -125,7 +147,7 @@ class CalendarSwiper extends React.Component {
           removeClippedSubviews={true}
           scrollEventThrottle={300}
           showsHorizontalScrollIndicator={false}
-          onMomentumScrollEnd={() => { console.dir(this.refs.calendar)}}>
+          onMomentumScrollEnd={this._scrollEnded.bind(this)}>
           {this.state.calendarDates.map((date) => { return this.renderMonthView(date) })}
         </ScrollView>
         <View>
