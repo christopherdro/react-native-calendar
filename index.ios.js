@@ -44,14 +44,14 @@ class CalendarSwiper extends React.Component {
   renderControls(date) {
     return (
       <View style={styles.calendarControls}>
-        <TouchableOpacity style={styles.controlButton} onPress={this._onPrev.bind(this)}>
-          <Text>Prev</Text>
+        <TouchableOpacity onPress={this._onPrev.bind(this)}>
+          <Text style={styles.controlButton}>Prev</Text>
         </TouchableOpacity>
         <Text style={styles.title}>
           {moment(this.state.currentMonth).format('MMMM YYYY')}
         </Text>
-        <TouchableOpacity style={styles.controls} onPress={this._onNext.bind(this)}>
-          <Text>Next</Text>
+        <TouchableOpacity onPress={this._onNext.bind(this)}>
+          <Text style={styles.controls} >Next</Text>
         </TouchableOpacity>
       </View>
     )
@@ -92,12 +92,12 @@ class CalendarSwiper extends React.Component {
         for (var x = days.length; x < 7; x++) {
           days.push(<TouchableWithoutFeedback><Text style={styles.dayListDay}></Text></TouchableWithoutFeedback>);
         }        
-        weekRows.push(<View style={styles.dayList}>{days}</View>);
+        weekRows.push(<View key={weekRows.length} style={styles.dayList}>{days}</View>);
       } else {
-        weekRows.push(<View style={styles.dayList}>{days}</View>);
+        weekRows.push(<View key={weekRows.length} style={styles.dayList}>{days}</View>);
       }
     } // column 
-    return (<View style={styles.calendarContainer}>{weekRows}</View>);
+    return (<View key={moment(newDay).month()} style={styles.calendarContainer}>{weekRows}</View>);
   }
 
   _onPrev(){
@@ -166,7 +166,6 @@ class CalendarSwiper extends React.Component {
         <ScrollView
           ref='calendar'
           horizontal={true}
-          bounces={false}
           pagingEnabled={true}
           removeClippedSubviews={true}
           scrollEventThrottle={600}
@@ -182,22 +181,20 @@ class CalendarSwiper extends React.Component {
     calendarContainer: {
       width: DEVICE_WIDTH
     },
-    title: {
-      textAlign: 'center',
-      flex: 2,
-    },
     calendarControls: {
       flexDirection: 'row',
       alignItems: 'center',
       margin: 10,
-      marginTop: 30,
+      marginTop: 30
     },
     controlButton: {
-      flex: 0.1
+      flex: 0.1,
+      fontSize: 15,
     },
     title: {
       flex: 0.8,
-      textAlign: 'center'
+      textAlign: 'center',
+      fontSize: 20
     },
     calendarHeading: {
       flex: 1,
