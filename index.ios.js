@@ -73,10 +73,13 @@ class CalendarSwiper extends React.Component {
           days.push(<TouchableWithoutFeedback><Text style={styles.dayListDay}></Text></TouchableWithoutFeedback>);
         } else {
           if(currentDay < daysInMonth) {
+            var newDay = moment(dayStart).set('date', currentDay + 1);
+            var isToday = (moment().isSame(newDay, 'month') && moment().isSame(newDay, 'day')) ? true : false;
+            
             days.push((
               <TouchableOpacity
-                onPress={this._selectDate.bind(this, moment(dayStart).set('date', currentDay + 1))}>
-                <Text style={styles.dayListDay}>{currentDay+1}</Text>
+                onPress={this._selectDate.bind(this, newDay)}>
+                <Text style={[styles.dayListDay, isToday && styles.currentDay]}>{currentDay + 1}</Text>
               </TouchableOpacity>
             ));
             currentDay++;
@@ -215,8 +218,9 @@ class CalendarSwiper extends React.Component {
       fontSize: 20,
       justifyContent: 'flex-start'
     },
+
     currentDay: {
-      color: '#FF3333'
+      color: 'red'
     }
   });
 
