@@ -215,7 +215,6 @@ class CalendarSwiper extends React.Component {
       fontSize: 20,
       justifyContent: 'flex-start'
     },
-
     currentDay: {
       color: 'red'
     }

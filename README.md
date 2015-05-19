@@ -1,6 +1,6 @@
-## react-native-calendar-swiper
+## react-native-calendar
 
-A calender component for react-native.
+Swipe/Click Calendar Component for React Native
 
 In development...
 
