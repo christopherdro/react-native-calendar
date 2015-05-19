@@ -1,6 +1,6 @@
 var React = require('react-native');
-var moment = require('moment');
 var Dimensions = require('Dimensions');
+var moment = require('moment');
 
 var {
   AppRegistry,
@@ -17,16 +17,20 @@ const DAYS = ['S', 'M', 'T', 'W', 'T', 'F', 'S'],
   MAX_ROWS = 7,
   DEVICE_WIDTH = Dimensions.get('window').width;
 
-var _currentMonthIndex;
+var _currentMonthIndex = 1;
 
 class CalendarSwiper extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      calendarDates: [moment().format()],
+      calendarDates: [moment().subtract(1, 'month').format(), moment().format(), moment().add(1, 'month').format()],
       selectedDate: null,
       currentMonth: moment().format()
     }
+  }
+
+  componentDidMount() {
+    this._scrollToItem(_currentMonthIndex);
   }
 
   renderHeading() {
@@ -51,13 +55,6 @@ class CalendarSwiper extends React.Component {
         </TouchableOpacity>
       </View>
     )
-  }
-
-  componentDidMount() {
-    _currentMonthIndex = 1;
-    this._prependMonth();
-    this._appendMonth();
-    this._scrollToItem(_currentMonthIndex);
   }
 
   renderMonthView(date) {
@@ -96,31 +93,26 @@ class CalendarSwiper extends React.Component {
       } else {
         weekRows.push(<View style={styles.dayList}>{days}</View>);
       }
-    } // column
-    
-    return (
-      <View ref="InnerScrollView" style={styles.calendarContainer}>
-      {weekRows}
-      <Text>{moment(date).format('MMMM')}</Text>
-      </View>
-    );
+    } // column 
+    return (<View style={styles.calendarContainer}>{weekRows}</View>);
   }
 
   _onPrev(){
     this._prependMonth();
     this._scrollToItem(_currentMonthIndex);
-
   }
+  
   _onNext(){
-    _currentMonthIndex++;
     this._appendMonth();
     this._scrollToItem(_currentMonthIndex);
   }
 
   _prependMonth() {
-    console.log('prepending');
     var calendarDates = this.state.calendarDates;
+    
     calendarDates.unshift(moment(calendarDates[0]).subtract(1, 'month').format());
+    calendarDates.pop();
+    
     this.setState({
       calendarDates: calendarDates,
       currentMonth: calendarDates[_currentMonthIndex]
@@ -128,9 +120,11 @@ class CalendarSwiper extends React.Component {
   }
 
   _appendMonth(){
-    console.log('appending');
     var calendarDates = this.state.calendarDates;
+    
     calendarDates.push(moment(calendarDates[calendarDates.length - 1]).add(1, 'month').format());
+    calendarDates.shift();
+    
     this.setState({
       calendarDates: calendarDates,
       currentMonth: calendarDates[_currentMonthIndex]
@@ -151,23 +145,17 @@ class CalendarSwiper extends React.Component {
     var currentPage = position / DEVICE_WIDTH;
 
     if (currentPage < _currentMonthIndex) {
-      console.log('User Swiped Back');
       this._prependMonth();
       this._scrollToItem(_currentMonthIndex);
-
     } else if (currentPage > _currentMonthIndex) {
-      console.log('User Swiped Forward');
-      _currentMonthIndex++;
-      this._appendMonth();
-      this._scrollToItem(_currentMonthIndex);
+        this._appendMonth();
+        this._scrollToItem(_currentMonthIndex);
     } else {
-        console.log('Same Page - Returning false');
         return false;
     }
   }
 
   render() {
-    console.log(this.refs.calendar);
     return (
       <View>
         {this.renderControls()}
