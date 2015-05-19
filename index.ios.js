@@ -24,7 +24,8 @@ class CalendarSwiper extends React.Component {
     super(props);
     this.state = {
       calendarDates: [moment().format()],
-      selectedDate: null
+      selectedDate: null,
+      currentMonth: moment().format()
     }
   }
 
@@ -43,7 +44,7 @@ class CalendarSwiper extends React.Component {
           <Text>Prev</Text>
         </TouchableOpacity>
         <Text style={styles.title}>
-          {moment(date).format('MMMM YYYY')}
+          {moment(this.state.currentMonth).format('MMMM YYYY')}
         </Text>
         <TouchableOpacity style={styles.controls} onPress={this._onNext.bind(this)}>
           <Text>Next</Text>
@@ -156,6 +157,7 @@ class CalendarSwiper extends React.Component {
         console.log('Same Page - Returning false');
         return false;
     }
+    this.setState({ currentMonth: this.state.calendarDates[_currentMonthIndex]});
   }
 
   render() {
