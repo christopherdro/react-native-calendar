@@ -159,6 +159,7 @@ class CalendarSwiper extends React.Component {
   }
 
   render() {
+    console.log(this.refs.calendar);
     return (
       <View>
         {this.renderControls()}
@@ -174,14 +175,6 @@ class CalendarSwiper extends React.Component {
           onMomentumScrollEnd={(event) => this._scrollEnded(event)}>
           {this.state.calendarDates.map((date) => { return this.renderMonthView(date) })}
         </ScrollView>
-        <View>
-          <TouchableOpacity onPress={this._prependMonth.bind(this)}>
-            <Text>Prepend</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={this._appendMonth.bind(this)}>
-            <Text>Append</Text>
-          </TouchableOpacity>
-        </View>
       </View>
     )
   }
