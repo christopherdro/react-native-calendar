@@ -8,7 +8,8 @@ In development...
 
 ## TODOS
 
+- [ ] Touch Highlighting
+- [ ] Highlight current day
 - [ ] Build out as reusable component
 - [ ] Custom Props
 - [ ] Language Support
-- [ ] Styling options
