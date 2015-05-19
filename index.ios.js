@@ -14,7 +14,8 @@ var {
 
 const DAYS = ['S', 'M', 'T', 'W', 'T', 'F', 'S'],
   MAX_COLUMNS = 7,
-  MAX_ROWS = 7
+  MAX_ROWS = 7,
+  DEVICE_WIDTH = Dimensions.get('window').width;
 
 var _currentMonthIndex;
 
@@ -22,10 +23,11 @@ class CalendarSwiper extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      calendarDates: [moment().subtract(3, 'months').format()],
+      calendarDates: [moment().format()],
       selectedDate: null
     }
   }
+
   renderHeading() {
     return (
       <View style={styles.calendarHeading}>
@@ -98,12 +100,13 @@ class CalendarSwiper extends React.Component {
     return (
       <View ref="InnerScrollView" style={styles.calendarContainer}>
       {weekRows}
+      <Text>{moment(date).format('MMMM')}</Text>
       </View>
     );
   }
 
   _scrollToItem(itemIndex) {
-      var scrollToX = itemIndex * Dimensions.get('window').width;
+      var scrollToX = itemIndex * DEVICE_WIDTH;
       this.refs.calendar.scrollWithoutAnimationTo(0, scrollToX);
   }
 
@@ -111,27 +114,48 @@ class CalendarSwiper extends React.Component {
     console.log(date.format());
   }
   _onPrev(){
-    var calendar = this.refs.calendar;
-    console.log(this.refs.calendar);
+    this._prependMonth();
+    this._scrollToItem(_currentMonthIndex);
+
   }
   _onNext(){
-    console.log('next pressed');
+    _currentMonthIndex++;
+    this._appendMonth();
+    this._scrollToItem(_currentMonthIndex);
   }
+
   _prependMonth() {
+    console.log('prepending');
     var calendarDates = this.state.calendarDates;
     calendarDates.unshift(moment(calendarDates[0]).subtract(1, 'month').format());
     this.setState({calendarDates: calendarDates});
   }
 
   _appendMonth(){
+    console.log('appending');
     var calendarDates = this.state.calendarDates;
     calendarDates.push(moment(calendarDates[calendarDates.length - 1]).add(1, 'month').format());
     this.setState({calendarDates: calendarDates});
   }
 
-  _scrollEnded() {
-    this._prependMonth();
-    this._scrollToItem(_currentMonthIndex);
+  _scrollEnded(event) {
+    var position = event.nativeEvent.contentOffset.x;
+    var currentPage = position / DEVICE_WIDTH;
+
+    if (currentPage < _currentMonthIndex) {
+      console.log('User Swiped Back');
+      this._prependMonth();
+      this._scrollToItem(_currentMonthIndex);
+
+    } else if (currentPage > _currentMonthIndex) {
+      console.log('User Swiped Forward');
+      _currentMonthIndex++;
+      this._appendMonth();
+      this._scrollToItem(_currentMonthIndex);
+    } else {
+        console.log('Same Page - Returning false');
+        return false;
+    }
   }
 
   render() {
@@ -145,9 +169,9 @@ class CalendarSwiper extends React.Component {
           bounces={false}
           pagingEnabled={true}
           removeClippedSubviews={true}
-          scrollEventThrottle={300}
+          scrollEventThrottle={600}
           showsHorizontalScrollIndicator={false}
-          onMomentumScrollEnd={this._scrollEnded.bind(this)}>
+          onMomentumScrollEnd={(event) => this._scrollEnded(event)}>
           {this.state.calendarDates.map((date) => { return this.renderMonthView(date) })}
         </ScrollView>
         <View>
@@ -164,7 +188,7 @@ class CalendarSwiper extends React.Component {
 };
   var styles = StyleSheet.create({
     calendarContainer: {
-      width: Dimensions.get('window').width,
+      width: DEVICE_WIDTH
     },
     title: {
       textAlign: 'center',
