@@ -1,0 +1,12 @@
+{
+  "name": "Calendar",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node_modules/react-native/packager/packager.sh"
+  },
+  "dependencies": {
+    "moment": "^2.10.3",
+    "react-native": "^0.4.4"
+  }
+}
