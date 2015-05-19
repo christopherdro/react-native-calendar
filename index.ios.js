@@ -71,7 +71,7 @@ class CalendarSwiper extends React.Component {
 
     for (var i = 0; i < MAX_COLUMNS; i++) {
       var days = [];
-      for (var j = 0; j < MAX_ROWS; j++) {  
+      for (var j = 0; j < MAX_ROWS; j++) {
         if (preFiller < offset) {
           days.push(<TouchableWithoutFeedback><Text style={styles.dayListDay}></Text></TouchableWithoutFeedback>);
         } else {
@@ -82,10 +82,10 @@ class CalendarSwiper extends React.Component {
                 <Text style={styles.dayListDay}>{currentDay+1}</Text>
               </TouchableOpacity>
             ));
-            currentDay++; 
+            currentDay++;
           } 
         } 
-        preFiller++;  
+        preFiller++;
       } // row
 
       if(days.length > 0 && days.length < 7) {
@@ -106,14 +106,6 @@ class CalendarSwiper extends React.Component {
     );
   }
 
-  _scrollToItem(itemIndex) {
-      var scrollToX = itemIndex * DEVICE_WIDTH;
-      this.refs.calendar.scrollWithoutAnimationTo(0, scrollToX);
-  }
-
-  _selectDate(date) {
-    console.log(date.format());
-  }
   _onPrev(){
     this._prependMonth();
     this._scrollToItem(_currentMonthIndex);
@@ -129,16 +121,31 @@ class CalendarSwiper extends React.Component {
     console.log('prepending');
     var calendarDates = this.state.calendarDates;
     calendarDates.unshift(moment(calendarDates[0]).subtract(1, 'month').format());
-    this.setState({calendarDates: calendarDates});
+    this.setState({
+      calendarDates: calendarDates,
+      currentMonth: calendarDates[_currentMonthIndex]
+    });
   }
 
   _appendMonth(){
     console.log('appending');
     var calendarDates = this.state.calendarDates;
     calendarDates.push(moment(calendarDates[calendarDates.length - 1]).add(1, 'month').format());
-    this.setState({calendarDates: calendarDates});
+    this.setState({
+      calendarDates: calendarDates,
+      currentMonth: calendarDates[_currentMonthIndex]
+    });
   }
 
+  _selectDate(date) {
+    console.log(date.format());
+  }
+
+  _scrollToItem(itemIndex) {
+      var scrollToX = itemIndex * DEVICE_WIDTH;
+      this.refs.calendar.scrollWithoutAnimationTo(0, scrollToX);
+  }
+  
   _scrollEnded(event) {
     var position = event.nativeEvent.contentOffset.x;
     var currentPage = position / DEVICE_WIDTH;
@@ -157,7 +164,6 @@ class CalendarSwiper extends React.Component {
         console.log('Same Page - Returning false');
         return false;
     }
-    this.setState({ currentMonth: this.state.calendarDates[_currentMonthIndex]});
   }
 
   render() {
