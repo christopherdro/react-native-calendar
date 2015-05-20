@@ -1,6 +1,7 @@
 'use strict';
 
 var React = require('react-native');
+var PropTypes = require('ReactPropTypes');
 var Dimensions = require('Dimensions');
 var moment = require('moment');
 
@@ -13,18 +14,32 @@ var {
   View
 } = React;
 
-var DAYS = ['S', 'M', 'T', 'W', 'T', 'F', 'S'],
+var 
+  DAYS = ['S', 'M', 'T', 'W', 'T', 'F', 'S'],
   MAX_COLUMNS = 7,
   MAX_ROWS = 7,
-  DEVICE_WIDTH = Dimensions.get('window').width;
+  DEVICE_WIDTH = Dimensions.get('window').width,
+  _currentMonthIndex = 2;
 
-var _currentMonthIndex = 2;
+var Calendar = React.createClass({
+  propTypes: {
+    onDateSelect: PropTypes.func,
+    scrollEnabled: PropTypes.bool,
+    showControls: PropTypes.bool,
+    prevButtonText: PropTypes.string,
+    nextButtonText: PropTypes.string,
+    onSwipeNext: PropTypes.func,
+    onSwipePrev: PropTypes.func,
+  },
 
-class Calendar extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      calendarDates: [
+  getDefaultProps() {
+    return {
+      // scrollEnabled () {}
+    }
+  },
+  getInitialState() {
+    return {
+     calendarDates: [
         moment().subtract(2, 'month').format(),
         moment().subtract(1, 'month').format(), 
         moment().format(), 
@@ -33,12 +48,12 @@ class Calendar extends React.Component {
       ],
       selectedDate: null,
       currentMonth: moment().format()
-    }
-  }
+    };
+  },
 
   componentDidMount() {
     this._scrollToItem(_currentMonthIndex);
-  }
+  },
 
   renderHeading() {
     return (
@@ -46,7 +61,7 @@ class Calendar extends React.Component {
         {DAYS.map((day) => { return (<Text style={styles.dayListDay}>{day}</Text>) })}
       </View>
     )
-  }
+  },
 
   renderControls(date) {
     return (
@@ -62,7 +77,7 @@ class Calendar extends React.Component {
         </TouchableOpacity>
       </View>
     )
-  }
+  },
 
   renderMonthView(date) {
   
@@ -105,17 +120,17 @@ class Calendar extends React.Component {
       }
     } // column 
     return (<View key={moment(newDay).month()} style={styles.calendarContainer}>{weekRows}</View>);
-  }
+  },
 
   _onPrev(){
     this._prependMonth();
     this._scrollToItem(_currentMonthIndex);
-  }
+  },
   
   _onNext(){
     this._appendMonth();
     this._scrollToItem(_currentMonthIndex);
-  }
+  },
 
   _prependMonth() {
     var calendarDates = this.state.calendarDates;
@@ -127,7 +142,7 @@ class Calendar extends React.Component {
       calendarDates: calendarDates,
       currentMonth: calendarDates[_currentMonthIndex]
     });
-  }
+  },
 
   _appendMonth(){
     var calendarDates = this.state.calendarDates;
@@ -139,16 +154,16 @@ class Calendar extends React.Component {
       calendarDates: calendarDates,
       currentMonth: calendarDates[_currentMonthIndex]
     });
-  }
+  },
 
   _selectDate(date) {
     console.log(date.format());
-  }
+  },
 
   _scrollToItem(itemIndex) {
       var scrollToX = itemIndex * DEVICE_WIDTH;
       this.refs.calendar.scrollWithoutAnimationTo(0, scrollToX);
-  }
+  },
   
   _scrollEnded(event) {
     var position = event.nativeEvent.contentOffset.x;
@@ -163,7 +178,7 @@ class Calendar extends React.Component {
     } else {
         return false;
     }
-  }
+  },
 
   render() {
     return (
@@ -173,6 +188,7 @@ class Calendar extends React.Component {
         <ScrollView
           ref='calendar'
           horizontal={true}
+          scrollEnabled={this.props.scrollEnabled}
           pagingEnabled={true}
           removeClippedSubviews={true}
           scrollEventThrottle={600}
@@ -183,48 +199,49 @@ class Calendar extends React.Component {
       </View>
     )
   }
-};
-  var styles = StyleSheet.create({
-    calendarContainer: {
-      width: DEVICE_WIDTH
-    },
-    calendarControls: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      margin: 10,
-      marginTop: 30
-    },
-    controlButton: {
-      flex: 0.1,
-      fontSize: 15,
-    },
-    title: {
-      flex: 0.8,
-      textAlign: 'center',
-      fontSize: 20
-    },
-    calendarHeading: {
-      flex: 1,
-      flexDirection: 'row',
-      alignItems: 'center',
-      borderTopWidth: 2,
-      borderBottomWidth: 2
-    },
-    dayList: {
-      flex: 1,
-      flexDirection: 'row',
-      alignItems: 'center'
-    },
-    dayListDay: {
-      padding: 5,
-      flex: 1,
-      textAlign: 'center',
-      fontSize: 20,
-      justifyContent: 'flex-start'
-    },
-    currentDay: {
-      color: 'red'
-    }
-  });
+});
+  
+var styles = StyleSheet.create({
+  calendarContainer: {
+    width: DEVICE_WIDTH
+  },
+  calendarControls: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    margin: 10,
+    marginTop: 30
+  },
+  controlButton: {
+    flex: 0.1,
+    fontSize: 15,
+  },
+  title: {
+    flex: 0.8,
+    textAlign: 'center',
+    fontSize: 20
+  },
+  calendarHeading: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderTopWidth: 2,
+    borderBottomWidth: 2
+  },
+  dayList: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center'
+  },
+  dayListDay: {
+    padding: 5,
+    flex: 1,
+    textAlign: 'center',
+    fontSize: 20,
+    justifyContent: 'flex-start'
+  },
+  currentDay: {
+    color: 'red'
+  }
+});
 
 module.exports = Calendar;
