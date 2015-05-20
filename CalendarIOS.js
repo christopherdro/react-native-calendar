@@ -28,6 +28,7 @@ var Calendar = React.createClass({
     showControls: PropTypes.bool,
     prevButtonText: PropTypes.string,
     nextButtonText: PropTypes.string,
+    titleFormat: PropTypes.string,
     onSwipeNext: PropTypes.func,
     onSwipePrev: PropTypes.func,
   },
@@ -67,13 +68,13 @@ var Calendar = React.createClass({
     return (
       <View style={styles.calendarControls}>
         <TouchableOpacity onPress={this._onPrev.bind(this)}>
-          <Text style={styles.controlButton}>Prev</Text>
+          <Text style={styles.controlButton}>{this.props.prevButtonText}</Text>
         </TouchableOpacity>
         <Text style={styles.title}>
-          {moment(this.state.currentMonth).format('MMMM YYYY')}
+          {moment(this.state.currentMonth).format(this.props.titleFormat)}
         </Text>
         <TouchableOpacity onPress={this._onNext.bind(this)}>
-          <Text style={styles.controls} >Next</Text>
+          <Text style={styles.controls}>{this.props.nextButtonText}</Text>
         </TouchableOpacity>
       </View>
     )
@@ -181,10 +182,11 @@ var Calendar = React.createClass({
   },
 
   render() {
+
     return (
       <View>
-        {this.renderControls()}
-        {this.renderHeading()}
+        {this.props.showControls && this.renderControls()}
+        {this.renderHeading(this.props.titleFormat)}
         <ScrollView
           ref='calendar'
           horizontal={true}
