@@ -1,33 +1,18 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- */
 'use strict';
 
 var React = require('react-native');
 var Calendar = require('react-native-calendar');
 
 var {
-  Calendar,
   AppRegistry,
   StyleSheet,
   Text,
   View,
 } = React;
 
-var Calendar = React.createClass({
+var CalendarExample = React.createClass({
   render: function() {
-    return (
-      <View style={styles.container}>
-        <Text style={styles.welcome}>
-          Welcome to React Native!
-        </Text>
-        <Text style={styles.instructions}>
-          Press Cmd+R to reload,{'\n'}
-          Cmd+D or shake for dev menu
-        </Text>
-      </View>
-    );
+    return (<Calendar />);
   }
 });
 
@@ -50,4 +35,4 @@ var styles = StyleSheet.create({
   },
 });
 
-AppRegistry.registerComponent('Calendar', () => Calendar);
+AppRegistry.registerComponent('CalendarExample', () => CalendarExample);
