@@ -12,7 +12,7 @@ var {
 
 var CalendarExample = React.createClass({
   render: function() {
-    return (<Calendar />);
+    return (<Calendar scrollEnabled={true}/>);
   }
 });
 
