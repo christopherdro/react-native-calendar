@@ -11,13 +11,13 @@ Supports iPhone4+ (Portrait only)
 `npm install react-native-calendar --save`
 
 ## Usage
-
+```javascript
 <Calendar scrollEnabled={true} 
         showControls={true}
         titleFormat={'MMMM YYYY'}
         prevButtonText={'Prev'}
         nextButtonText={'Next'} />
-
+```
 
 ## TODOS
 
