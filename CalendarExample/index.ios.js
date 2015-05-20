@@ -12,7 +12,15 @@ var {
 
 var CalendarExample = React.createClass({
   render: function() {
-    return (<Calendar scrollEnabled={true}/>);
+    return (
+      <Calendar 
+        scrollEnabled={true}
+        showControls={true}
+        titleFormat={'MMMM YYYY'}
+        prevButtonText={'Prev'}
+        nextButtonText={'Next'}
+      />
+    );
   }
 });
 
