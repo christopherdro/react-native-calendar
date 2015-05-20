@@ -1,6 +1,6 @@
 ## react-native-calendar
 
-A <Calendar> component for React Native
+A `<Calendar>` component for React Native
 
 Supports iPhone4+ (Portrait only)
 
