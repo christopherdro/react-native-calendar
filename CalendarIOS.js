@@ -15,14 +15,14 @@ var {
 } = React;
 
 var 
-  DAYS = ['S', 'M', 'T', 'W', 'T', 'F', 'S'],
   MAX_COLUMNS = 7,
   MAX_ROWS = 7,
   DEVICE_WIDTH = Dimensions.get('window').width,
-  _currentMonthIndex = 2;
+  VIEW_INDEX = 2;
 
 var Calendar = React.createClass({
   propTypes: {
+    dayHeadings: PropTypes.array,
     onDateSelect: PropTypes.func,
     scrollEnabled: PropTypes.bool,
     showControls: PropTypes.bool,
@@ -39,7 +39,8 @@ var Calendar = React.createClass({
       showControls: false,
       prevButtonText: 'Prev',
       nextButtonText: 'Next',
-      titleFormat: 'MMMM YYYY'
+      titleFormat: 'MMMM YYYY',
+      dayHeadings: ['S', 'M', 'T', 'W', 'T', 'F', 'S']
     }
   },
   getInitialState() {
@@ -57,13 +58,13 @@ var Calendar = React.createClass({
   },
 
   componentDidMount() {
-    this._scrollToItem(_currentMonthIndex);
+    this._scrollToItem(VIEW_INDEX);
   },
 
   renderHeading() {
     return (
       <View style={styles.calendarHeading}>
-        {DAYS.map((day) => { return (<Text style={styles.dayListDay}>{day}</Text>) })}
+        {this.props.dayHeadings.map((day) => { return (<Text style={styles.dayListDay}>{day}</Text>) })}
       </View>
     )
   },
@@ -129,12 +130,12 @@ var Calendar = React.createClass({
 
   _onPrev(){
     this._prependMonth();
-    this._scrollToItem(_currentMonthIndex);
+    this._scrollToItem(VIEW_INDEX);
   },
   
   _onNext(){
     this._appendMonth();
-    this._scrollToItem(_currentMonthIndex);
+    this._scrollToItem(VIEW_INDEX);
   },
 
   _prependMonth() {
@@ -145,7 +146,7 @@ var Calendar = React.createClass({
     
     this.setState({
       calendarDates: calendarDates,
-      currentMonth: calendarDates[_currentMonthIndex]
+      currentMonth: calendarDates[VIEW_INDEX]
     });
   },
 
@@ -157,7 +158,7 @@ var Calendar = React.createClass({
     
     this.setState({
       calendarDates: calendarDates,
-      currentMonth: calendarDates[_currentMonthIndex]
+      currentMonth: calendarDates[VIEW_INDEX]
     });
   },
 
@@ -174,12 +175,12 @@ var Calendar = React.createClass({
     var position = event.nativeEvent.contentOffset.x;
     var currentPage = position / DEVICE_WIDTH;
 
-    if (currentPage < _currentMonthIndex) {
+    if (currentPage < VIEW_INDEX) {
       this._prependMonth();
-      this._scrollToItem(_currentMonthIndex);
-    } else if (currentPage > _currentMonthIndex) {
+      this._scrollToItem(VIEW_INDEX);
+    } else if (currentPage > VIEW_INDEX) {
         this._appendMonth();
-        this._scrollToItem(_currentMonthIndex);
+        this._scrollToItem(VIEW_INDEX);
     } else {
         return false;
     }
