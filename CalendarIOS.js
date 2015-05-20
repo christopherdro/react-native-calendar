@@ -35,7 +35,11 @@ var Calendar = React.createClass({
 
   getDefaultProps() {
     return {
-      // scrollEnabled () {}
+      scrollEnabled: false,
+      showControls: false,
+      prevButtonText: 'Prev',
+      nextButtonText: 'Next',
+      titleFormat: 'MMMM YYYY'
     }
   },
   getInitialState() {
