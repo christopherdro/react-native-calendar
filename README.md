@@ -1,14 +1,32 @@
 ## react-native-calendar
 
-Swipe/Click Calendar Component for React Native
+A <Calendar> component for React Native
 
-In development...
+Supports iPhone4+ (Portrait only)
 
 ![Demo gif](https://github.com/christopherdro/react-native-calendar-swiper/blob/master/demo.gif)
 
+### Installation
+
+`npm install react-native-calendar --save`
+
+## Usage
+
+<Calendar scrollEnabled={true} 
+        showControls={true}
+        titleFormat={'MMMM YYYY'}
+        prevButtonText={'Prev'}
+        nextButtonText={'Next'} />
+
+
 ## TODOS
 
+- [ ] Improve scrolling
+- [ ] Landscape support
 - [ ] Touch Highlighting
-- [ ] Build out as reusable component
-- [ ] Custom Props
+- [ ] Layout fixes
+- [ ] Add more props
 - [ ] Language Support
+
+
+**MIT Licensed**
