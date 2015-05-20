@@ -13,18 +13,24 @@ var {
   View
 } = React;
 
-const DAYS = ['S', 'M', 'T', 'W', 'T', 'F', 'S'],
+var DAYS = ['S', 'M', 'T', 'W', 'T', 'F', 'S'],
   MAX_COLUMNS = 7,
   MAX_ROWS = 7,
   DEVICE_WIDTH = Dimensions.get('window').width;
 
-var _currentMonthIndex = 1;
+var _currentMonthIndex = 2;
 
 class Calendar extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      calendarDates: [moment().subtract(1, 'month').format(), moment().format(), moment().add(1, 'month').format()],
+      calendarDates: [
+        moment().subtract(2, 'month').format(),
+        moment().subtract(1, 'month').format(), 
+        moment().format(), 
+        moment().add(1, 'month').format(),
+        moment().add(2, 'month').format()
+      ],
       selectedDate: null,
       currentMonth: moment().format()
     }
