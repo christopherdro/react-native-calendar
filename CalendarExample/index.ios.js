@@ -2,6 +2,7 @@
 
 var React = require('react-native');
 var Calendar = require('react-native-calendar');
+var moment = require('moment');
 
 var {
   AppRegistry,
@@ -13,22 +14,30 @@ var {
 var customDayHeadings = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
 
 var CalendarExample = React.createClass({
+  getInitialState: function() {
+    return {
+      selectedDate: moment().format()
+    };
+  },
   render: function() {
     return (
-      <Calendar
-        ref="calendar"
-        scrollEnabled={true}
-        showControls={true}
-        dayHeadings={customDayHeadings}
-        titleFormat={'MMMM YYYY'}
-        prevButtonText={'Prev'}
-        nextButtonText={'Next'}
-        onDateSelect={(date) => console.log(date)}
-        onTouchPrev={() => console.log('Back TOUCH')}
-        onTouchNext={() => console.log('Forward TOUCH')}
-        onSwipePrev={() => console.log('Back SWIPE')}
-        onSwipeNext={() => console.log('Forward SWIPE')}
-      />
+      <View>
+        <Calendar
+          ref="calendar"
+          scrollEnabled={true}
+          showControls={true}
+          dayHeadings={customDayHeadings}
+          titleFormat={'MMMM YYYY'}
+          prevButtonText={'Prev'}
+          nextButtonText={'Next'}
+          onDateSelect={(date) => this.setState({selectedDate: date})}
+          onTouchPrev={() => console.log('Back TOUCH')}
+          onTouchNext={() => console.log('Forward TOUCH')}
+          onSwipePrev={() => console.log('Back SWIPE')}
+          onSwipeNext={() => console.log('Forward SWIPE')}/>
+        <Text>Selected Date: {moment(this.state.selectedDate).format('MMMM DD YYYY')}</Text>
+      </View>
+
     );
   }
 });
