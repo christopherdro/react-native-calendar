@@ -1,6 +1,6 @@
 {
   "name": "react-native-calendar",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "Simple Calendar Component for React Native",
   "main": "CalendarIOS.js",
   "repository": {
