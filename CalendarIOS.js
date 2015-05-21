@@ -151,7 +151,7 @@ var Calendar = React.createClass({
   },
 
   _selectDate(date) {
-    this.props.onDateSelect && this.props.onDateSelect();
+    this.props.onDateSelect && this.props.onDateSelect(date.format());
   },
 
   _onPrev(){
