@@ -10,6 +10,8 @@ var {
   View,
 } = React;
 
+var customDayHeadings = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
+
 var CalendarExample = React.createClass({
   render: function() {
     return (
@@ -17,9 +19,11 @@ var CalendarExample = React.createClass({
         ref="calendar"
         scrollEnabled={true}
         showControls={true}
+        dayHeadings={customDayHeadings}
         titleFormat={'MMMM YYYY'}
         prevButtonText={'Prev'}
         nextButtonText={'Next'}
+        onDateSelect={(date) => console.log(date)}
         onTouchPrev={() => console.log('Back TOUCH')}
         onTouchNext={() => console.log('Forward TOUCH')}
         onSwipePrev={() => console.log('Back SWIPE')}
