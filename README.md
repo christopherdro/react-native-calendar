@@ -4,6 +4,10 @@ A `<Calendar>` component for React Native
 
 Supports iPhone4+ (Portrait only)
 
+Swiping feature needs to improved when swiping fast.
+Suggestions and PR's are welcome!
+
+
 ## Installation
 
 `npm install react-native-calendar --save`
@@ -27,10 +31,9 @@ Supports iPhone4+ (Portrait only)
 
 ## TODOS
 
-- [ ] Improve scrolling
-- [ ] Landscape support
+- [ ] Improve swipe feature
 - [ ] Touch Highlighting
-- [ ] Layout fixes
+- [ ] Landscape support
 - [ ] Language Support
 
 ## DEMO
