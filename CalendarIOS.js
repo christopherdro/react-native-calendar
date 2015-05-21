@@ -45,15 +45,10 @@ var Calendar = React.createClass({
       dayHeadings: ['S', 'M', 'T', 'W', 'T', 'F', 'S']
     }
   },
+
   getInitialState() {
     return {
-     calendarDates: [
-        moment().subtract(2, 'month').format(),
-        moment().subtract(1, 'month').format(),
-        moment().format(), 
-        moment().add(1, 'month').format(),
-        moment().add(2, 'month').format()
-      ],
+     calendarDates: this.getInitialStack(),
       selectedDate: null,
       currentMonth: moment().format()
     };
@@ -63,32 +58,50 @@ var Calendar = React.createClass({
     this._scrollToItem(VIEW_INDEX);
   },
 
+  getInitialStack() {
+    return([
+      moment().subtract(2, 'month').format(),
+      moment().subtract(1, 'month').format(),
+      moment().format(), 
+      moment().add(1, 'month').format(),
+      moment().add(2, 'month').format()
+    ])
+  },
+
+ 
+  renderTopBar(date) {
+    if(this.props.showControls) {
+      return (
+        <View style={styles.calendarControls}>
+          <TouchableOpacity onPress={this._onPrev}>
+            <Text style={styles.controlButton}>{this.props.prevButtonText}</Text>
+          </TouchableOpacity>
+          <Text style={styles.title}>
+            {moment(this.state.currentMonth).format(this.props.titleFormat)}
+          </Text>
+          <TouchableOpacity onPress={this._onNext}>
+            <Text style={styles.controlButton}>{this.props.nextButtonText}</Text>
+          </TouchableOpacity>
+        </View>
+      )
+    } else {
+      return (
+        <View style={styles.calendarControls}>
+          <Text style={styles.title}>{moment(this.state.currentMonth).format(this.props.titleFormat)}</Text>
+        </View>
+      )
+    }
+  },
+
   renderHeading() {
     return (
       <View style={styles.calendarHeading}>
-        {this.props.dayHeadings.map((day) => { return (<Text style={styles.dayListDay}>{day}</Text>) })}
-      </View>
-    )
-  },
-
-  renderControls(date) {
-    return (
-      <View style={styles.calendarControls}>
-        <TouchableOpacity onPress={this._onPrev}>
-          <Text style={styles.controlButton}>{this.props.prevButtonText}</Text>
-        </TouchableOpacity>
-        <Text style={styles.title}>
-          {moment(this.state.currentMonth).format(this.props.titleFormat)}
-        </Text>
-        <TouchableOpacity onPress={this._onNext}>
-          <Text style={styles.controls}>{this.props.nextButtonText}</Text>
-        </TouchableOpacity>
+        {this.props.dayHeadings.map((day) => { return (<Text style={styles.dayHeading}>{day}</Text>) })}
       </View>
     )
   },
 
   renderMonthView(date) {
-  
     var dayStart = moment(date).startOf('month').format(),
       daysInMonth = moment(dayStart).daysInMonth(),
       offset = moment(dayStart).get('day'),
@@ -100,7 +113,7 @@ var Calendar = React.createClass({
       var days = [];
       for (var j = 0; j < MAX_ROWS; j++) {
         if (preFiller < offset) {
-          days.push(<TouchableWithoutFeedback><Text style={styles.dayListDay}></Text></TouchableWithoutFeedback>);
+          days.push(<TouchableWithoutFeedback><Text style={styles.dayButton}></Text></TouchableWithoutFeedback>);
         } else {
           if(currentDay < daysInMonth) {
             var newDay = moment(dayStart).set('date', currentDay + 1);
@@ -109,7 +122,7 @@ var Calendar = React.createClass({
             days.push((
               <TouchableOpacity
                 onPress={this._selectDate.bind(this, newDay)}>
-                <Text style={[styles.dayListDay, isToday && styles.currentDay]}>{currentDay + 1}</Text>
+                <Text style={[styles.dayButton, isToday && styles.currentDay]}>{currentDay + 1}</Text>
               </TouchableOpacity>
             ));
             currentDay++;
@@ -120,11 +133,11 @@ var Calendar = React.createClass({
 
       if(days.length > 0 && days.length < 7) {
         for (var x = days.length; x < 7; x++) {
-          days.push(<TouchableWithoutFeedback><Text style={styles.dayListDay}></Text></TouchableWithoutFeedback>);
+          days.push(<TouchableWithoutFeedback><Text style={styles.dayButton}></Text></TouchableWithoutFeedback>);
         }        
-        weekRows.push(<View key={weekRows.length} style={styles.dayList}>{days}</View>);
+        weekRows.push(<View key={weekRows.length} style={styles.weekRow}>{days}</View>);
       } else {
-        weekRows.push(<View key={weekRows.length} style={styles.dayList}>{days}</View>);
+        weekRows.push(<View key={weekRows.length} style={styles.weekRow}>{days}</View>);
       }
     } // column 
     return (<View key={moment(newDay).month()} style={styles.calendarContainer}>{weekRows}</View>);
@@ -189,10 +202,9 @@ var Calendar = React.createClass({
   },
 
   render() {
-
     return (
       <View>
-        {this.props.showControls && this.renderControls()}
+        {this.renderTopBar()}
         {this.renderHeading(this.props.titleFormat)}
         <ScrollView
           ref='calendar'
@@ -223,33 +235,41 @@ var styles = StyleSheet.create({
   controlButton: {
     flex: 0.1,
     fontSize: 15,
+    padding: 5,
   },
   title: {
     flex: 0.8,
     textAlign: 'center',
-    fontSize: 20
+    fontSize: 15,
   },
   calendarHeading: {
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
-    borderTopWidth: 2,
-    borderBottomWidth: 2
+    borderTopWidth: 1,
+    borderBottomWidth: 1
   },
-  dayList: {
+  dayHeading: {
+    padding: 5,
+    flex: 1,
+    textAlign: 'center',
+    fontSize: 15,
+    justifyContent: 'flex-start',
+  },
+  weekRow: {
     flex: 1,
     flexDirection: 'row',
-    alignItems: 'center'
+    alignItems: 'center',
   },
-  dayListDay: {
+  dayButton: {
     padding: 5,
     flex: 1,
     textAlign: 'center',
     fontSize: 20,
-    justifyContent: 'flex-start'
+    justifyContent: 'flex-start',
   },
   currentDay: {
-    color: 'red'
+    color: 'red',
   }
 });
 
