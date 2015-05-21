@@ -31,6 +31,8 @@ var Calendar = React.createClass({
     titleFormat: PropTypes.string,
     onSwipeNext: PropTypes.func,
     onSwipePrev: PropTypes.func,
+    onTouchNext: PropTypes.func,
+    onTouchPrev: PropTypes.func,
   },
 
   getDefaultProps() {
@@ -47,7 +49,7 @@ var Calendar = React.createClass({
     return {
      calendarDates: [
         moment().subtract(2, 'month').format(),
-        moment().subtract(1, 'month').format(), 
+        moment().subtract(1, 'month').format(),
         moment().format(), 
         moment().add(1, 'month').format(),
         moment().add(2, 'month').format()
@@ -72,13 +74,13 @@ var Calendar = React.createClass({
   renderControls(date) {
     return (
       <View style={styles.calendarControls}>
-        <TouchableOpacity onPress={this._onPrev.bind(this)}>
+        <TouchableOpacity onPress={this._onPrev}>
           <Text style={styles.controlButton}>{this.props.prevButtonText}</Text>
         </TouchableOpacity>
         <Text style={styles.title}>
           {moment(this.state.currentMonth).format(this.props.titleFormat)}
         </Text>
-        <TouchableOpacity onPress={this._onNext.bind(this)}>
+        <TouchableOpacity onPress={this._onNext}>
           <Text style={styles.controls}>{this.props.nextButtonText}</Text>
         </TouchableOpacity>
       </View>
@@ -128,22 +130,10 @@ var Calendar = React.createClass({
     return (<View key={moment(newDay).month()} style={styles.calendarContainer}>{weekRows}</View>);
   },
 
-  _onPrev(){
-    this._prependMonth();
-    this._scrollToItem(VIEW_INDEX);
-  },
-  
-  _onNext(){
-    this._appendMonth();
-    this._scrollToItem(VIEW_INDEX);
-  },
-
   _prependMonth() {
     var calendarDates = this.state.calendarDates;
-    
     calendarDates.unshift(moment(calendarDates[0]).subtract(1, 'month').format());
     calendarDates.pop();
-    
     this.setState({
       calendarDates: calendarDates,
       currentMonth: calendarDates[VIEW_INDEX]
@@ -152,10 +142,8 @@ var Calendar = React.createClass({
 
   _appendMonth(){
     var calendarDates = this.state.calendarDates;
-    
     calendarDates.push(moment(calendarDates[calendarDates.length - 1]).add(1, 'month').format());
     calendarDates.shift();
-    
     this.setState({
       calendarDates: calendarDates,
       currentMonth: calendarDates[VIEW_INDEX]
@@ -163,9 +151,21 @@ var Calendar = React.createClass({
   },
 
   _selectDate(date) {
-    console.log(date.format());
+    this.props.onDateSelect && this.props.onDateSelect();
   },
 
+  _onPrev(){
+    this._prependMonth();
+    this._scrollToItem(VIEW_INDEX);
+    this.props.onTouchPrev && this.props.onTouchPrev();
+  },
+  
+  _onNext(){
+    this._appendMonth();
+    this._scrollToItem(VIEW_INDEX);
+    this.props.onTouchNext && this.props.onTouchNext();
+  },
+  
   _scrollToItem(itemIndex) {
       var scrollToX = itemIndex * DEVICE_WIDTH;
       this.refs.calendar.scrollWithoutAnimationTo(0, scrollToX);
@@ -178,9 +178,11 @@ var Calendar = React.createClass({
     if (currentPage < VIEW_INDEX) {
       this._prependMonth();
       this._scrollToItem(VIEW_INDEX);
+      this.props.onSwipePrev && this.props.onSwipePrev();
     } else if (currentPage > VIEW_INDEX) {
         this._appendMonth();
         this._scrollToItem(VIEW_INDEX);
+        this.props.onSwipeNext() && this.props.onSwipeNext();
     } else {
         return false;
     }

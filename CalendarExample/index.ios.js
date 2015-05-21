@@ -13,12 +13,17 @@ var {
 var CalendarExample = React.createClass({
   render: function() {
     return (
-      <Calendar 
+      <Calendar
+        ref="calendar"
         scrollEnabled={true}
         showControls={true}
         titleFormat={'MMMM YYYY'}
         prevButtonText={'Prev'}
         nextButtonText={'Next'}
+        onTouchPrev={() => console.log('Back TOUCH')}
+        onTouchNext={() => console.log('Forward TOUCH')}
+        onSwipePrev={() => console.log('Back SWIPE')}
+        onSwipeNext={() => console.log('Forward SWIPE')}
       />
     );
   }
