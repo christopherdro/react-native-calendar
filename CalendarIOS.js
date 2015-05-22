@@ -48,7 +48,7 @@ var Calendar = React.createClass({
 
   getInitialState() {
     return {
-     calendarDates: this.getInitialStack(),
+      calendarDates: this.getInitialStack(),
       selectedDate: null,
       currentMonth: moment().format()
     };
