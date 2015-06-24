@@ -14,7 +14,7 @@ var {
   View
 } = React;
 
-var 
+var
   MAX_COLUMNS = 7,
   MAX_ROWS = 7,
   DEVICE_WIDTH = Dimensions.get('window').width,
@@ -62,25 +62,25 @@ var Calendar = React.createClass({
     return([
       moment().subtract(2, 'month').format(),
       moment().subtract(1, 'month').format(),
-      moment().format(), 
+      moment().format(),
       moment().add(1, 'month').format(),
       moment().add(2, 'month').format()
     ])
   },
 
- 
+
   renderTopBar(date) {
     if(this.props.showControls) {
       return (
         <View style={styles.calendarControls}>
-          <TouchableOpacity onPress={this._onPrev}>
-            <Text style={styles.controlButton}>{this.props.prevButtonText}</Text>
+          <TouchableOpacity style={styles.controlButton} onPress={this._onPrev}>
+            <Text style={styles.controlButtonText}>{this.props.prevButtonText}</Text>
           </TouchableOpacity>
           <Text style={styles.title}>
             {moment(this.state.currentMonth).format(this.props.titleFormat)}
           </Text>
-          <TouchableOpacity onPress={this._onNext}>
-            <Text style={styles.controlButton}>{this.props.nextButtonText}</Text>
+          <TouchableOpacity style={styles.controlButton} onPress={this._onNext}>
+            <Text style={styles.controlButtonText}>{this.props.nextButtonText}</Text>
           </TouchableOpacity>
         </View>
       )
@@ -118,7 +118,7 @@ var Calendar = React.createClass({
           if(currentDay < daysInMonth) {
             var newDay = moment(dayStart).set('date', currentDay + 1);
             var isToday = (moment().isSame(newDay, 'month') && moment().isSame(newDay, 'day')) ? true : false;
-            
+
             days.push((
               <TouchableOpacity
                 onPress={this._selectDate.bind(this, newDay)}>
@@ -126,20 +126,20 @@ var Calendar = React.createClass({
               </TouchableOpacity>
             ));
             currentDay++;
-          } 
-        } 
+          }
+        }
         preFiller++;
       } // row
 
       if(days.length > 0 && days.length < 7) {
         for (var x = days.length; x < 7; x++) {
           days.push(<TouchableWithoutFeedback><Text style={styles.dayButton}></Text></TouchableWithoutFeedback>);
-        }        
+        }
         weekRows.push(<View key={weekRows.length} style={styles.weekRow}>{days}</View>);
       } else {
         weekRows.push(<View key={weekRows.length} style={styles.weekRow}>{days}</View>);
       }
-    } // column 
+    } // column
     return (<View key={moment(newDay).month()} style={styles.calendarContainer}>{weekRows}</View>);
   },
 
@@ -172,18 +172,18 @@ var Calendar = React.createClass({
     this._scrollToItem(VIEW_INDEX);
     this.props.onTouchPrev && this.props.onTouchPrev();
   },
-  
+
   _onNext(){
     this._appendMonth();
     this._scrollToItem(VIEW_INDEX);
     this.props.onTouchNext && this.props.onTouchNext();
   },
-  
+
   _scrollToItem(itemIndex) {
       var scrollToX = itemIndex * DEVICE_WIDTH;
       this.refs.calendar.scrollWithoutAnimationTo(0, scrollToX);
   },
-  
+
   _scrollEnded(event) {
     var position = event.nativeEvent.contentOffset.x;
     var currentPage = position / DEVICE_WIDTH;
@@ -221,24 +221,27 @@ var Calendar = React.createClass({
     )
   }
 });
-  
+
 var styles = StyleSheet.create({
   calendarContainer: {
     width: DEVICE_WIDTH
   },
   calendarControls: {
+    flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
     margin: 10,
     marginTop: 30
   },
   controlButton: {
-    flex: 0.1,
-    fontSize: 15,
+    flex: 1,
     padding: 5,
   },
+  controlButtonText: {
+    fontSize: 15,
+  },
   title: {
-    flex: 0.8,
+    flex: 1,
     textAlign: 'center',
     fontSize: 15,
   },
