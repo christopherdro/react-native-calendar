@@ -33,6 +33,7 @@ var Calendar = React.createClass({
     onSwipePrev: PropTypes.func,
     onTouchNext: PropTypes.func,
     onTouchPrev: PropTypes.func,
+    eventDates: PropTypes.array,
   },
 
   getDefaultProps() {
@@ -42,7 +43,8 @@ var Calendar = React.createClass({
       prevButtonText: 'Prev',
       nextButtonText: 'Next',
       titleFormat: 'MMMM YYYY',
-      dayHeadings: ['S', 'M', 'T', 'W', 'T', 'F', 'S']
+      dayHeadings: ['S', 'M', 'T', 'W', 'T', 'F', 'S'],
+      eventDates: [],
     }
   },
 
@@ -118,13 +120,21 @@ var Calendar = React.createClass({
           if(currentDay < daysInMonth) {
             var newDay = moment(dayStart).set('date', currentDay + 1);
             var isToday = (moment().isSame(newDay, 'month') && moment().isSame(newDay, 'day')) ? true : false;
+            var hasEvent = false;
+            for (var i = 0; i < this.props.eventDates.length; i++) {
+              hasEvent = moment(this.props.eventDates[i]).isSame(newDay, 'day') ? true : false;
+              if (hasEvent) { break; }
+            }
 
             days.push((
               <TouchableOpacity
                 onPress={this._selectDate.bind(this, newDay)}>
                   <View style={styles.dayButton}>
                     <Text style={[styles.day, isToday && styles.currentDay]}>{currentDay + 1}</Text>
-                    <View style={styles.eventIndicator}></View>
+                    {this.props.eventDates.length > 0 ?
+                      <View style={[styles.eventIndicatorFiller, hasEvent && styles.eventIndicator]}></View>
+                      : null
+                    }
                   </View>
               </TouchableOpacity>
             ));
@@ -284,6 +294,19 @@ var styles = StyleSheet.create({
     borderBottomWidth: 4,
     borderRightWidth: 4,
     backgroundColor: '#cccccc',
+    borderTopLeftRadius: 4,
+    borderTopRightRadius: 4,
+    borderBottomLeftRadius: 4,
+    borderBottomRightRadius: 4,
+  },
+  eventIndicatorFiller: {
+    marginTop: 10,
+    borderColor: 'transparent',
+    borderLeftWidth: 4,
+    borderTopWidth: 4,
+    borderBottomWidth: 4,
+    borderRightWidth: 4,
+    backgroundColor: 'transparent',
     borderTopLeftRadius: 4,
     borderTopRightRadius: 4,
     borderBottomLeftRadius: 4,
