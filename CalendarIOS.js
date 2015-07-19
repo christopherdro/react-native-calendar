@@ -124,7 +124,7 @@ var Calendar = React.createClass({
                 onPress={this._selectDate.bind(this, newDay)}>
                   <View style={styles.dayButton}>
                     <Text style={[styles.day, isToday && styles.currentDay]}>{currentDay + 1}</Text>
-                    <View style={styles.dayDot}></View>
+                    <View style={styles.eventIndicator}></View>
                   </View>
               </TouchableOpacity>
             ));
@@ -276,7 +276,7 @@ var styles = StyleSheet.create({
   day: {
     fontSize: 20,
   },
-  dayDot: {
+  eventIndicator: {
     marginTop: 10,
     borderColor: '#cccccc',
     borderLeftWidth: 4,
