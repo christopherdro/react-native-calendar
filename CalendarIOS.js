@@ -113,7 +113,7 @@ var Calendar = React.createClass({
       var days = [];
       for (var j = 0; j < MAX_ROWS; j++) {
         if (preFiller < offset) {
-          days.push(<TouchableWithoutFeedback><Text style={styles.dayButton}></Text></TouchableWithoutFeedback>);
+          days.push(<TouchableWithoutFeedback><View style={styles.dayButton}></View></TouchableWithoutFeedback>);
         } else {
           if(currentDay < daysInMonth) {
             var newDay = moment(dayStart).set('date', currentDay + 1);
@@ -122,7 +122,10 @@ var Calendar = React.createClass({
             days.push((
               <TouchableOpacity
                 onPress={this._selectDate.bind(this, newDay)}>
-                <Text style={[styles.dayButton, isToday && styles.currentDay]}>{currentDay + 1}</Text>
+                  <View style={styles.dayButton}>
+                    <Text style={[styles.day, isToday && styles.currentDay]}>{currentDay + 1}</Text>
+                    <View style={styles.dayDot}></View>
+                  </View>
               </TouchableOpacity>
             ));
             currentDay++;
@@ -133,7 +136,7 @@ var Calendar = React.createClass({
 
       if(days.length > 0 && days.length < 7) {
         for (var x = days.length; x < 7; x++) {
-          days.push(<TouchableWithoutFeedback><Text style={styles.dayButton}></Text></TouchableWithoutFeedback>);
+          days.push(<TouchableWithoutFeedback><View style={styles.dayButton}></View></TouchableWithoutFeedback>);
         }
         weekRows.push(<View key={weekRows.length} style={styles.weekRow}>{days}</View>);
       } else {
@@ -267,9 +270,24 @@ var styles = StyleSheet.create({
   dayButton: {
     padding: 5,
     flex: 1,
-    textAlign: 'center',
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
+  day: {
     fontSize: 20,
-    justifyContent: 'flex-start',
+  },
+  dayDot: {
+    marginTop: 10,
+    borderColor: '#cccccc',
+    borderLeftWidth: 4,
+    borderTopWidth: 4,
+    borderBottomWidth: 4,
+    borderRightWidth: 4,
+    backgroundColor: '#cccccc',
+    borderTopLeftRadius: 4,
+    borderTopRightRadius: 4,
+    borderBottomLeftRadius: 4,
+    borderBottomRightRadius: 4,
   },
   currentDay: {
     color: 'red',
