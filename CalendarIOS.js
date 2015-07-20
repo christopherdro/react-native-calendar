@@ -121,8 +121,8 @@ var Calendar = React.createClass({
             var newDay = moment(dayStart).set('date', currentDay + 1);
             var isToday = (moment().isSame(newDay, 'month') && moment().isSame(newDay, 'day')) ? true : false;
             var hasEvent = false;
-            for (var i = 0; i < this.props.eventDates.length; i++) {
-              hasEvent = moment(this.props.eventDates[i]).isSame(newDay, 'day') ? true : false;
+            for (var x = 0; x < this.props.eventDates.length; x++) {
+              hasEvent = moment(this.props.eventDates[x]).isSame(newDay, 'day') ? true : false;
               if (hasEvent) { break; }
             }
 
