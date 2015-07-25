@@ -34,6 +34,7 @@ var Calendar = React.createClass({
     onTouchNext: PropTypes.func,
     onTouchPrev: PropTypes.func,
     eventDates: PropTypes.array,
+    startDate: PropTypes.string,
   },
 
   getDefaultProps() {
@@ -45,6 +46,7 @@ var Calendar = React.createClass({
       titleFormat: 'MMMM YYYY',
       dayHeadings: ['S', 'M', 'T', 'W', 'T', 'F', 'S'],
       eventDates: [],
+      startDate: moment(),
     }
   },
 
@@ -52,7 +54,7 @@ var Calendar = React.createClass({
     return {
       calendarDates: this.getInitialStack(),
       selectedDate: null,
-      currentMonth: moment().format()
+      currentMonth: moment(this.props.startDate).format()
     };
   },
 
@@ -64,7 +66,7 @@ var Calendar = React.createClass({
     return([
       moment().subtract(2, 'month').format(),
       moment().subtract(1, 'month').format(),
-      moment().format(),
+      moment(this.props.startDate).format(),
       moment().add(1, 'month').format(),
       moment().add(2, 'month').format()
     ])
