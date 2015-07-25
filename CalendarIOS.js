@@ -46,7 +46,7 @@ var Calendar = React.createClass({
       titleFormat: 'MMMM YYYY',
       dayHeadings: ['S', 'M', 'T', 'W', 'T', 'F', 'S'],
       eventDates: [],
-      startDate: moment(),
+      startDate: moment().format('YYYY-MM-DD'),
     }
   },
 
