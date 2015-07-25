@@ -210,7 +210,7 @@ var Calendar = React.createClass({
     } else if (currentPage > VIEW_INDEX) {
         this._appendMonth();
         this._scrollToItem(VIEW_INDEX);
-        this.props.onSwipeNext() && this.props.onSwipeNext();
+        this.props.onSwipeNext && this.props.onSwipeNext();
     } else {
         return false;
     }
@@ -246,7 +246,6 @@ var styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     margin: 10,
-    marginTop: 30
   },
   controlButton: {
     flex: 1,
