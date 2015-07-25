@@ -33,6 +33,7 @@ var Calendar = React.createClass({
     onSwipePrev: PropTypes.func,
     onTouchNext: PropTypes.func,
     onTouchPrev: PropTypes.func,
+    eventDates: PropTypes.array,
   },
 
   getDefaultProps() {
@@ -42,7 +43,8 @@ var Calendar = React.createClass({
       prevButtonText: 'Prev',
       nextButtonText: 'Next',
       titleFormat: 'MMMM YYYY',
-      dayHeadings: ['S', 'M', 'T', 'W', 'T', 'F', 'S']
+      dayHeadings: ['S', 'M', 'T', 'W', 'T', 'F', 'S'],
+      eventDates: [],
     }
   },
 
@@ -113,16 +115,27 @@ var Calendar = React.createClass({
       var days = [];
       for (var j = 0; j < MAX_ROWS; j++) {
         if (preFiller < offset) {
-          days.push(<TouchableWithoutFeedback><Text style={styles.dayButton}></Text></TouchableWithoutFeedback>);
+          days.push(<TouchableWithoutFeedback><View style={styles.dayButton}></View></TouchableWithoutFeedback>);
         } else {
           if(currentDay < daysInMonth) {
             var newDay = moment(dayStart).set('date', currentDay + 1);
             var isToday = (moment().isSame(newDay, 'month') && moment().isSame(newDay, 'day')) ? true : false;
+            var hasEvent = false;
+            for (var x = 0; x < this.props.eventDates.length; x++) {
+              hasEvent = moment(this.props.eventDates[x]).isSame(newDay, 'day') ? true : false;
+              if (hasEvent) { break; }
+            }
 
             days.push((
               <TouchableOpacity
                 onPress={this._selectDate.bind(this, newDay)}>
-                <Text style={[styles.dayButton, isToday && styles.currentDay]}>{currentDay + 1}</Text>
+                  <View style={styles.dayButton}>
+                    <Text style={[styles.day, isToday && styles.currentDay]}>{currentDay + 1}</Text>
+                    {this.props.eventDates.length > 0 ?
+                      <View style={[styles.eventIndicatorFiller, hasEvent && styles.eventIndicator]}></View>
+                      : null
+                    }
+                  </View>
               </TouchableOpacity>
             ));
             currentDay++;
@@ -133,7 +146,7 @@ var Calendar = React.createClass({
 
       if(days.length > 0 && days.length < 7) {
         for (var x = days.length; x < 7; x++) {
-          days.push(<TouchableWithoutFeedback><Text style={styles.dayButton}></Text></TouchableWithoutFeedback>);
+          days.push(<TouchableWithoutFeedback><View style={styles.dayButton}></View></TouchableWithoutFeedback>);
         }
         weekRows.push(<View key={weekRows.length} style={styles.weekRow}>{days}</View>);
       } else {
@@ -266,9 +279,37 @@ var styles = StyleSheet.create({
   dayButton: {
     padding: 5,
     flex: 1,
-    textAlign: 'center',
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
+  day: {
     fontSize: 20,
-    justifyContent: 'flex-start',
+  },
+  eventIndicator: {
+    marginTop: 6,
+    borderColor: '#cccccc',
+    borderLeftWidth: 2.5,
+    borderTopWidth: 2.5,
+    borderBottomWidth: 2.5,
+    borderRightWidth: 2.5,
+    backgroundColor: '#cccccc',
+    borderTopLeftRadius: 2.5,
+    borderTopRightRadius: 2.5,
+    borderBottomLeftRadius: 2.5,
+    borderBottomRightRadius: 2.5,
+  },
+  eventIndicatorFiller: {
+    marginTop: 6,
+    borderColor: 'transparent',
+    borderLeftWidth: 2.5,
+    borderTopWidth: 2.5,
+    borderBottomWidth: 2.5,
+    borderRightWidth: 2.5,
+    backgroundColor: 'transparent',
+    borderTopLeftRadius: 2.5,
+    borderTopRightRadius: 2.5,
+    borderBottomLeftRadius: 2.5,
+    borderBottomRightRadius: 2.5,
   },
   currentDay: {
     color: 'red',
