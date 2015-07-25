@@ -195,7 +195,7 @@ var Calendar = React.createClass({
     } else if (currentPage > VIEW_INDEX) {
         this._appendMonth();
         this._scrollToItem(VIEW_INDEX);
-        this.props.onSwipeNext() && this.props.onSwipeNext();
+        this.props.onSwipeNext && this.props.onSwipeNext();
     } else {
         return false;
     }
