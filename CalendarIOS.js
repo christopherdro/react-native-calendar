@@ -231,7 +231,6 @@ var styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     margin: 10,
-    marginTop: 30
   },
   controlButton: {
     flex: 1,
