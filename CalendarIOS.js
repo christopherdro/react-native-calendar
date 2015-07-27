@@ -229,6 +229,7 @@ var Calendar = React.createClass({
           removeClippedSubviews={true}
           scrollEventThrottle={600}
           showsHorizontalScrollIndicator={false}
+          automaticallyAdjustContentInsets={false}          
           onMomentumScrollEnd={(event) => this._scrollEnded(event)}>
           {this.state.calendarDates.map((date) => { return this.renderMonthView(date) })}
         </ScrollView>
