@@ -63,11 +63,11 @@ var Calendar = React.createClass({
 
   getInitialStack() {
     return([
-      moment().subtract(2, 'month').format(),
-      moment().subtract(1, 'month').format(),
+      moment(this.props.startDate).subtract(2, 'month').format(),
+      moment(this.props.startDate).subtract(1, 'month').format(),
       moment(this.props.startDate).format(),
-      moment().add(1, 'month').format(),
-      moment().add(2, 'month').format()
+      moment(this.props.startDate).add(1, 'month').format(),
+      moment(this.props.startDate).add(2, 'month').format()
     ])
   },
 
