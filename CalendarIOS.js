@@ -34,6 +34,7 @@ var Calendar = React.createClass({
     onTouchNext: PropTypes.func,
     onTouchPrev: PropTypes.func,
     eventDates: PropTypes.array,
+    startDate: PropTypes.string,
   },
 
   getDefaultProps() {
@@ -44,7 +45,7 @@ var Calendar = React.createClass({
       nextButtonText: 'Next',
       titleFormat: 'MMMM YYYY',
       dayHeadings: ['S', 'M', 'T', 'W', 'T', 'F', 'S'],
-      eventDates: [],
+      startDate: moment().format('YYYY-MM-DD'),
     }
   },
 
@@ -52,7 +53,7 @@ var Calendar = React.createClass({
     return {
       calendarDates: this.getInitialStack(),
       selectedDate: null,
-      currentMonth: moment().format()
+      currentMonth: moment(this.props.startDate).format()
     };
   },
 
@@ -62,11 +63,11 @@ var Calendar = React.createClass({
 
   getInitialStack() {
     return([
-      moment().subtract(2, 'month').format(),
-      moment().subtract(1, 'month').format(),
-      moment().format(),
-      moment().add(1, 'month').format(),
-      moment().add(2, 'month').format()
+      moment(this.props.startDate).subtract(2, 'month').format(),
+      moment(this.props.startDate).subtract(1, 'month').format(),
+      moment(this.props.startDate).format(),
+      moment(this.props.startDate).add(1, 'month').format(),
+      moment(this.props.startDate).add(2, 'month').format()
     ])
   },
 
@@ -121,9 +122,11 @@ var Calendar = React.createClass({
             var newDay = moment(dayStart).set('date', currentDay + 1);
             var isToday = (moment().isSame(newDay, 'month') && moment().isSame(newDay, 'day')) ? true : false;
             var hasEvent = false;
-            for (var x = 0; x < this.props.eventDates.length; x++) {
-              hasEvent = moment(this.props.eventDates[x]).isSame(newDay, 'day') ? true : false;
-              if (hasEvent) { break; }
+            if (this.props.eventDates) {
+              for (var x = 0; x < this.props.eventDates.length; x++) {
+                hasEvent = moment(this.props.eventDates[x]).isSame(newDay, 'day') ? true : false;
+                if (hasEvent) { break; }
+              }
             }
 
             days.push((
@@ -131,7 +134,7 @@ var Calendar = React.createClass({
                 onPress={this._selectDate.bind(this, newDay)}>
                   <View style={styles.dayButton}>
                     <Text style={[styles.day, isToday && styles.currentDay]}>{currentDay + 1}</Text>
-                    {this.props.eventDates.length > 0 ?
+                    {this.props.eventDates ?
                       <View style={[styles.eventIndicatorFiller, hasEvent && styles.eventIndicator]}></View>
                       : null
                     }
@@ -227,6 +230,7 @@ var Calendar = React.createClass({
           removeClippedSubviews={true}
           scrollEventThrottle={600}
           showsHorizontalScrollIndicator={false}
+          automaticallyAdjustContentInsets={false}
           onMomentumScrollEnd={(event) => this._scrollEnded(event)}>
           {this.state.calendarDates.map((date) => { return this.renderMonthView(date) })}
         </ScrollView>
