@@ -14,7 +14,7 @@ Suggestions and PR's are welcome!
 
 ## Usage
 ```javascript
-<Calendar 
+<Calendar
   scrollEnabled={true}              // False disables swiping. Default: True
   showControls={true}               // False hides prev/next buttons. Default: False
   titleFormat={'MMMM YYYY'}         // Format for displaying current month. Default: 'MMMM YYYY'
@@ -26,6 +26,8 @@ Suggestions and PR's are welcome!
   onTouchNext={this.onTouchNext}    // Callback for next touch event
   onSwipePrev={this.onSwipePrev}    // Callback for back swipe event
   onSwipeNext={this.onSwipeNext}    // Callback for forward swipe event
+  eventDates={['2015-07-01']}       // Optional array of moment() parseable dates that will show an event indicator
+  startDate={'2015-08-01'}          // The first month that will display. Default: current month
  />
 ```
 
