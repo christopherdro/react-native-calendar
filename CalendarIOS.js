@@ -292,31 +292,19 @@ var styles = StyleSheet.create({
   eventIndicator: {
     marginTop: 6,
     borderColor: '#cccccc',
-    borderLeftWidth: 2.5,
-    borderTopWidth: 2.5,
-    borderBottomWidth: 2.5,
-    borderRightWidth: 2.5,
+    borderWidth: 2.5,
     backgroundColor: '#cccccc',
-    borderTopLeftRadius: 2.5,
-    borderTopRightRadius: 2.5,
-    borderBottomLeftRadius: 2.5,
-    borderBottomRightRadius: 2.5,
+    borderRadius: 2.5,
   },
   eventIndicatorFiller: {
     marginTop: 6,
     borderColor: 'transparent',
-    borderLeftWidth: 2.5,
-    borderTopWidth: 2.5,
-    borderBottomWidth: 2.5,
-    borderRightWidth: 2.5,
+    borderWidth: 2.5,
     backgroundColor: 'transparent',
-    borderTopLeftRadius: 2.5,
-    borderTopRightRadius: 2.5,
-    borderBottomLeftRadius: 2.5,
-    borderBottomRightRadius: 2.5,
+    borderRadius: 2.5,
   },
   currentDay: {
-    color: 'red',
+    color: 'red'
   }
 });
 
