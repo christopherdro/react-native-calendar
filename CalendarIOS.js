@@ -131,9 +131,12 @@ var Calendar = React.createClass({
 
             days.push((
               <TouchableOpacity
+                style={styles.touchableOpacity}
                 onPress={this._selectDate.bind(this, newDay)}>
                   <View style={styles.dayButton}>
-                    <Text style={[styles.day, isToday && styles.currentDay]}>{currentDay + 1}</Text>
+                    <View style={[styles.dayEmptyCircle, isToday && styles.currentDay]}>
+                      <Text style={[styles.day, isToday && styles.currentDayText]}>{currentDay + 1}</Text>
+                    </View>
                     {this.props.eventDates ?
                       <View style={[styles.eventIndicatorFiller, hasEvent && styles.eventIndicator]}></View>
                       : null
@@ -290,21 +293,30 @@ var styles = StyleSheet.create({
     fontSize: 20,
   },
   eventIndicator: {
-    marginTop: 6,
     borderColor: '#cccccc',
     borderWidth: 2.5,
     backgroundColor: '#cccccc',
     borderRadius: 2.5,
   },
   eventIndicatorFiller: {
-    marginTop: 6,
     borderColor: 'transparent',
     borderWidth: 2.5,
     backgroundColor: 'transparent',
     borderRadius: 2.5,
   },
+  dayEmptyCircle: {
+    borderColor: 'transparent',
+    borderWidth: 4.5,
+    backgroundColor: 'transparent',
+    borderRadius: 50,
+    marginBottom: 2.5,
+  },
   currentDay: {
-    color: 'red'
+    borderColor: 'red',
+    backgroundColor: 'red',
+  },
+  currentDayText: {
+    color: 'white'
   }
 });
 
