@@ -121,6 +121,7 @@ var Calendar = React.createClass({
           if(currentDay < daysInMonth) {
             var newDay = moment(dayStart).set('date', currentDay + 1);
             var isToday = (moment().isSame(newDay, 'month') && moment().isSame(newDay, 'day')) ? true : false;
+            var isSelected = (moment(this.state.selectedDate).isSame(newDay, 'month') && moment(this.state.selectedDate).isSame(newDay, 'day')) ? true : false;
             var hasEvent = false;
             if (this.props.eventDates) {
               for (var x = 0; x < this.props.eventDates.length; x++) {
@@ -129,13 +130,20 @@ var Calendar = React.createClass({
               }
             }
 
+            var dayCircleStyle = [styles.emptyDayCircle];
+            if (isSelected) {
+              dayCircleStyle.push(styles.selectedDayCircle);
+            } else if (isToday) {
+              dayCircleStyle.push(styles.currentDayCircl);
+            }
+
             days.push((
               <TouchableOpacity
                 style={styles.touchableOpacity}
                 onPress={this._selectDate.bind(this, newDay)}>
                   <View style={styles.dayButton}>
-                    <View style={[styles.emptyDayCircle, isToday && styles.currentDayCircleColor]}>
-                      <Text style={[styles.day, isToday && styles.currentDayText]}>{currentDay + 1}</Text>
+                    <View style={dayCircleStyle}>
+                      <Text style={[styles.day, (isToday || isSelected) && styles.selectedDayText]}>{currentDay + 1}</Text>
                     </View>
                     {this.props.eventDates ?
                       <View style={[styles.emptyEventIndicator, hasEvent && styles.eventIndicatorColor]}></View>
@@ -183,6 +191,9 @@ var Calendar = React.createClass({
   },
 
   _selectDate(date) {
+    this.setState({
+      selectedDate: date,
+    });
     this.props.onDateSelect && this.props.onDateSelect(date.format());
   },
 
@@ -309,12 +320,17 @@ var styles = StyleSheet.create({
     backgroundColor: 'transparent',
     borderRadius: 50,
   },
-  currentDayCircleColor: {
+  currentDayCircl: {
     borderColor: 'red',
     backgroundColor: 'red',
   },
-  currentDayText: {
-    color: 'white'
+  selectedDayCircle: {
+    borderColor: 'black',
+    backgroundColor: 'black',
+  },
+  selectedDayText: {
+    color: 'white',
+    fontWeight: 'bold',
   }
 });
 
