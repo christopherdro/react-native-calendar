@@ -170,7 +170,7 @@ var Calendar = React.createClass({
     } else {
       dayCircleStyle = [styles.emptyDayCircle]
     }
-    if (isSelected) {
+    if (isSelected && !isToday) {
       dayCircleStyle.push(styles.selectedDayCircle);
     } else if (isToday) {
       dayCircleStyle.push(styles.currentDayCircle);
