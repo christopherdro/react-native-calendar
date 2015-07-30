@@ -130,19 +130,12 @@ var Calendar = React.createClass({
               }
             }
 
-            var dayCircleStyle = [styles.emptyDayCircle];
-            if (isSelected) {
-              dayCircleStyle.push(styles.selectedDayCircle);
-            } else if (isToday) {
-              dayCircleStyle.push(styles.currentDayCircl);
-            }
-
             days.push((
               <TouchableOpacity
                 style={styles.touchableOpacity}
                 onPress={this._selectDate.bind(this, newDay)}>
                   <View style={styles.dayButton}>
-                    <View style={dayCircleStyle}>
+                    <View style={this._dayCircleStyle(newDay, isSelected, isToday)}>
                       <Text style={[styles.day, (isToday || isSelected) && styles.selectedDayText]}>{currentDay + 1}</Text>
                     </View>
                     {this.props.eventDates ?
@@ -168,6 +161,21 @@ var Calendar = React.createClass({
       }
     } // column
     return (<View key={moment(newDay).month()} style={styles.calendarContainer}>{weekRows}</View>);
+  },
+
+  _dayCircleStyle(newDay, isSelected, isToday) {
+    var dayCircleStyle;
+    if (moment(newDay).format("D") <= 9) {
+      dayCircleStyle = [styles.emptyDayCircleWider]
+    } else {
+      dayCircleStyle = [styles.emptyDayCircle]
+    }
+    if (isSelected) {
+      dayCircleStyle.push(styles.selectedDayCircle);
+    } else if (isToday) {
+      dayCircleStyle.push(styles.currentDayCircle);
+    }
+    return dayCircleStyle;
   },
 
   _prependMonth() {
@@ -316,11 +324,20 @@ var styles = StyleSheet.create({
   },
   emptyDayCircle: {
     borderColor: 'transparent',
-    borderWidth: 4.5,
+    borderWidth: 5,
     backgroundColor: 'transparent',
     borderRadius: 50,
   },
-  currentDayCircl: {
+  emptyDayCircleWider: {
+    borderColor: 'transparent',
+    borderTopWidth: 5,
+    borderLeftWidth: 11,
+    borderRightWidth: 11,
+    borderBottomWidth: 5,
+    backgroundColor: 'transparent',
+    borderRadius: 50,
+  },
+  currentDayCircle: {
     borderColor: 'red',
     backgroundColor: 'red',
   },
