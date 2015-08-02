@@ -186,13 +186,13 @@ var Calendar = React.createClass({
   _onPrev(){
     this._prependMonth();
     this._scrollToItem(VIEW_INDEX);
-    this.props.onTouchPrev && this.props.onTouchPrev();
+    this.props.onTouchPrev && this.props.onTouchPrev(this.state.calendarDates[VIEW_INDEX]);
   },
 
   _onNext(){
     this._appendMonth();
     this._scrollToItem(VIEW_INDEX);
-    this.props.onTouchNext && this.props.onTouchNext();
+    this.props.onTouchNext && this.props.onTouchNext(this.state.calendarDates[VIEW_INDEX]);
   },
 
   _scrollToItem(itemIndex) {
