@@ -360,7 +360,7 @@ var styles = StyleSheet.create({
     alignSelf: 'center'
   },
   eventIndicatorFiller: {
-    marginTop: 6,
+    marginTop: 3,
     borderColor: 'transparent',
     borderWidth: 2.5,
     borderRadius: 2.5,
