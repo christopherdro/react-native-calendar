@@ -52,7 +52,7 @@ var Calendar = React.createClass({
   getInitialState() {
     return {
       calendarDates: this.getInitialStack(),
-      selectedDate: null,
+      selectedDate: moment(),
       currentMonth: moment(this.props.startDate).format()
     };
   },
@@ -136,7 +136,7 @@ var Calendar = React.createClass({
                 onPress={this._selectDate.bind(this, newDay)}>
                   <View style={styles.dayButton}>
                     <View style={this._dayCircleStyle(newDay, isSelected, isToday)}>
-                      <Text style={[styles.day, (isToday || isSelected) && styles.selectedDayText]}>{currentDay + 1}</Text>
+                      <Text style={this._dayTextStyle(isSelected, isToday)}>{currentDay + 1}</Text>
                     </View>
                     {this.props.eventDates ?
                       <View style={[styles.emptyEventIndicator, hasEvent && styles.eventIndicatorColor]}></View>
@@ -166,16 +166,28 @@ var Calendar = React.createClass({
   _dayCircleStyle(newDay, isSelected, isToday) {
     var dayCircleStyle;
     if (moment(newDay).format("D") <= 9) {
-      dayCircleStyle = [styles.emptyDayCircleWider]
+      dayCircleStyle = [styles.emptyDayCircleWider];
     } else {
-      dayCircleStyle = [styles.emptyDayCircle]
+      dayCircleStyle = [styles.emptyDayCircle];
     }
     if (isSelected && !isToday) {
       dayCircleStyle.push(styles.selectedDayCircle);
-    } else if (isToday) {
+    } else if (isSelected && isToday) {
       dayCircleStyle.push(styles.currentDayCircle);
+    } else if (!isSelected && isToday) {
+      dayCircleStyle.push(styles.currentDay);
     }
     return dayCircleStyle;
+  },
+
+  _dayTextStyle(isSelected, isToday) {
+    var dayTextStyle = [styles.day];
+    if (isToday && !isSelected) {
+      dayTextStyle.push(styles.currentDayText);
+    } else if (isToday || isSelected) {
+      dayTextStyle.push(styles.selectedDayText);
+    }
+    return dayTextStyle;
   },
 
   _prependMonth() {
@@ -340,6 +352,9 @@ var styles = StyleSheet.create({
   currentDayCircle: {
     borderColor: 'red',
     backgroundColor: 'red',
+  },
+  currentDayText: {
+    color: 'red',
   },
   selectedDayCircle: {
     borderColor: 'black',
