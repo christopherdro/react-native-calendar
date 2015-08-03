@@ -24,6 +24,7 @@ var CalendarExample = React.createClass({
       <View>
         <Calendar
           ref="calendar"
+          eventDates={['2015-07-03', '2015-07-05', '2015-07-10', '2015-07-15', '2015-07-20', '2015-07-25', '2015-07-28', '2015-07-30']}
           scrollEnabled={true}
           showControls={true}
           dayHeadings={customDayHeadings}

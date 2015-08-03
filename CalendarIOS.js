@@ -1,11 +1,11 @@
 'use strict';
 
-var React = require('react-native');
-var PropTypes = require('ReactPropTypes');
-var Dimensions = require('Dimensions');
-var moment = require('moment');
+let React = require('react-native');
+let PropTypes = require('ReactPropTypes');
+let moment = require('moment');
 
-var {
+let {
+  Dimensions,
   ScrollView,
   StyleSheet,
   Text,
@@ -14,13 +14,13 @@ var {
   View
 } = React;
 
-var
+let
   MAX_COLUMNS = 7,
   MAX_ROWS = 7,
   DEVICE_WIDTH = Dimensions.get('window').width,
   VIEW_INDEX = 2;
 
-var Calendar = React.createClass({
+let Calendar = React.createClass({
   propTypes: {
     dayHeadings: PropTypes.array,
     onDateSelect: PropTypes.func,
@@ -121,7 +121,7 @@ var Calendar = React.createClass({
       var days = [];
       for (var j = 0; j < MAX_ROWS; j++) {
         if (preFiller < offset) {
-          days.push(<TouchableWithoutFeedback><View style={styles.dayButtonFiller}></View></TouchableWithoutFeedback>);
+          days.push(<TouchableWithoutFeedback><View style={styles.dayButtonFiller}><Text style={styles.day}></Text></View></TouchableWithoutFeedback>);
         } else {
           if(currentDay < daysInMonth) {
             var newDay = moment(dayStart).set('date', currentDay + 1);
@@ -144,7 +144,7 @@ var Calendar = React.createClass({
                       <Text style={this._dayTextStyle(newDay, isSelected, isToday)}>{currentDay + 1}</Text>
                     </View>
                     {this.props.eventDates ?
-                      <View style={[styles.emptyEventIndicator, hasEvent && styles.eventIndicatorColor]}></View>
+                      <View style={[styles.eventIndicatorFiller, hasEvent && styles.eventIndicator]}></View>
                       : null
                     }
                   </View>
@@ -158,7 +158,13 @@ var Calendar = React.createClass({
 
       if(days.length > 0 && days.length < 7) {
         for (var x = days.length; x < 7; x++) {
-          days.push(<TouchableWithoutFeedback><View style={styles.dayButtonFiller}></View></TouchableWithoutFeedback>);
+          days.push(
+            <TouchableWithoutFeedback>
+              <View style={styles.dayButtonFiller}>
+                <Text style={styles.day}></Text>
+              </View>
+            </TouchableWithoutFeedback>
+          );
         }
         weekRows.push(<View key={weekRows.length} style={styles.weekRow}>{days}</View>);
       } else {
@@ -174,16 +180,16 @@ var Calendar = React.createClass({
   _dayCircleStyle(newDay, isSelected, isToday) {
     var dayCircleStyle;
     if (moment(newDay).format("D") <= 9) {
-      dayCircleStyle = [styles.emptyDayCircleWider];
+      dayCircleStyle = [styles.dayCircleFillerWider];
     } else {
-      dayCircleStyle = [styles.emptyDayCircle];
+      dayCircleStyle = [styles.dayCircleFiller];
     }
     if (isSelected && !isToday) {
       dayCircleStyle.push(styles.selectedDayCircle);
     } else if (isSelected && isToday) {
       dayCircleStyle.push(styles.currentDayCircle);
     } else if (!isSelected && isToday) {
-      dayCircleStyle.push(styles.currentDay);
+      dayCircleStyle.push(styles.currentDayText);
     }
     return dayCircleStyle;
   },
@@ -230,13 +236,13 @@ var Calendar = React.createClass({
   _onPrev(){
     this._prependMonth();
     this._scrollToItem(VIEW_INDEX);
-    this.props.onTouchPrev && this.props.onTouchPrev();
+    this.props.onTouchPrev && this.props.onTouchPrev(this.state.calendarDates[VIEW_INDEX]);
   },
 
   _onNext(){
     this._appendMonth();
     this._scrollToItem(VIEW_INDEX);
-    this.props.onTouchNext && this.props.onTouchNext();
+    this.props.onTouchNext && this.props.onTouchNext(this.state.calendarDates[VIEW_INDEX]);
   },
 
   _scrollToItem(itemIndex) {
@@ -253,11 +259,11 @@ var Calendar = React.createClass({
       this._scrollToItem(VIEW_INDEX);
       this.props.onSwipePrev && this.props.onSwipePrev();
     } else if (currentPage > VIEW_INDEX) {
-        this._appendMonth();
-        this._scrollToItem(VIEW_INDEX);
-        this.props.onSwipeNext && this.props.onSwipeNext();
+      this._appendMonth();
+      this._scrollToItem(VIEW_INDEX);
+      this.props.onSwipeNext && this.props.onSwipeNext();
     } else {
-        return false;
+      return false;
     }
   },
 
@@ -308,12 +314,9 @@ var styles = StyleSheet.create({
   calendarControls: {
     flex: 1,
     flexDirection: 'row',
-    alignItems: 'center',
     margin: 10,
   },
   controlButton: {
-    flex: 1,
-    padding: 5,
   },
   controlButtonText: {
     fontSize: 15,
@@ -324,59 +327,51 @@ var styles = StyleSheet.create({
     fontSize: 15,
   },
   calendarHeading: {
-    flex: 1,
     flexDirection: 'row',
-    alignItems: 'center',
     borderTopWidth: 1,
-    borderBottomWidth: 1
+    borderBottomWidth: 1,
   },
   dayHeading: {
-    padding: 5,
     flex: 1,
-    textAlign: 'center',
     fontSize: 15,
-    justifyContent: 'flex-start',
+    textAlign: 'center',
+    paddingVertical: 5
   },
   weekRow: {
-    flex: 1,
     flexDirection: 'row',
-    alignItems: 'center',
   },
   dayButton: {
     padding: 5,
-    flex: 1,
-    flexDirection: 'column',
-    alignItems: 'center',
+    width: DEVICE_WIDTH / 7,
     borderTopWidth: 1,
     borderTopColor: '#e9e9e9',
   },
   dayButtonFiller: {
     padding: 5,
-    flex: 1,
-    flexDirection: 'column',
-    alignItems: 'center',
+    width: DEVICE_WIDTH / 7
   },
   day: {
     fontSize: 20,
+    textAlign: 'center',
   },
-  emptyEventIndicator: {
+  eventIndicator: {
+    borderColor: '#cccccc',
+    width: 5,
+    alignSelf: 'center'
+  },
+  eventIndicatorFiller: {
+    marginTop: 6,
     borderColor: 'transparent',
     borderWidth: 2.5,
-    backgroundColor: 'transparent',
     borderRadius: 2.5,
-    marginTop: 2.5,
   },
-  eventIndicatorColor: {
-    borderColor: '#cccccc',
-    backgroundColor: '#cccccc',
-  },
-  emptyDayCircle: {
+  dayCircleFiller: {
     borderColor: 'transparent',
     borderWidth: 5,
     backgroundColor: 'transparent',
     borderRadius: 50,
   },
-  emptyDayCircleWider: {
+  dayCircleFillerWider: {
     borderColor: 'transparent',
     borderTopWidth: 5,
     borderLeftWidth: 11,
