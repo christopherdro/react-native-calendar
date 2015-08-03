@@ -165,7 +165,7 @@ var Calendar = React.createClass({
         weekRows.push(<View key={weekRows.length} style={styles.weekRow}>{days}</View>);
       }
     } // column
-    renderedMonthView = <View key={moment(newDay).month()} style={styles.calendarContainer}>{weekRows}</View>;
+    renderedMonthView = <View key={moment(newDay).month()} style={styles.monthContainer}>{weekRows}</View>;
     // keep this rendered month view in case it can be reused without generating it again
     this.renderedMonths.push([date, renderedMonthView])
     return renderedMonthView;
@@ -276,7 +276,7 @@ var Calendar = React.createClass({
 
   render() {
     return (
-      <View>
+      <View style={styles.calendarContainer}>
         {this.renderTopBar()}
         {this.renderHeading(this.props.titleFormat)}
         <ScrollView
@@ -298,6 +298,9 @@ var Calendar = React.createClass({
 
 var styles = StyleSheet.create({
   calendarContainer: {
+    backgroundColor: '#f7f7f7',
+  },
+  monthContainer: {
     width: DEVICE_WIDTH
   },
   calendarControls: {
