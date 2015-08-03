@@ -141,7 +141,7 @@ var Calendar = React.createClass({
                 onPress={this._selectDate.bind(this, newDay)}>
                   <View style={styles.dayButton}>
                     <View style={this._dayCircleStyle(newDay, isSelected, isToday)}>
-                      <Text style={this._dayTextStyle(isSelected, isToday)}>{currentDay + 1}</Text>
+                      <Text style={this._dayTextStyle(newDay, isSelected, isToday)}>{currentDay + 1}</Text>
                     </View>
                     {this.props.eventDates ?
                       <View style={[styles.emptyEventIndicator, hasEvent && styles.eventIndicatorColor]}></View>
@@ -188,12 +188,14 @@ var Calendar = React.createClass({
     return dayCircleStyle;
   },
 
-  _dayTextStyle(isSelected, isToday) {
+  _dayTextStyle(newDay, isSelected, isToday) {
     var dayTextStyle = [styles.day];
     if (isToday && !isSelected) {
       dayTextStyle.push(styles.currentDayText);
     } else if (isToday || isSelected) {
       dayTextStyle.push(styles.selectedDayText);
+    } else if (moment(newDay).day() === 6 || moment(newDay).day() === 0) {
+      dayTextStyle.push(styles.weekendDayText);
     }
     return dayTextStyle;
   },
@@ -397,6 +399,9 @@ var styles = StyleSheet.create({
   selectedDayText: {
     color: 'white',
     fontWeight: 'bold',
+  },
+  weekendDayText: {
+    color: '#cccccc',
   }
 });
 
