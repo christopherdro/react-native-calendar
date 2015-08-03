@@ -188,8 +188,6 @@ let Calendar = React.createClass({
       dayCircleStyle.push(styles.selectedDayCircle);
     } else if (isSelected && isToday) {
       dayCircleStyle.push(styles.currentDayCircle);
-    } else if (!isSelected && isToday) {
-      dayCircleStyle.push(styles.currentDayText);
     }
     return dayCircleStyle;
   },
