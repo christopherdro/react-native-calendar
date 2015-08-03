@@ -121,7 +121,7 @@ var Calendar = React.createClass({
       var days = [];
       for (var j = 0; j < MAX_ROWS; j++) {
         if (preFiller < offset) {
-          days.push(<TouchableWithoutFeedback><View style={styles.dayButton}></View></TouchableWithoutFeedback>);
+          days.push(<TouchableWithoutFeedback><View style={styles.dayButtonFiller}></View></TouchableWithoutFeedback>);
         } else {
           if(currentDay < daysInMonth) {
             var newDay = moment(dayStart).set('date', currentDay + 1);
@@ -158,7 +158,7 @@ var Calendar = React.createClass({
 
       if(days.length > 0 && days.length < 7) {
         for (var x = days.length; x < 7; x++) {
-          days.push(<TouchableWithoutFeedback><View style={styles.dayButton}></View></TouchableWithoutFeedback>);
+          days.push(<TouchableWithoutFeedback><View style={styles.dayButtonFiller}></View></TouchableWithoutFeedback>);
         }
         weekRows.push(<View key={weekRows.length} style={styles.weekRow}>{days}</View>);
       } else {
@@ -341,6 +341,14 @@ var styles = StyleSheet.create({
     alignItems: 'center',
   },
   dayButton: {
+    padding: 5,
+    flex: 1,
+    flexDirection: 'column',
+    alignItems: 'center',
+    borderTopWidth: 1,
+    borderTopColor: '#e9e9e9',
+  },
+  dayButtonFiller: {
     padding: 5,
     flex: 1,
     flexDirection: 'column',
