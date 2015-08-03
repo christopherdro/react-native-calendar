@@ -1,11 +1,11 @@
 'use strict';
 
-var React = require('react-native');
-var PropTypes = require('ReactPropTypes');
-var Dimensions = require('Dimensions');
-var moment = require('moment');
+let React = require('react-native');
+let PropTypes = require('ReactPropTypes');
+let moment = require('moment');
 
-var {
+let {
+  Dimensions,
   ScrollView,
   StyleSheet,
   Text,
@@ -14,13 +14,13 @@ var {
   View
 } = React;
 
-var
+let
   MAX_COLUMNS = 7,
   MAX_ROWS = 7,
   DEVICE_WIDTH = Dimensions.get('window').width,
   VIEW_INDEX = 2;
 
-var Calendar = React.createClass({
+let Calendar = React.createClass({
   propTypes: {
     dayHeadings: PropTypes.array,
     onDateSelect: PropTypes.func,
@@ -116,7 +116,7 @@ var Calendar = React.createClass({
       var days = [];
       for (var j = 0; j < MAX_ROWS; j++) {
         if (preFiller < offset) {
-          days.push(<TouchableWithoutFeedback><View style={styles.dayButton}></View></TouchableWithoutFeedback>);
+          days.push(<TouchableWithoutFeedback><View style={styles.dayButton}><Text style={styles.day}></Text></View></TouchableWithoutFeedback>);
         } else {
           if(currentDay < daysInMonth) {
             var newDay = moment(dayStart).set('date', currentDay + 1);
@@ -149,7 +149,13 @@ var Calendar = React.createClass({
 
       if(days.length > 0 && days.length < 7) {
         for (var x = days.length; x < 7; x++) {
-          days.push(<TouchableWithoutFeedback><View style={styles.dayButton}></View></TouchableWithoutFeedback>);
+          days.push(
+            <TouchableWithoutFeedback>
+              <View style={styles.dayButton}>
+                <Text style={styles.day}></Text>
+              </View>
+            </TouchableWithoutFeedback>
+          );
         }
         weekRows.push(<View key={weekRows.length} style={styles.weekRow}>{days}</View>);
       } else {
@@ -209,11 +215,11 @@ var Calendar = React.createClass({
       this._scrollToItem(VIEW_INDEX);
       this.props.onSwipePrev && this.props.onSwipePrev();
     } else if (currentPage > VIEW_INDEX) {
-        this._appendMonth();
-        this._scrollToItem(VIEW_INDEX);
-        this.props.onSwipeNext && this.props.onSwipeNext();
+      this._appendMonth();
+      this._scrollToItem(VIEW_INDEX);
+      this.props.onSwipeNext && this.props.onSwipeNext();
     } else {
-        return false;
+      return false;
     }
   },
 
@@ -246,12 +252,9 @@ var styles = StyleSheet.create({
   calendarControls: {
     flex: 1,
     flexDirection: 'row',
-    alignItems: 'center',
     margin: 10,
   },
   controlButton: {
-    flex: 1,
-    padding: 5,
   },
   controlButtonText: {
     fontSize: 15,
@@ -262,58 +265,37 @@ var styles = StyleSheet.create({
     fontSize: 15,
   },
   calendarHeading: {
-    flex: 1,
     flexDirection: 'row',
-    alignItems: 'center',
     borderTopWidth: 1,
-    borderBottomWidth: 1
+    borderBottomWidth: 1,
   },
   dayHeading: {
-    padding: 5,
     flex: 1,
-    textAlign: 'center',
     fontSize: 15,
-    justifyContent: 'flex-start',
+    textAlign: 'center',
+    paddingVertical: 5
   },
   weekRow: {
-    flex: 1,
     flexDirection: 'row',
-    alignItems: 'center',
   },
   dayButton: {
     padding: 5,
-    flex: 1,
-    flexDirection: 'column',
-    alignItems: 'center',
+    width: DEVICE_WIDTH / 7
   },
   day: {
     fontSize: 20,
+    textAlign: 'center',
   },
   eventIndicator: {
-    marginTop: 6,
     borderColor: '#cccccc',
-    borderLeftWidth: 2.5,
-    borderTopWidth: 2.5,
-    borderBottomWidth: 2.5,
-    borderRightWidth: 2.5,
-    backgroundColor: '#cccccc',
-    borderTopLeftRadius: 2.5,
-    borderTopRightRadius: 2.5,
-    borderBottomLeftRadius: 2.5,
-    borderBottomRightRadius: 2.5,
+    width: 5,
+    alignSelf: 'center'
   },
   eventIndicatorFiller: {
     marginTop: 6,
     borderColor: 'transparent',
-    borderLeftWidth: 2.5,
-    borderTopWidth: 2.5,
-    borderBottomWidth: 2.5,
-    borderRightWidth: 2.5,
-    backgroundColor: 'transparent',
-    borderTopLeftRadius: 2.5,
-    borderTopRightRadius: 2.5,
-    borderBottomLeftRadius: 2.5,
-    borderBottomRightRadius: 2.5,
+    borderWidth: 2.5,
+    borderRadius: 2.5,
   },
   currentDay: {
     color: 'red',
