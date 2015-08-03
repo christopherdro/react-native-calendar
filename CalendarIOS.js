@@ -57,6 +57,10 @@ var Calendar = React.createClass({
     };
   },
 
+  componentWillMount() {
+    this.renderedMonths = [];
+  },
+
   componentDidMount() {
     this._scrollToItem(VIEW_INDEX);
   },
@@ -110,7 +114,8 @@ var Calendar = React.createClass({
       offset = moment(dayStart).get('day'),
       preFiller = 0,
       currentDay = 0,
-      weekRows = [];
+      weekRows = [],
+      renderedMonthView;
 
     for (var i = 0; i < MAX_COLUMNS; i++) {
       var days = [];
@@ -160,7 +165,10 @@ var Calendar = React.createClass({
         weekRows.push(<View key={weekRows.length} style={styles.weekRow}>{days}</View>);
       }
     } // column
-    return (<View key={moment(newDay).month()} style={styles.calendarContainer}>{weekRows}</View>);
+    renderedMonthView = <View key={moment(newDay).month()} style={styles.calendarContainer}>{weekRows}</View>;
+    // keep this rendered month view in case it can be reused without generating it again
+    this.renderedMonths.push([date, renderedMonthView])
+    return renderedMonthView;
   },
 
   _dayCircleStyle(newDay, isSelected, isToday) {
@@ -251,6 +259,21 @@ var Calendar = React.createClass({
     }
   },
 
+  _renderedMonth(date) {
+    var renderedMonth = null;
+    if (moment(this.state.currentMonth).isSame(date, 'month')) {
+      renderedMonth = this.renderMonthView(date);
+    } else {
+      for (var i = 0; i < this.renderedMonths.length; i++) {
+        if (moment(this.renderedMonths[i][0]).isSame(date, 'month')) {
+          renderedMonth = this.renderedMonths[i][1];
+        }
+      }
+      if (!renderedMonth) { renderedMonth = this.renderMonthView(date); }
+    }
+    return renderedMonth;
+  },
+
   render() {
     return (
       <View>
@@ -266,7 +289,7 @@ var Calendar = React.createClass({
           showsHorizontalScrollIndicator={false}
           automaticallyAdjustContentInsets={false}
           onMomentumScrollEnd={(event) => this._scrollEnded(event)}>
-          {this.state.calendarDates.map((date) => { return this.renderMonthView(date) })}
+            {this.state.calendarDates.map((date) => { return this._renderedMonth(date) })}
         </ScrollView>
       </View>
     )
