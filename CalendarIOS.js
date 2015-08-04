@@ -178,12 +178,7 @@ let Calendar = React.createClass({
   },
 
   _dayCircleStyle(newDay, isSelected, isToday) {
-    var dayCircleStyle;
-    if (moment(newDay).format("D") <= 9) {
-      dayCircleStyle = [styles.dayCircleFillerWider];
-    } else {
-      dayCircleStyle = [styles.dayCircleFiller];
-    }
+    var dayCircleStyle = [styles.dayCircleFiller];
     if (isSelected && !isToday) {
       dayCircleStyle.push(styles.selectedDayCircle);
     } else if (isSelected && isToday) {
@@ -365,17 +360,8 @@ var styles = StyleSheet.create({
   },
   dayCircleFiller: {
     borderColor: 'transparent',
+    backgroundColor: 'transparent',
     borderWidth: 5,
-    backgroundColor: 'transparent',
-    borderRadius: 50,
-  },
-  dayCircleFillerWider: {
-    borderColor: 'transparent',
-    borderTopWidth: 5,
-    borderLeftWidth: 11,
-    borderRightWidth: 11,
-    borderBottomWidth: 5,
-    backgroundColor: 'transparent',
     borderRadius: 50,
   },
   currentDayCircle: {
