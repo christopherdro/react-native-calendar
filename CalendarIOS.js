@@ -361,7 +361,7 @@ var styles = StyleSheet.create({
   dayCircleFiller: {
     borderColor: 'transparent',
     backgroundColor: 'transparent',
-    borderWidth: 5,
+    borderWidth: DEVICE_WIDTH / 7 / 7,
     borderRadius: 50,
   },
   currentDayCircle: {
