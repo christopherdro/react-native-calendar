@@ -3,6 +3,7 @@
 let React = require('react-native');
 let PropTypes = require('ReactPropTypes');
 let moment = require('moment');
+let _ = require('lodash');
 
 let {
   Dimensions,
@@ -35,6 +36,7 @@ let Calendar = React.createClass({
     onTouchPrev: PropTypes.func,
     eventDates: PropTypes.array,
     startDate: PropTypes.string,
+    customStyle: PropTypes.object,
   },
 
   getDefaultProps() {
@@ -56,6 +58,9 @@ let Calendar = React.createClass({
       currentMonth: moment(this.props.startDate).format()
     };
   },
+  componentWillMount() {
+    this.styles = _.merge(styles, this.props.customStyle);
+  },
 
   componentDidMount() {
     this._scrollToItem(VIEW_INDEX);
@@ -75,22 +80,22 @@ let Calendar = React.createClass({
   renderTopBar(date) {
     if(this.props.showControls) {
       return (
-        <View style={styles.calendarControls}>
-          <TouchableOpacity style={styles.controlButton} onPress={this._onPrev}>
-            <Text style={styles.controlButtonText}>{this.props.prevButtonText}</Text>
+        <View style={this.styles.calendarControls}>
+          <TouchableOpacity style={this.styles.controlButton} onPress={this._onPrev}>
+            <Text style={this.styles.controlButtonText}>{this.props.prevButtonText}</Text>
           </TouchableOpacity>
-          <Text style={styles.title}>
+          <Text style={this.styles.title}>
             {moment(this.state.currentMonth).format(this.props.titleFormat)}
           </Text>
-          <TouchableOpacity style={styles.controlButton} onPress={this._onNext}>
-            <Text style={styles.controlButtonText}>{this.props.nextButtonText}</Text>
+          <TouchableOpacity style={this.styles.controlButton} onPress={this._onNext}>
+            <Text style={this.styles.controlButtonText}>{this.props.nextButtonText}</Text>
           </TouchableOpacity>
         </View>
       )
     } else {
       return (
-        <View style={styles.calendarControls}>
-          <Text style={styles.title}>{moment(this.state.currentMonth).format(this.props.titleFormat)}</Text>
+        <View style={this.styles.calendarControls}>
+          <Text style={this.styles.title}>{moment(this.state.currentMonth).format(this.props.titleFormat)}</Text>
         </View>
       )
     }
@@ -98,8 +103,8 @@ let Calendar = React.createClass({
 
   renderHeading() {
     return (
-      <View style={styles.calendarHeading}>
-        {this.props.dayHeadings.map((day) => { return (<Text style={styles.dayHeading}>{day}</Text>) })}
+      <View style={this.styles.calendarHeading}>
+        {this.props.dayHeadings.map((day) => { return (<Text style={this.styles.dayHeading}>{day}</Text>) })}
       </View>
     )
   },
@@ -116,7 +121,7 @@ let Calendar = React.createClass({
       var days = [];
       for (var j = 0; j < MAX_ROWS; j++) {
         if (preFiller < offset) {
-          days.push(<TouchableWithoutFeedback><View style={styles.dayButton}><Text style={styles.day}></Text></View></TouchableWithoutFeedback>);
+          days.push(<TouchableWithoutFeedback><View style={this.styles.dayButton}><Text style={this.styles.day}></Text></View></TouchableWithoutFeedback>);
         } else {
           if(currentDay < daysInMonth) {
             var newDay = moment(dayStart).set('date', currentDay + 1);
@@ -132,10 +137,10 @@ let Calendar = React.createClass({
             days.push((
               <TouchableOpacity
                 onPress={this._selectDate.bind(this, newDay)}>
-                  <View style={styles.dayButton}>
-                    <Text style={[styles.day, isToday && styles.currentDay]}>{currentDay + 1}</Text>
+                  <View style={this.styles.dayButton}>
+                    <Text style={[this.styles.day, isToday && this.styles.currentDay]}>{currentDay + 1}</Text>
                     {this.props.eventDates ?
-                      <View style={[styles.eventIndicatorFiller, hasEvent && styles.eventIndicator]}></View>
+                      <View style={[this.styles.eventIndicatorFiller, hasEvent && this.styles.eventIndicator]}></View>
                       : null
                     }
                   </View>
@@ -151,18 +156,18 @@ let Calendar = React.createClass({
         for (var x = days.length; x < 7; x++) {
           days.push(
             <TouchableWithoutFeedback>
-              <View style={styles.dayButton}>
-                <Text style={styles.day}></Text>
+              <View style={this.styles.dayButton}>
+                <Text style={this.styles.day}></Text>
               </View>
             </TouchableWithoutFeedback>
           );
         }
-        weekRows.push(<View key={weekRows.length} style={styles.weekRow}>{days}</View>);
+        weekRows.push(<View key={weekRows.length} style={this.styles.weekRow}>{days}</View>);
       } else {
-        weekRows.push(<View key={weekRows.length} style={styles.weekRow}>{days}</View>);
+        weekRows.push(<View key={weekRows.length} style={this.styles.weekRow}>{days}</View>);
       }
     } // column
-    return (<View key={moment(newDay).month()} style={styles.calendarContainer}>{weekRows}</View>);
+    return (<View key={moment(newDay).month()} style={this.styles.calendarContainer}>{weekRows}</View>);
   },
 
   _prependMonth() {
