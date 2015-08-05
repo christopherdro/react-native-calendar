@@ -351,16 +351,15 @@ var styles = StyleSheet.create({
     fontSize: 20,
     textAlign: 'center',
   },
-  eventIndicator: {
-    borderColor: '#cccccc',
-    width: 5,
-    alignSelf: 'center'
-  },
   eventIndicatorFiller: {
     marginTop: 3,
     borderColor: 'transparent',
     borderWidth: 2.5,
     borderRadius: 2.5,
+    alignSelf: 'center'
+  },
+  eventIndicator: {
+    borderColor: '#cccccc',
   },
   dayCircleFiller: {
     borderColor: 'transparent',
