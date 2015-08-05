@@ -60,10 +60,6 @@ let Calendar = React.createClass({
   },
 
   componentWillMount() {
-    // this.styles = _.merge(styles, this.props.customStyle);
-  },
-
-  componentWillMount() {
     this.renderedMonths = [];
   },
 
