@@ -14,6 +14,7 @@
   "author": "Christopher Dro <casheghian@gmail.com> (https://github.com/christopherdro)",
   "license": "MIT",
   "dependencies": {
+    "lodash": "^3.10.1",
     "moment": "^2.10.3"
   },
   "devDependencies": {
