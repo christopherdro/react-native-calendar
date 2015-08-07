@@ -338,6 +338,7 @@ var styles = StyleSheet.create({
     flexDirection: 'row',
   },
   dayButton: {
+    alignItems: 'center',
     padding: 5,
     width: DEVICE_WIDTH / 7,
     borderTopWidth: 1,
@@ -349,33 +350,32 @@ var styles = StyleSheet.create({
   },
   day: {
     fontSize: 20,
-    textAlign: 'center',
+    alignSelf: 'center',
   },
   eventIndicatorFiller: {
     marginTop: 3,
     borderColor: 'transparent',
-    borderWidth: 2.5,
-    borderRadius: 2.5,
-    alignSelf: 'center'
+    width: 4,
+    height: 4,
+    borderRadius: 2,
   },
   eventIndicator: {
-    borderColor: '#cccccc',
+    backgroundColor: '#cccccc'
   },
   dayCircleFiller: {
-    borderColor: 'transparent',
+    justifyContent: 'center',
     backgroundColor: 'transparent',
-    borderWidth: DEVICE_WIDTH / 7 / 7,
-    borderRadius: 50,
+    width: 34,
+    height: 34,
+    borderRadius: 17,
   },
   currentDayCircle: {
-    borderColor: 'red',
     backgroundColor: 'red',
   },
   currentDayText: {
     color: 'red',
   },
   selectedDayCircle: {
-    borderColor: 'black',
     backgroundColor: 'black',
   },
   selectedDayText: {
