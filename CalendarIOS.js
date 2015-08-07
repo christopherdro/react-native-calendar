@@ -36,6 +36,7 @@ let Calendar = React.createClass({
     onTouchPrev: PropTypes.func,
     eventDates: PropTypes.array,
     startDate: PropTypes.string,
+    selectedDate: PropTypes.string,
     customStyle: PropTypes.object,
   },
 
@@ -54,7 +55,7 @@ let Calendar = React.createClass({
   getInitialState() {
     return {
       calendarDates: this.getInitialStack(),
-      selectedDate: moment(),
+      selectedDate: moment(this.props.selectedDate).format(),
       currentMonth: moment(this.props.startDate).format()
     };
   },
@@ -349,7 +350,7 @@ var styles = StyleSheet.create({
     width: DEVICE_WIDTH / 7
   },
   day: {
-    fontSize: 20,
+    fontSize: 16,
     alignSelf: 'center',
   },
   eventIndicatorFiller: {
@@ -365,9 +366,9 @@ var styles = StyleSheet.create({
   dayCircleFiller: {
     justifyContent: 'center',
     backgroundColor: 'transparent',
-    width: 34,
-    height: 34,
-    borderRadius: 17,
+    width: 28,
+    height: 28,
+    borderRadius: 14,
   },
   currentDayCircle: {
     backgroundColor: 'red',
