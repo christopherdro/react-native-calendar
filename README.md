@@ -28,6 +28,7 @@ Suggestions and PR's are welcome!
   onSwipeNext={this.onSwipeNext}    // Callback for forward swipe event
   eventDates={['2015-07-01']}       // Optional array of moment() parseable dates that will show an event indicator
   startDate={'2015-08-01'}          // The first month that will display. Default: current month
+  selectedDate={2015-08-15'}        // Day to be selected
   customStyle={{day: {fontSize: 15, textAlign: 'center'}}} // Customize any pre-defined styles
  />
 ```
@@ -35,7 +36,6 @@ Suggestions and PR's are welcome!
 ## TODOS
 
 - [ ] Improve swipe feature
-- [ ] Touch Highlighting
 - [ ] Landscape support
 - [ ] Language Support
 
