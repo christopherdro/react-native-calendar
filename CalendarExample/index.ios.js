@@ -21,12 +21,13 @@ var CalendarExample = React.createClass({
   },
   render: function() {
     return (
-      <View>
+      <View style={styles.container}>
         <Calendar
           ref="calendar"
           eventDates={['2015-07-03', '2015-07-05', '2015-07-10', '2015-07-15', '2015-07-20', '2015-07-25', '2015-07-28', '2015-07-30']}
           scrollEnabled={true}
           showControls={true}
+          selectedDate={'2015-08-15'}
           dayHeadings={customDayHeadings}
           titleFormat={'MMMM YYYY'}
           prevButtonText={'Prev'}
@@ -46,9 +47,8 @@ var CalendarExample = React.createClass({
 var styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
+    paddingTop: 20,
+    backgroundColor: '#f7f7f7',
   },
   welcome: {
     fontSize: 20,
