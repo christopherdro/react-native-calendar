@@ -106,7 +106,7 @@ let Calendar = React.createClass({
   renderHeading() {
     return (
       <View style={this.styles.calendarHeading}>
-        {this.props.dayHeadings.map((day) => { return (<Text style={this.styles.dayHeading}>{day}</Text>) })}
+        {this.props.dayHeadings.map((day) => { return (<Text style={day === "S" ? this.styles.weekendHeading : this.styles.dayHeading}>{day}</Text>) })}
       </View>
     )
   },
@@ -334,6 +334,13 @@ var styles = StyleSheet.create({
     fontSize: 15,
     textAlign: 'center',
     paddingVertical: 5
+  },
+  weekendHeading: {
+    flex: 1,
+    fontSize: 15,
+    textAlign: 'center',
+    paddingVertical: 5,
+    color: '#cccccc'
   },
   weekRow: {
     flexDirection: 'row',
