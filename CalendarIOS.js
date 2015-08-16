@@ -106,7 +106,7 @@ let Calendar = React.createClass({
   renderHeading() {
     return (
       <View style={this.styles.calendarHeading}>
-        {this.props.dayHeadings.map((day) => { return (<Text style={day === "S" ? this.styles.weekendHeading : this.styles.dayHeading}>{day}</Text>) })}
+        {this.props.dayHeadings.map((day, i) => { return (<Text style={i == 0 || i == 6 ? this.styles.weekendHeading : this.styles.dayHeading}>{day}</Text>) })}
       </View>
     )
   },
