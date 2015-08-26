@@ -69,13 +69,17 @@ let Calendar = React.createClass({
   },
 
   getInitialStack() {
-    return([
-      moment(this.props.startDate).subtract(2, 'month').format(),
-      moment(this.props.startDate).subtract(1, 'month').format(),
-      moment(this.props.startDate).format(),
-      moment(this.props.startDate).add(1, 'month').format(),
-      moment(this.props.startDate).add(2, 'month').format()
-    ])
+    var initialStack = [];
+    if (this.props.scrollEnabled) {
+      initialStack.push(moment(this.props.startDate).subtract(2, 'month').format());
+      initialStack.push(moment(this.props.startDate).subtract(1, 'month').format());
+      initialStack.push(moment(this.props.startDate).format());
+      initialStack.push(moment(this.props.startDate).add(1, 'month').format());
+      initialStack.push(moment(this.props.startDate).add(2, 'month').format());
+    } else {
+      initialStack.push(moment(this.props.startDate).format())
+    }
+    return initialStack;
   },
 
 
@@ -106,7 +110,7 @@ let Calendar = React.createClass({
   renderHeading() {
     return (
       <View style={this.styles.calendarHeading}>
-        {this.props.dayHeadings.map((day) => { return (<Text style={this.styles.dayHeading}>{day}</Text>) })}
+        {this.props.dayHeadings.map((day, i) => { return (<Text style={i == 0 || i == 6 ? this.styles.weekendHeading : this.styles.dayHeading}>{day}</Text>) })}
       </View>
     )
   },
@@ -334,6 +338,13 @@ var styles = StyleSheet.create({
     fontSize: 15,
     textAlign: 'center',
     paddingVertical: 5
+  },
+  weekendHeading: {
+    flex: 1,
+    fontSize: 15,
+    textAlign: 'center',
+    paddingVertical: 5,
+    color: '#cccccc'
   },
   weekRow: {
     flexDirection: 'row',
