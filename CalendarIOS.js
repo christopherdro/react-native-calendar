@@ -110,7 +110,7 @@ let Calendar = React.createClass({
   renderHeading() {
     return (
       <View style={this.styles.calendarHeading}>
-        {this.props.dayHeadings.map((day, i) => { return (<Text style={i == 0 || i == 6 ? this.styles.weekendHeading : this.styles.dayHeading}>{day}</Text>) })}
+        {this.props.dayHeadings.map((day, i) => { return (<Text key={i} style={i == 0 || i == 6 ? this.styles.weekendHeading : this.styles.dayHeading}>{day}</Text>) })}
       </View>
     )
   },
@@ -128,7 +128,7 @@ let Calendar = React.createClass({
       var days = [];
       for (var j = 0; j < MAX_ROWS; j++) {
         if (preFiller < offset) {
-          days.push(<TouchableWithoutFeedback><View style={this.styles.dayButtonFiller}><Text style={this.styles.day}></Text></View></TouchableWithoutFeedback>);
+          days.push(<TouchableWithoutFeedback key={`${i},${j}`}><View style={this.styles.dayButtonFiller}><Text style={this.styles.day}></Text></View></TouchableWithoutFeedback>);
         } else {
           if(currentDay < daysInMonth) {
             var newDay = moment(dayStart).set('date', currentDay + 1);
@@ -144,6 +144,7 @@ let Calendar = React.createClass({
 
             days.push((
               <TouchableOpacity
+                key={`${i},${j}`}
                 style={this.styles.touchableOpacity}
                 onPress={this._selectDate.bind(this, newDay)}>
                   <View style={this.styles.dayButton}>
@@ -166,7 +167,7 @@ let Calendar = React.createClass({
       if(days.length > 0 && days.length < 7) {
         for (var x = days.length; x < 7; x++) {
           days.push(
-            <TouchableWithoutFeedback>
+            <TouchableWithoutFeedback key={x}>
               <View style={this.styles.dayButtonFiller}>
                 <Text style={this.styles.day}></Text>
               </View>
