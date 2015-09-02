@@ -248,8 +248,10 @@ let Calendar = React.createClass({
   },
 
   _scrollToItem(itemIndex) {
-      var scrollToX = itemIndex * DEVICE_WIDTH;
+    var scrollToX = itemIndex * DEVICE_WIDTH;
+    if (this.props.scrollEnabled) {
       this.refs.calendar.scrollWithoutAnimationTo(0, scrollToX);
+    }
   },
 
   _scrollEnded(event) {
@@ -290,18 +292,24 @@ let Calendar = React.createClass({
       <View style={this.styles.calendarContainer}>
         {this.renderTopBar()}
         {this.renderHeading(this.props.titleFormat)}
-        <ScrollView
-          ref='calendar'
-          horizontal={true}
-          scrollEnabled={this.props.scrollEnabled}
-          pagingEnabled={true}
-          removeClippedSubviews={true}
-          scrollEventThrottle={600}
-          showsHorizontalScrollIndicator={false}
-          automaticallyAdjustContentInsets={false}
-          onMomentumScrollEnd={(event) => this._scrollEnded(event)}>
+        {this.props.scrollEnabled ?
+          <ScrollView
+            ref='calendar'
+            horizontal={true}
+            scrollEnabled={true}
+            pagingEnabled={true}
+            removeClippedSubviews={true}
+            scrollEventThrottle={600}
+            showsHorizontalScrollIndicator={false}
+            automaticallyAdjustContentInsets={false}
+            onMomentumScrollEnd={(event) => this._scrollEnded(event)}>
+              {this.state.calendarDates.map((date) => { return this._renderedMonth(date) })}
+          </ScrollView>
+          :
+          <View ref='calendar'>
             {this.state.calendarDates.map((date) => { return this._renderedMonth(date) })}
-        </ScrollView>
+          </View>
+        }
       </View>
     )
   }
