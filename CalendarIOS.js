@@ -18,8 +18,7 @@ let {
 let
   MAX_COLUMNS = 7,
   MAX_ROWS = 7,
-  DEVICE_WIDTH = Dimensions.get('window').width,
-  VIEW_INDEX = 2;
+  DEVICE_WIDTH = Dimensions.get('window').width;
 
 let Day = React.createClass({
 
@@ -155,7 +154,7 @@ let Calendar = React.createClass({
   },
 
   componentDidMount() {
-    this._scrollToItem(VIEW_INDEX);
+    this._scrollToItem(this._getViewIndex());
   },
 
   getInitialStack() {
@@ -269,6 +268,10 @@ let Calendar = React.createClass({
     return renderedMonthView;
   },
 
+  _getViewIndex() {
+    return this.props.scrollEnabled ? 2 : 0;
+  },
+
   _dayCircleStyle(newDay, isSelected, isToday) {
     var dayCircleStyle = [styles.dayCircleFiller, this.props.customStyle.dayCircleFiller];
     if (isSelected && !isToday) {
@@ -302,7 +305,7 @@ let Calendar = React.createClass({
     calendarDates.pop();
     this.setState({
       calendarDates: calendarDates,
-      currentMonth: calendarDates[VIEW_INDEX]
+      currentMonth: calendarDates[this._getViewIndex()]
     });
   },
 
@@ -312,7 +315,7 @@ let Calendar = React.createClass({
     calendarDates.shift();
     this.setState({
       calendarDates: calendarDates,
-      currentMonth: calendarDates[VIEW_INDEX]
+      currentMonth: calendarDates[this._getViewIndex()]
     });
   },
 
@@ -325,14 +328,14 @@ let Calendar = React.createClass({
 
   _onPrev(){
     this._prependMonth();
-    this._scrollToItem(VIEW_INDEX);
-    this.props.onTouchPrev && this.props.onTouchPrev(this.state.calendarDates[VIEW_INDEX]);
+    this._scrollToItem(this._getViewIndex());
+    this.props.onTouchPrev && this.props.onTouchPrev(this.state.calendarDates[this._getViewIndex()]);
   },
 
   _onNext(){
     this._appendMonth();
-    this._scrollToItem(VIEW_INDEX);
-    this.props.onTouchNext && this.props.onTouchNext(this.state.calendarDates[VIEW_INDEX]);
+    this._scrollToItem(this._getViewIndex());
+    this.props.onTouchNext && this.props.onTouchNext(this.state.calendarDates[this._getViewIndex()]);
   },
 
   _scrollToItem(itemIndex) {
@@ -346,13 +349,13 @@ let Calendar = React.createClass({
     var position = event.nativeEvent.contentOffset.x;
     var currentPage = position / DEVICE_WIDTH;
 
-    if (currentPage < VIEW_INDEX) {
+    if (currentPage < this._getViewIndex()) {
       this._prependMonth();
-      this._scrollToItem(VIEW_INDEX);
+      this._scrollToItem(this._getViewIndex());
       this.props.onSwipePrev && this.props.onSwipePrev();
-    } else if (currentPage > VIEW_INDEX) {
+    } else if (currentPage > this._getViewIndex()) {
       this._appendMonth();
-      this._scrollToItem(VIEW_INDEX);
+      this._scrollToItem(this._getViewIndex());
       this.props.onSwipeNext && this.props.onSwipeNext();
     } else {
       return false;
