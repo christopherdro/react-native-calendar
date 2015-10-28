@@ -23,6 +23,7 @@ Portrait mode only
   prevButtonText={'Prev'}           // Text for previous button. Default: 'Prev'
   nextButtonText={'Next'}           // Text for next button. Default: 'Next'
   onDateSelect={(date) => this.onDateSelect(date)} // Callback after date selection
+  onDateIsEnabled={(date) => this.decideIfDateIsEnabled(date)} // Optional callback to determine if a specific date is selectable
   onTouchPrev={this.onTouchPrev}    // Callback for prev touch event
   onTouchNext={this.onTouchNext}    // Callback for next touch event
   onSwipePrev={this.onSwipePrev}    // Callback for back swipe event
