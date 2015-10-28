@@ -302,7 +302,7 @@ let Calendar = React.createClass({
     calendarDates.pop();
     this.setState({
       calendarDates: calendarDates,
-      currentMonth: calendarDates[VIEW_INDEX]
+      currentMonth: calendarDates[this.props.scrollEnabled ? VIEW_INDEX : 0]
     });
   },
 
@@ -312,7 +312,7 @@ let Calendar = React.createClass({
     calendarDates.shift();
     this.setState({
       calendarDates: calendarDates,
-      currentMonth: calendarDates[VIEW_INDEX]
+      currentMonth: calendarDates[this.props.scrollEnabled ? VIEW_INDEX : 0]
     });
   },
 
