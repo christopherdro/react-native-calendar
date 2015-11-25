@@ -12,6 +12,13 @@
     "README.md"
   ],
   "author": "Christopher Dro <casheghian@gmail.com> (https://github.com/christopherdro)",
+  "contributors": [
+    {
+      "name": "David Sanderson",
+      "email": "coderdave@gmail.com",
+      "url": "https://github.com/coderdave"
+    }
+  ],
   "license": "MIT",
   "dependencies": {
     "lodash": ">=3.10.1",
