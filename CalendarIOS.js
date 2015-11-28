@@ -42,7 +42,7 @@ let Day = React.createClass({
   },
 
   shouldComponentUpdate(nextProps, nextState) {
-    return this.props.isSelected !== nextProps.isSelected
+    return this.props.isSelected !== nextProps.isSelected || this.props.hasEvent !== nextProps.hasEvent
   },
 
   _dayCircleStyle(newDay, isSelected, isToday) {
