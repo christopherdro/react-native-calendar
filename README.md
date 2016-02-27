@@ -20,7 +20,7 @@ Suggestions and PR's are welcome!
   titleFormat={'MMMM YYYY'}         // Format for displaying current month. Default: 'MMMM YYYY'
   dayHeadings={Array}               // Default: ['S', 'M', 'T', 'W', 'T', 'F', 'S']
   prevButtonText={'Prev'}           // Text for previous button. Default: 'Prev'
-  nextButtonText={'Next'}           // Text for next button. Default: 'Next
+  nextButtonText={'Next'}           // Text for next button. Default: 'Next'
   onDateSelect={(date) => this.onDateSelect(date)} // Callback after date selection
   onTouchPrev={this.onTouchPrev}    // Callback for prev touch event
   onTouchNext={this.onTouchNext}    // Callback for next touch event
