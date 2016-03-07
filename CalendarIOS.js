@@ -85,7 +85,7 @@ let Day = React.createClass({
     if (filler) {
       return (
         <TouchableWithoutFeedback>
-          <View style={[styles.dayButtonFiller, this.props.customStyle.dayButtonFiller]}>
+          <View style={[styles.dayButtonFiller, { width: this.props.dayWidth }, this.props.customStyle.dayButtonFiller]}>
             <Text style={[styles.day, this.props.customStyle.day]}></Text>
           </View>
         </TouchableWithoutFeedback>
@@ -93,7 +93,7 @@ let Day = React.createClass({
     } else {
       return (
         <TouchableOpacity onPress={() => this.props.onPress(newDay)}>
-          <View style={[styles.dayButton, this.props.customStyle.dayButton]}>
+          <View style={[styles.dayButton, { width: this.props.dayWidth }, this.props.customStyle.dayButton]}>
             <View style={this._dayCircleStyle(newDay, isSelected, isToday)}>
               <Text style={this._dayTextStyle(newDay, isSelected, isToday)}>{currentDay + 1}</Text>
             </View>
@@ -125,6 +125,7 @@ let Calendar = React.createClass({
     startDate: PropTypes.string,
     selectedDate: PropTypes.string,
     customStyle: PropTypes.object,
+    contentWidth: PropTypes.number,
   },
 
   getDefaultProps() {
@@ -138,6 +139,7 @@ let Calendar = React.createClass({
       startDate: moment().format('YYYY-MM-DD'),
       eventDates: [],
       customStyle: {},
+      contentWidth: DEVICE_WIDTH
     }
   },
 
@@ -219,7 +221,7 @@ let Calendar = React.createClass({
       var days = [];
       for (var j = 0; j < MAX_ROWS; j++) {
         if (preFiller < offset) {
-          days.push(<Day key={`${i},${j}`} filler={true} />);
+          days.push(<Day key={`${i},${j}`} filler={true} dayWidth={this.props.contentWidth / 7} />);
         } else {
           if(currentDay < daysInMonth) {
             var newDay = moment(dayStart).set('date', currentDay + 1);
@@ -244,6 +246,7 @@ let Calendar = React.createClass({
                 hasEvent={hasEvent}
                 usingEvents={this.props.eventDates.length > 0 ? true : false}
                 customStyle={this.props.customStyle}
+                dayWidth={this.props.contentWidth / 7}
               />
             ));
             currentDay++;
@@ -254,7 +257,7 @@ let Calendar = React.createClass({
 
       if(days.length > 0 && days.length < 7) {
         for (var x = days.length; x < 7; x++) {
-          days.push(<Day key={x} filler={true}/>);
+          days.push(<Day key={x} filler={true} dayWidth={this.props.contentWidth / 7}/>);
         }
         weekRows.push(<View key={weekRows.length} style={[styles.weekRow, this.props.customStyle.weekRow]}>{days}</View>);
       } else {
@@ -262,7 +265,7 @@ let Calendar = React.createClass({
       }
     } // column
 
-    renderedMonthView = <View key={moment(newDay).month()} style={styles.monthContainer}>{weekRows}</View>;
+    renderedMonthView = <View key={moment(newDay).month()} style={[styles.monthContainer, { width: this.props.contentWidth }]}>{weekRows}</View>;
     // keep this rendered month view in case it can be reused without generating it again
     this.renderedMonths.push([date, renderedMonthView])
     return renderedMonthView;
@@ -335,7 +338,7 @@ let Calendar = React.createClass({
   },
 
   _scrollToItem(itemIndex) {
-    var scrollToX = itemIndex * DEVICE_WIDTH;
+    var scrollToX = itemIndex * this.props.contentWidth;
     if (this.props.scrollEnabled) {
       this.refs.calendar.scrollWithoutAnimationTo(0, scrollToX);
     }
@@ -343,7 +346,7 @@ let Calendar = React.createClass({
 
   _scrollEnded(event) {
     var position = event.nativeEvent.contentOffset.x;
-    var currentPage = position / DEVICE_WIDTH;
+    var currentPage = position / this.props.contentWidth;
 
     if (currentPage < VIEW_INDEX) {
       this._prependMonth();
@@ -406,7 +409,6 @@ var styles = StyleSheet.create({
     backgroundColor: '#f7f7f7',
   },
   monthContainer: {
-    width: DEVICE_WIDTH
   },
   calendarControls: {
     flex: 1,
@@ -447,13 +449,11 @@ var styles = StyleSheet.create({
   dayButton: {
     alignItems: 'center',
     padding: 5,
-    width: DEVICE_WIDTH / 7,
     borderTopWidth: 1,
     borderTopColor: '#e9e9e9',
   },
   dayButtonFiller: {
     padding: 5,
-    width: DEVICE_WIDTH / 7
   },
   day: {
     fontSize: 16,
