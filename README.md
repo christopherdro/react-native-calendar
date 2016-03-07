@@ -30,6 +30,7 @@ Suggestions and PR's are welcome!
   startDate={'2015-08-01'}          // The first month that will display. Default: current month
   selectedDate={'2015-08-15'}       // Day to be selected
   customStyle={{day: {fontSize: 15, textAlign: 'center'}}} // Customize any pre-defined styles
+  contentWidth={DEVICE_WIDTH}       // The width of the calendar content
  />
 ```
 
