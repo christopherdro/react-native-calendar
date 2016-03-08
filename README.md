@@ -33,6 +33,31 @@ Suggestions and PR's are welcome!
  />
 ```
 
+## Available custom styles
+
+- calendarContainer
+- monthContainer
+- calendarControls
+- controlButton
+- controlButtonText
+- title
+- calendarHeading
+- dayHeading
+- weekendHeading
+- weekRow
+- dayButton
+- dayButtonFiller
+- day
+- eventIndicatorFiller
+- eventIndicator
+- dayCircleFiller
+- currentDayCircle
+- currentDayText
+- selectedDayCircle
+- selectedDayText
+- weekendDayText
+
+
 ## TODOS
 
 - [ ] Improve swipe feature
