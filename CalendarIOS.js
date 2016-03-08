@@ -31,12 +31,12 @@ let Day = React.createClass({
     onPress: PropTypes.func,
     usingEvents: PropTypes.bool,
     filler: PropTypes.bool,
-    customStyle: PropTypes.object,
+    style: PropTypes.object,
   },
 
   getDefaultProps () {
     return {
-      customStyle: {},
+      style: {},
     }
   },
 
@@ -45,28 +45,28 @@ let Day = React.createClass({
   },
 
   _dayCircleStyle(newDay, isSelected, isToday) {
-    var dayCircleStyle = [styles.dayCircleFiller, this.props.customStyle.dayCircleFiller];
+    var dayCircleStyle = [styles.dayCircleFiller, this.props.style.dayCircleFiller];
     if (isSelected && !isToday) {
       dayCircleStyle.push(styles.selectedDayCircle);
-      dayCircleStyle.push(this.props.customStyle.selectedDayCircle);
+      dayCircleStyle.push(this.props.style.selectedDayCircle);
     } else if (isSelected && isToday) {
       dayCircleStyle.push(styles.currentDayCircle);
-      dayCircleStyle.push(this.props.customStyle.currentDayCircle);
+      dayCircleStyle.push(this.props.style.currentDayCircle);
     }
     return dayCircleStyle;
   },
 
   _dayTextStyle(newDay, isSelected, isToday) {
-    var dayTextStyle = [styles.day, this.props.customStyle.day];
+    var dayTextStyle = [styles.day, this.props.style.day];
     if (isToday && !isSelected) {
       dayTextStyle.push(styles.currentDayText);
-      dayTextStyle.push(this.props.customStyle.currentDayText);
+      dayTextStyle.push(this.props.style.currentDayText);
     } else if (isToday || isSelected) {
       dayTextStyle.push(styles.selectedDayText);
-      dayTextStyle.push(this.props.customStyle.selectedDayText);
+      dayTextStyle.push(this.props.style.selectedDayText);
     } else if (moment(newDay).day() === 6 || moment(newDay).day() === 0) {
       dayTextStyle.push(styles.weekendDayText);
-      dayTextStyle.push(this.props.customStyle.weekendDayText);
+      dayTextStyle.push(this.props.style.weekendDayText);
     }
     return dayTextStyle;
   },
@@ -85,20 +85,20 @@ let Day = React.createClass({
     if (filler) {
       return (
         <TouchableWithoutFeedback>
-          <View style={[styles.dayButtonFiller, this.props.customStyle.dayButtonFiller]}>
-            <Text style={[styles.day, this.props.customStyle.day]}></Text>
+          <View style={[styles.dayButtonFiller, this.props.style.dayButtonFiller]}>
+            <Text style={[styles.day, this.props.style.day]}></Text>
           </View>
         </TouchableWithoutFeedback>
       );
     } else {
       return (
         <TouchableOpacity onPress={() => this.props.onPress(newDay)}>
-          <View style={[styles.dayButton, this.props.customStyle.dayButton]}>
+          <View style={[styles.dayButton, this.props.style.dayButton]}>
             <View style={this._dayCircleStyle(newDay, isSelected, isToday)}>
               <Text style={this._dayTextStyle(newDay, isSelected, isToday)}>{currentDay + 1}</Text>
             </View>
             {usingEvents ?
-              <View style={[styles.eventIndicatorFiller, this.props.customStyle.eventIndicatorFiller, hasEvent && styles.eventIndicator, hasEvent && this.props.customStyle.eventIndicator]}></View>
+              <View style={[styles.eventIndicatorFiller, this.props.style.eventIndicatorFiller, hasEvent && styles.eventIndicator, hasEvent && this.props.style.eventIndicator]}></View>
               : null
             }
           </View>
@@ -124,7 +124,7 @@ let Calendar = React.createClass({
     eventDates: PropTypes.array,
     startDate: PropTypes.string,
     selectedDate: PropTypes.string,
-    customStyle: PropTypes.object,
+    style: PropTypes.object,
   },
 
   getDefaultProps() {
@@ -137,7 +137,7 @@ let Calendar = React.createClass({
       dayHeadings: ['S', 'M', 'T', 'W', 'T', 'F', 'S'],
       startDate: moment().format('YYYY-MM-DD'),
       eventDates: [],
-      customStyle: {},
+      style: {},
     }
   },
 
@@ -175,22 +175,22 @@ let Calendar = React.createClass({
   renderTopBar(date) {
     if(this.props.showControls) {
       return (
-        <View style={[styles.calendarControls, this.props.customStyle.calendarControls]}>
-          <TouchableOpacity style={[styles.controlButton, this.props.customStyle.controlButton]} onPress={this._onPrev}>
-            <Text style={[styles.controlButtonText, this.props.customStyle.controlButtonText]}>{this.props.prevButtonText}</Text>
+        <View style={[styles.calendarControls, this.props.style.calendarControls]}>
+          <TouchableOpacity style={[styles.controlButton, this.props.style.controlButton]} onPress={this._onPrev}>
+            <Text style={[styles.controlButtonText, this.props.style.controlButtonText]}>{this.props.prevButtonText}</Text>
           </TouchableOpacity>
-          <Text style={[styles.title, this.props.customStyle.title]}>
+          <Text style={[styles.title, this.props.style.title]}>
             {moment(this.state.currentMonth).format(this.props.titleFormat)}
           </Text>
-          <TouchableOpacity style={[styles.controlButton, this.props.customStyle.controlButton]} onPress={this._onNext}>
-            <Text style={[styles.controlButtonText, this.props.customStyle.controlButtonText]}>{this.props.nextButtonText}</Text>
+          <TouchableOpacity style={[styles.controlButton, this.props.style.controlButton]} onPress={this._onNext}>
+            <Text style={[styles.controlButtonText, this.props.style.controlButtonText]}>{this.props.nextButtonText}</Text>
           </TouchableOpacity>
         </View>
       )
     } else {
       return (
-        <View style={[styles.calendarControls, this.props.customStyle.calendarControls]}>
-          <Text style={[styles.title, this.props.customStyle.title]}>{moment(this.state.currentMonth).format(this.props.titleFormat)}</Text>
+        <View style={[styles.calendarControls, this.props.style.calendarControls]}>
+          <Text style={[styles.title, this.props.style.title]}>{moment(this.state.currentMonth).format(this.props.titleFormat)}</Text>
         </View>
       )
     }
@@ -198,9 +198,9 @@ let Calendar = React.createClass({
 
   renderHeading() {
     return (
-      <View style={[styles.calendarHeading, this.props.customStyle.calendarHeading]}>
+      <View style={[styles.calendarHeading, this.props.style.calendarHeading]}>
         {this.props.dayHeadings.map((day, i) =>
-          <Text key={i} style={i == 0 || i == 6 ? [styles.weekendHeading, this.props.customStyle.weekendHeading] : [styles.dayHeading, this.props.customStyle.dayHeading]}>{day}</Text>
+          <Text key={i} style={i == 0 || i == 6 ? [styles.weekendHeading, this.props.style.weekendHeading] : [styles.dayHeading, this.props.style.dayHeading]}>{day}</Text>
         )}
       </View>
     )
@@ -243,7 +243,7 @@ let Calendar = React.createClass({
                 isSelected={isSelected}
                 hasEvent={hasEvent}
                 usingEvents={this.props.eventDates.length > 0 ? true : false}
-                customStyle={this.props.customStyle}
+                style={this.props.style}
               />
             ));
             currentDay++;
@@ -256,9 +256,9 @@ let Calendar = React.createClass({
         for (var x = days.length; x < 7; x++) {
           days.push(<Day key={x} filler={true}/>);
         }
-        weekRows.push(<View key={weekRows.length} style={[styles.weekRow, this.props.customStyle.weekRow]}>{days}</View>);
+        weekRows.push(<View key={weekRows.length} style={[styles.weekRow, this.props.style.weekRow]}>{days}</View>);
       } else {
-        weekRows.push(<View key={weekRows.length} style={[styles.weekRow, this.props.customStyle.weekRow]}>{days}</View>);
+        weekRows.push(<View key={weekRows.length} style={[styles.weekRow, this.props.style.weekRow]}>{days}</View>);
       }
     } // column
 
@@ -269,28 +269,28 @@ let Calendar = React.createClass({
   },
 
   _dayCircleStyle(newDay, isSelected, isToday) {
-    var dayCircleStyle = [styles.dayCircleFiller, this.props.customStyle.dayCircleFiller];
+    var dayCircleStyle = [styles.dayCircleFiller, this.props.style.dayCircleFiller];
     if (isSelected && !isToday) {
       dayCircleStyle.push(styles.selectedDayCircle);
-      dayCircleStyle.push(this.props.customStyle.selectedDayCircle);
+      dayCircleStyle.push(this.props.style.selectedDayCircle);
     } else if (isSelected && isToday) {
       dayCircleStyle.push(styles.currentDayCircle);
-      dayCircleStyle.push(this.props.customStyle.currentDayCircle);
+      dayCircleStyle.push(this.props.style.currentDayCircle);
     }
     return dayCircleStyle;
   },
 
   _dayTextStyle(newDay, isSelected, isToday) {
-    var dayTextStyle = [styles.day, this.props.customStyle.day];
+    var dayTextStyle = [styles.day, this.props.style.day];
     if (isToday && !isSelected) {
       dayTextStyle.push(styles.currentDayText);
-      dayTextStyle.push(this.props.customStyle.currentDayText);
+      dayTextStyle.push(this.props.style.currentDayText);
     } else if (isToday || isSelected) {
       dayTextStyle.push(styles.selectedDayText);
-      dayTextStyle.push(this.props.customStyle.selectedDayText);
+      dayTextStyle.push(this.props.style.selectedDayText);
     } else if (moment(newDay).day() === 6 || moment(newDay).day() === 0) {
       dayTextStyle.push(styles.weekendDayText);
-      dayTextStyle.push(this.props.customStyle.weekendDayText);
+      dayTextStyle.push(this.props.style.weekendDayText);
     }
     return dayTextStyle;
   },
@@ -375,7 +375,7 @@ let Calendar = React.createClass({
 
   render() {
     return (
-      <View style={[styles.calendarContainer, this.props.customStyle.calendarContainer]}>
+      <View style={[styles.calendarContainer, this.props.style.calendarContainer]}>
         {this.renderTopBar()}
         {this.renderHeading(this.props.titleFormat)}
         {this.props.scrollEnabled ?
