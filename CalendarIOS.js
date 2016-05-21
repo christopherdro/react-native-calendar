@@ -218,7 +218,7 @@ let Calendar = React.createClass({
       var days = [];
       for (var j = 0; j < MAX_ROWS; j++) {
         if (preFiller < offset) {
-          days.push(<Day key={`${i},${j}`} filler={true} />);
+          days.push(<Day key={`${i},${j}`} filler={true} customStyle={this.props.customStyle} />);
         } else {
           if(currentDay < daysInMonth) {
             var newDay = moment(dayStart).set('date', currentDay + 1);
