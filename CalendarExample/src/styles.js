@@ -1,13 +1,12 @@
-const React = require('react-native')
-const DEVICE_WIDTH = React.Dimensions.get('window').width
-
+const React = require('react-native');
+const DEVICE_WIDTH = React.Dimensions.get('window').width;
 
 module.exports = React.StyleSheet.create({
   calendarContainer: {
     backgroundColor: '#f7f7f7',
   },
   monthContainer: {
-    width: DEVICE_WIDTH
+    width: DEVICE_WIDTH,
   },
   calendarControls: {
     flex: 1,
@@ -35,14 +34,14 @@ module.exports = React.StyleSheet.create({
     flex: 1,
     fontSize: 15,
     textAlign: 'center',
-    paddingVertical: 5
+    paddingVertical: 5,
   },
   weekendHeading: {
     flex: 1,
     fontSize: 15,
     textAlign: 'center',
     paddingVertical: 5,
-    color: '#cccccc'
+    color: '#cccccc',
   },
   weekRow: {
     flexDirection: 'row',
@@ -56,7 +55,7 @@ module.exports = React.StyleSheet.create({
   },
   dayButtonFiller: {
     padding: 5,
-    width: DEVICE_WIDTH / 7
+    width: DEVICE_WIDTH / 7,
   },
   day: {
     fontSize: 16,
@@ -70,7 +69,7 @@ module.exports = React.StyleSheet.create({
     borderRadius: 2,
   },
   eventIndicator: {
-    backgroundColor: '#cccccc'
+    backgroundColor: '#cccccc',
   },
   dayCircleFiller: {
     justifyContent: 'center',
@@ -94,5 +93,5 @@ module.exports = React.StyleSheet.create({
   },
   weekendDayText: {
     color: '#cccccc',
-  }
-})
+  },
+});
