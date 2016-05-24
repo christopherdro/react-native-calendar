@@ -1,23 +1,22 @@
-const React = require('react-native');
-const PropTypes = require('ReactPropTypes');
-const styles = require('./styles');
-
-const {
+import React, {
+  Component,
+  PropTypes,
   Text,
   TouchableOpacity,
   TouchableWithoutFeedback,
   View,
-} = React;
+} from 'react-native';
+import styles from './styles';
 
-class Day extends React.Component {
+export default class Day extends Component {
 
   constructor(props) {
     super(props);
-    this._dayCircleStyle = this._dayCircleStyle.bind(this);
-    this._dayTextStyle = this._dayTextStyle.bind(this);
+    this.dayCircleStyle = this.dayCircleStyle.bind(this);
+    this.dayTextStyle = this.dayTextStyle.bind(this);
   }
 
-  _dayCircleStyle(isWeekend, isSelected, isToday) {
+  dayCircleStyle(isWeekend, isSelected, isToday) {
     const dayCircleStyle = [styles.dayCircleFiller, this.props.customStyle.dayCircleFiller];
     if (isSelected && !isToday) {
       dayCircleStyle.push(styles.selectedDayCircle);
@@ -29,7 +28,7 @@ class Day extends React.Component {
     return dayCircleStyle;
   }
 
-  _dayTextStyle(isWeekend, isSelected, isToday) {
+  dayTextStyle(isWeekend, isSelected, isToday) {
     const dayTextStyle = [styles.day, this.props.customStyle.day];
     if (isToday && !isSelected) {
       dayTextStyle.push(styles.currentDayText);
@@ -66,8 +65,8 @@ class Day extends React.Component {
     : (
       <TouchableOpacity onPress={this.props.onPress}>
         <View style={[styles.dayButton, this.props.customStyle.dayButton]}>
-          <View style={this._dayCircleStyle(isWeekend, isSelected, isToday)}>
-            <Text style={this._dayTextStyle(isWeekend, isSelected, isToday)}>{caption}</Text>
+          <View style={this.dayCircleStyle(isWeekend, isSelected, isToday)}>
+            <Text style={this.dayTextStyle(isWeekend, isSelected, isToday)}>{caption}</Text>
           </View>
           {usingEvents &&
             <View style={[
@@ -98,5 +97,3 @@ Day.propTypes = {
   customStyle: PropTypes.object,
   usingEvents: PropTypes.bool,
 };
-
-module.exports = Day;

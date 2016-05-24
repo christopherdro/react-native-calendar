@@ -1,7 +1,10 @@
-const React = require('react-native');
-const DEVICE_WIDTH = React.Dimensions.get('window').width;
+import React, {
+  Dimensions,
+  StyleSheet,
+} from 'react-native';
+const DEVICE_WIDTH = Dimensions.get('window').width;
 
-module.exports = React.StyleSheet.create({
+const styles = StyleSheet.create({
   calendarContainer: {
     backgroundColor: '#f7f7f7',
   },
@@ -95,3 +98,5 @@ module.exports = React.StyleSheet.create({
     color: '#cccccc',
   },
 });
+
+export default styles;

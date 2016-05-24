@@ -1,13 +1,12 @@
-const React = require('react-native');
-const Calendar = require('./src/calendar');
-const moment = require('moment');
-
-const {
+import React, {
+  Component,
   AppRegistry,
   StyleSheet,
   Text,
   View,
-} = React;
+} from 'react-native';
+import Calendar from './src/calendar';
+import moment from 'moment';
 
 const customDayHeadings = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 const customMonthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May',
@@ -31,7 +30,7 @@ const styles = StyleSheet.create({
   },
 });
 
-class CalendarExample extends React.Component {
+class CalendarExample extends Component {
   constructor(props) {
     super(props);
     this.state = {
