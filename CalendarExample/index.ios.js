@@ -1,53 +1,58 @@
-'use strict';
+/**
+ * Sample React Native App
+ * https://github.com/facebook/react-native
+ * @flow
+ */
 
-var React = require('react-native');
-var Calendar = require('react-native-calendar');
-var moment = require('moment');
-
-var {
+import React, { Component } from 'react';
+import {
   AppRegistry,
   StyleSheet,
   Text,
-  View,
-} = React;
+  View
+} from 'react-native';
+
+import Calendar from 'react-native-calendar'
+import moment from 'moment'
 
 var customDayHeadings = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
+var customMonthHeadings = ["1월","2월","3월","4월","5월","6월","7월","8월","9월","10월","11월","12월"]
 
-var CalendarExample = React.createClass({
-  getInitialState: function() {
-    return {
+class CalendarExample extends Component {
+
+  componentWillMount() {
+    this.setState({
       selectedDate: moment().format()
-    };
-  },
-  render: function() {
+    })
+  }
+
+  render() {
     return (
       <View style={styles.container}>
         <Calendar
           ref="calendar"
-          eventDates={['2015-07-03', '2015-07-05', '2015-07-10', '2015-07-15', '2015-07-20', '2015-07-25', '2015-07-28', '2015-07-30']}
-          scrollEnabled={true}
+          eventDates={['2016-05-03', '2016-05-13','2016-05-23','2016-05-01','2016-05-18']}
           showControls={true}
           dayHeadings={customDayHeadings}
           titleFormat={'MMMM YYYY'}
           prevButtonText={'Prev'}
           nextButtonText={'Next'}
           onDateSelect={(date) => this.setState({selectedDate: date})}
-          onTouchPrev={() => console.log('Back TOUCH')}
-          onTouchNext={() => console.log('Forward TOUCH')}
-          onSwipePrev={() => console.log('Back SWIPE')}
-          onSwipeNext={() => console.log('Forward SWIPE')}/>
+          scrollEnabled={false}
+          monthHeadings={customMonthHeadings}
+          />
         <Text>Selected Date: {moment(this.state.selectedDate).format('MMMM DD YYYY')}</Text>
       </View>
-
     );
   }
-});
+}
 
-var styles = StyleSheet.create({
+const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 20,
-    backgroundColor: '#f7f7f7',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#F5FCFF',
   },
   welcome: {
     fontSize: 20,
