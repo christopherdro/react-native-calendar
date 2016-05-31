@@ -2,7 +2,7 @@
 
 A `<Calendar>` component for React Native
 
-Supports iPhone4+ (Portrait only)
+Supports iPhone4+, Android (Portrait only)
 
 Swiping feature needs to improved when swiping fast.
 Suggestions and PR's are welcome!
