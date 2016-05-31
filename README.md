@@ -19,6 +19,7 @@ Suggestions and PR's are welcome!
   showControls={true}               // False hides prev/next buttons. Default: False
   titleFormat={'MMMM YYYY'}         // Format for displaying current month. Default: 'MMMM YYYY'
   dayHeadings={Array}               // Default: ['S', 'M', 'T', 'W', 'T', 'F', 'S']
+  dayHeadings={Array}               // Default: ['Jan', 'Feb',..., 'Dec']
   prevButtonText={'Prev'}           // Text for previous button. Default: 'Prev'
   nextButtonText={'Next'}           // Text for next button. Default: 'Next'
   onDateSelect={(date) => this.onDateSelect(date)} // Callback after date selection
