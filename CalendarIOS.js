@@ -121,6 +121,7 @@ let Calendar = React.createClass({
     onTouchNext: React.PropTypes.func,
     onTouchPrev: React.PropTypes.func,
     eventDates: React.PropTypes.array,
+    hasEvent: React.PropTypes.func,
     startDate: React.PropTypes.string,
     selectedDate: React.PropTypes.string,
     customStyle: React.PropTypes.object,
@@ -225,7 +226,9 @@ let Calendar = React.createClass({
             var isToday = (moment().isSame(newDay, 'month') && moment().isSame(newDay, 'day')) ? true : false;
             var isSelected = (moment(this.state.selectedDate).isSame(newDay, 'month') && moment(this.state.selectedDate).isSame(newDay, 'day')) ? true : false;
             var hasEvent = false;
-            if (this.props.eventDates) {
+            if(this.props.hasEvent){
+              hasEvent = this.props.hasEvent(newDay);
+            } else if(this.props.eventDates) {
               for (var x = 0; x < this.props.eventDates.length; x++) {
                 hasEvent = moment(this.props.eventDates[x]).isSame(newDay, 'day') ? true : false;
                 if (hasEvent) { break; }
@@ -241,7 +244,7 @@ let Calendar = React.createClass({
                 isToday={isToday}
                 isSelected={isSelected}
                 hasEvent={hasEvent}
-                usingEvents={this.props.eventDates.length > 0 ? true : false}
+                usingEvents={this.props.eventDates.length > 0 || this.props.hasEvent ? true : false}
                 customStyle={this.props.customStyle}
               />
             ));
