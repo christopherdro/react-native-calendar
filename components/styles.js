@@ -1,7 +1,8 @@
-import React, {
+import {
   Dimensions,
   StyleSheet,
 } from 'react-native';
+
 const DEVICE_WIDTH = Dimensions.get('window').width;
 
 const styles = StyleSheet.create({
@@ -14,7 +15,6 @@ const styles = StyleSheet.create({
   calendarControls: {
     flex: 1,
     flexDirection: 'row',
-    // margin: 10,
   },
   controlButton: {
   },

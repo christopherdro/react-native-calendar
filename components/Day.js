@@ -9,7 +9,6 @@ import {
 import styles from './styles';
 
 export default class Day extends Component {
-
   constructor(props) {
     super(props);
     this.dayCircleStyle = this.dayCircleStyle.bind(this);

@@ -30,5 +30,5 @@
   },
   "devDependencies": {
     "react-native": ">=0.18.0"
-  },
+  }
 }
