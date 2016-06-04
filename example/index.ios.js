@@ -44,7 +44,7 @@ class CalendarExample extends Component {
       <View style={styles.container}>
         <Calendar
           ref="calendar"
-          eventDates={['2015-07-03', '2015-07-05', '2015-07-28', '2015-07-30']}
+          eventDates={['2016-07-03', '2016-07-05', '2016-07-28', '2016-07-30']}
           scrollEnabled
           showControls
           dayHeadings={customDayHeadings}
