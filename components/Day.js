@@ -1,11 +1,11 @@
-import React, {
-  Component,
-  PropTypes,
+import React, { Component, PropTypes } from 'react';
+import {
   Text,
   TouchableOpacity,
   TouchableWithoutFeedback,
   View,
 } from 'react-native';
+
 import styles from './styles';
 
 export default class Day extends Component {

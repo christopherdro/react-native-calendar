@@ -1,14 +1,15 @@
-import React, {
-  Component,
-  PropTypes,
+import React, { Component, PropTypes } from 'react';
+import {
   Dimensions,
   ScrollView,
   Text,
   TouchableOpacity,
   View,
 } from 'react-native';
+
+import Day from './Day';
+
 import moment from 'moment';
-import Day from './day';
 import styles from './styles';
 
 const DEVICE_WIDTH = Dimensions.get('window').width;
@@ -103,7 +104,7 @@ export default class Calendar extends Component {
     const currentPage = position / DEVICE_WIDTH;
     const newMoment = moment(this.state.currentMonthMoment).add(currentPage - VIEW_INDEX, 'month');
     this.setState({ currentMonthMoment: newMoment });
-    
+
     if (currentPage < VIEW_INDEX) {
       this.props.onSwipePrev && this.props.onSwipePrev();
     } else if (currentPage > VIEW_INDEX) {
