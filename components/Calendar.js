@@ -15,19 +15,6 @@ import styles from './styles';
 const DEVICE_WIDTH = Dimensions.get('window').width;
 const VIEW_INDEX = 2;
 
-function prepareEventDates(eventDates) {
-  const res = {};
-  for (const _date of eventDates) {
-    const date = moment(_date);
-    const month = moment(date).startOf('month').format();
-    if (!res[month]) {
-      res[month] = {};
-    }
-    res[month][date.date() - 1] = true;
-  }
-  return res;
-}
-
 export default class Calendar extends Component {
 
   state = {
@@ -95,6 +82,20 @@ export default class Calendar extends Component {
       return res;
     }
     return [moment(currentMonth)];
+  }
+
+ prepareEventDates(eventDates) {
+    const parsedDates = {};
+
+    eventDates.forEach(event => {
+      const date = moment(event);
+      const month = moment(date).startOf('month').format();
+      if (!parsedDates[month]) {
+        parsedDates[month] = {};
+      }
+      parsedDates[month][date.date() - 1] = true;
+    })
+    return parsedDates;
   }
 
   selectDate(date) {
@@ -280,7 +281,7 @@ export default class Calendar extends Component {
   render() {
     console.log('Rendering')
     const calendarDates = this.getMonthStack(this.state.currentMonthMoment);
-    const eventDatesMap = prepareEventDates(this.props.eventDates);
+    const eventDatesMap = this.prepareEventDates(this.props.eventDates);
     return (
       <View style={[styles.calendarContainer, this.props.customStyle.calendarContainer]}>
         {this.renderTopBar()}
