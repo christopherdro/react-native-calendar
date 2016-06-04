@@ -28,31 +28,55 @@ function prepareEventDates(eventDates) {
   return res;
 }
 
-
-// Short rant on localizing the calendar:
-// - Date.toLocaleString is so buggy (on RN) I couldn't use it
-// - moment.js is so buggy (partially but not entirely because of RN) I decided not to use it
-// - discouradged by these findings, I rather sticked to good old 'what you set is what you get'
-//   approach with English as a default
-
 export default class Calendar extends Component {
 
-  constructor(props) {
-    super(props);
-    this.renderTopBar = this.renderTopBar.bind(this);
-    this.renderHeading = this.renderHeading.bind(this);
-    this.getMonthStack = this.getMonthStack.bind(this);
-    this.selectDate = this.selectDate.bind(this);
-    this.onPrev = this.onPrev.bind(this);
-    this.onNext = this.onNext.bind(this);
-    this.renderMonthView = this.renderMonthView.bind(this);
-    this.scrollEnded = this.scrollEnded.bind(this);
-    this.scrollToItem = this.scrollToItem.bind(this);
-    this.state = {
-      selectedMoment: moment(this.props.selectedDate),
-      currentMonthMoment: moment(this.props.startDate),
-    };
-  }
+  state = {
+    selectedMoment: moment(this.props.selectedDate),
+    currentMonthMoment: moment(this.props.startDate),
+  };
+
+  static defaultProps = {
+    scrollEnabled: false,
+    showControls: false,
+    prevButtonText: 'Prev',
+    nextButtonText: 'Next',
+    titleFormat: 'MMMM YYYY',
+    dayHeadings: ['S', 'M', 'T', 'W', 'T', 'F', 'S'],
+    monthNames: ['January', 'February', 'March', 'April', 'May', 'June',
+      'July', 'August', 'September', 'October', 'November', 'December'],
+    startDate: moment().format('YYYY-MM-DD'),
+    eventDates: [],
+    customStyle: {},
+    weekStart: 1,
+    today: moment(),
+  };
+
+  static propTypes = {
+    onDateSelect: PropTypes.func,
+    scrollEnabled: PropTypes.bool,
+    showControls: PropTypes.bool,
+    prevButtonText: PropTypes.string,
+    nextButtonText: PropTypes.string,
+    titleFormat: PropTypes.string,
+    onSwipeNext: PropTypes.func,
+    onSwipePrev: PropTypes.func,
+    onTouchNext: PropTypes.func,
+    onTouchPrev: PropTypes.func,
+    // all Date types can be anything that moment.js can parse to a proper moment.
+    // Most common cases are: Date object, date string, Moment object.
+    startDate: PropTypes.any,
+    selectedDate: PropTypes.any,
+    // defaults to, well, today. The moment of rendering.
+    today: PropTypes.any,
+    eventDates: PropTypes.array, // array of anythng date-like, see comment above
+    customStyle: PropTypes.object,
+    // 0 - Sunday, 1 - Monday, 2 - Tuesday, etc (typically 0 or 1)
+    weekStart: PropTypes.number,
+    // array of weekday labels, starting with Sunday
+    dayHeadings: PropTypes.array,
+    // array of 12 month names, defaults to English
+    monthNames: PropTypes.array,
+  };
 
   componentDidMount() {
     this.scrollToItem(VIEW_INDEX);
@@ -254,6 +278,7 @@ export default class Calendar extends Component {
   }
 
   render() {
+    console.log('Rendering')
     const calendarDates = this.getMonthStack(this.state.currentMonthMoment);
     const eventDatesMap = prepareEventDates(this.props.eventDates);
     return (
@@ -283,46 +308,3 @@ export default class Calendar extends Component {
     );
   }
 }
-
-Calendar.defaultProps = {
-  scrollEnabled: false,
-  showControls: false,
-  prevButtonText: 'Prev',
-  nextButtonText: 'Next',
-  titleFormat: 'MMMM YYYY',
-  dayHeadings: ['S', 'M', 'T', 'W', 'T', 'F', 'S'],
-  monthNames: ['January', 'February', 'March', 'April', 'May', 'June',
-    'July', 'August', 'September', 'October', 'November', 'December'],
-  startDate: moment().format('YYYY-MM-DD'),
-  eventDates: [],
-  customStyle: {},
-  weekStart: 1,
-  today: moment(),
-};
-
-Calendar.propTypes = {
-  onDateSelect: PropTypes.func,
-  scrollEnabled: PropTypes.bool,
-  showControls: PropTypes.bool,
-  prevButtonText: PropTypes.string,
-  nextButtonText: PropTypes.string,
-  titleFormat: PropTypes.string,
-  onSwipeNext: PropTypes.func,
-  onSwipePrev: PropTypes.func,
-  onTouchNext: PropTypes.func,
-  onTouchPrev: PropTypes.func,
-  // all Date types can be anything that moment.js can parse to a proper moment.
-  // Most common cases are: Date object, date string, Moment object.
-  startDate: PropTypes.any,
-  selectedDate: PropTypes.any,
-  // defaults to, well, today. The moment of rendering.
-  today: PropTypes.any,
-  eventDates: PropTypes.array, // array of anythng date-like, see comment above
-  customStyle: PropTypes.object,
-  // 0 - Sunday, 1 - Monday, 2 - Tuesday, etc (typically 0 or 1)
-  weekStart: PropTypes.number,
-  // array of weekday labels, starting with Sunday
-  dayHeadings: PropTypes.array,
-  // array of 12 month names, defaults to English
-  monthNames: PropTypes.array,
-};

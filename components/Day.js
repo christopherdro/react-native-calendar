@@ -9,13 +9,23 @@ import {
 import styles from './styles';
 
 export default class Day extends Component {
-  constructor(props) {
-    super(props);
-    this.dayCircleStyle = this.dayCircleStyle.bind(this);
-    this.dayTextStyle = this.dayTextStyle.bind(this);
+  static defaultProps = {
+    customStyle: {},
   }
 
-  dayCircleStyle(isWeekend, isSelected, isToday) {
+  static propTypes = {
+    isSelected: PropTypes.bool,
+    isToday: PropTypes.bool,
+    hasEvent: PropTypes.bool,
+    caption: PropTypes.any,
+    onPress: PropTypes.func,
+    isWeekend: PropTypes.bool,
+    filler: PropTypes.bool,
+    customStyle: PropTypes.object,
+    usingEvents: PropTypes.bool,
+  }
+
+  dayCircleStyle = (isWeekend, isSelected, isToday) => {
     const dayCircleStyle = [styles.dayCircleFiller, this.props.customStyle.dayCircleFiller];
     if (isSelected && !isToday) {
       dayCircleStyle.push(styles.selectedDayCircle);
@@ -27,7 +37,7 @@ export default class Day extends Component {
     return dayCircleStyle;
   }
 
-  dayTextStyle(isWeekend, isSelected, isToday) {
+  dayTextStyle = (isWeekend, isSelected, isToday) => {
     const dayTextStyle = [styles.day, this.props.customStyle.day];
     if (isToday && !isSelected) {
       dayTextStyle.push(styles.currentDayText);
@@ -80,19 +90,3 @@ export default class Day extends Component {
     );
   }
 }
-
-Day.defaultProps = {
-  customStyle: {},
-};
-
-Day.propTypes = {
-  isSelected: PropTypes.bool,
-  isToday: PropTypes.bool,
-  hasEvent: PropTypes.bool,
-  caption: PropTypes.any,
-  onPress: PropTypes.func,
-  isWeekend: PropTypes.bool,
-  filler: PropTypes.bool,
-  customStyle: PropTypes.object,
-  usingEvents: PropTypes.bool,
-};
