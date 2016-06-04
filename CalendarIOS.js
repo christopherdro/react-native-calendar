@@ -110,7 +110,6 @@ let Day = React.createClass({
 let Calendar = React.createClass({
   propTypes: {
     dayHeadings: React.PropTypes.array,
-    monthHeadings: React.PropTypes.array,
     onDateSelect: React.PropTypes.func,
     scrollEnabled: React.PropTypes.bool,
     showControls: React.PropTypes.bool,
@@ -135,7 +134,6 @@ let Calendar = React.createClass({
       nextButtonText: 'Next',
       titleFormat: 'MMMM YYYY',
       dayHeadings: ['S', 'M', 'T', 'W', 'T', 'F', 'S'],
-      monthHeadings: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
       startDate: moment().format('YYYY-MM-DD'),
       eventDates: [],
       customStyle: {},
@@ -152,11 +150,6 @@ let Calendar = React.createClass({
 
   componentWillMount() {
     this.renderedMonths = [];
-    
-    //set customMonth read http://momentjs.com/docs/#/customization/month-names/
-    moment.locale('customMonth',{
-      months: this.props.monthHeadings,
-    })
   },
 
   componentDidMount() {
