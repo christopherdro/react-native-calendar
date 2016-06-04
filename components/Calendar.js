@@ -138,27 +138,14 @@ export default class Calendar extends Component {
   }
 
   renderMonthView(argMoment, eventDatesMap) {
-    /*
-      In the code bellow. several moments and datatypes are mentioned. To avoid confusion,
-      here is the naming convention I used:
 
-      Moments:
-        arg - (any) date in a month we want to render
-        today - day rendered as today. typically the moment of rendering
-        selected moment
-
-      Data types:
-        moment - moment.js object
-        index - 0, 1, 2, .. :) Typically index of day within a given month
-    */
-
-    let // eslint-disable-line one-var
-      renderIndex = 0,
-      weekRows = [],
+    let
       days = [],
+      renderIndex = 0,
       startOfArgMonthMoment = argMoment.startOf('month');
+      weekRows = [],
 
-    const // eslint-disable-line one-var
+    const
       selectedMoment = moment(this.state.selectedMoment),
       weekStart = this.props.weekStart,
       todayMoment = moment(this.props.today),
@@ -173,9 +160,7 @@ export default class Calendar extends Component {
       ? eventDatesMap[argMoment.startOf('month').format()]
       : null;
 
-    // let before = (new Date()).getTime()
-
-    for (;;) {
+    do {
       const dayIndex = renderIndex - offset;
       const isoWeekday = (renderIndex + weekStart) % 7;
 
@@ -205,7 +190,7 @@ export default class Calendar extends Component {
             key={weekRows.length}
             style={[styles.weekRow, this.props.customStyle.weekRow]}
           >
-              {days}
+            {days}
           </View>);
         days = [];
         if (dayIndex + 1 >= argMonthDaysCount) {
@@ -213,10 +198,8 @@ export default class Calendar extends Component {
         }
       }
       renderIndex += 1;
-    }
+    } while (true)
 
-    // let after = (new Date()).getTime()
-    // console.log('--- render time ---', after - before)
     return <View key={argMoment.month()} style={styles.monthContainer}>{weekRows}</View>;
   }
 
