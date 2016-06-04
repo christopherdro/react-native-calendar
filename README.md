@@ -2,7 +2,7 @@
 
 A `<Calendar>` component for React Native
 
-Supports iPhone4+ (Portrait only)
+Supports iPhone4+, Android (Portrait only)
 
 Swiping feature needs to improved when swiping fast.
 Suggestions and PR's are welcome!
@@ -19,6 +19,7 @@ Suggestions and PR's are welcome!
   showControls={true}               // False hides prev/next buttons. Default: False
   titleFormat={'MMMM YYYY'}         // Format for displaying current month. Default: 'MMMM YYYY'
   dayHeadings={Array}               // Default: ['S', 'M', 'T', 'W', 'T', 'F', 'S']
+  monthHeadings={Array}               // Default: ['Jan', 'Feb',..., 'Dec']
   prevButtonText={'Prev'}           // Text for previous button. Default: 'Prev'
   nextButtonText={'Next'}           // Text for next button. Default: 'Next'
   onDateSelect={(date) => this.onDateSelect(date)} // Callback after date selection
