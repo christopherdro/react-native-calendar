@@ -119,7 +119,7 @@ export default class Calendar extends Component {
   scrollToItem(itemIndex) {
     const scrollToX = itemIndex * DEVICE_WIDTH;
     if (this.props.scrollEnabled) {
-      this.refs.calendar.scrollTo({ y: 0, x: scrollToX, animated: false });
+      this._calendar.scrollTo({ y: 0, x: scrollToX, animated: false });
     }
   }
 
@@ -287,7 +287,7 @@ export default class Calendar extends Component {
         {this.renderHeading(this.props.titleFormat)}
         {this.props.scrollEnabled ?
           <ScrollView
-            ref="calendar"
+            ref={calendar => this._calendar = calendar}
             horizontal
             scrollEnabled
             pagingEnabled
@@ -300,7 +300,7 @@ export default class Calendar extends Component {
             {calendarDates.map((date) => this.renderMonthView(moment(date), eventDatesMap))}
           </ScrollView>
           :
-          <View ref="calendar">
+          <View ref={calendar => this._calendar = calendar}>
             {calendarDates.map((date) => this.renderMonthView(moment(date), eventDatesMap))}
           </View>
         }
