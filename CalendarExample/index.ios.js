@@ -1,49 +1,18 @@
-'use strict';
-
-var React = require('react-native');
-var Calendar = require('react-native-calendar');
-var moment = require('moment');
-
-var {
+import React, {
+  Component,
   AppRegistry,
   StyleSheet,
   Text,
   View,
-} = React;
+} from 'react-native';
+import Calendar from './src/calendar';
+import moment from 'moment';
 
-var customDayHeadings = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
+const customDayHeadings = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+const customMonthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May',
+  'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
-var CalendarExample = React.createClass({
-  getInitialState: function() {
-    return {
-      selectedDate: moment().format()
-    };
-  },
-  render: function() {
-    return (
-      <View style={styles.container}>
-        <Calendar
-          ref="calendar"
-          eventDates={['2015-07-03', '2015-07-05', '2015-07-10', '2015-07-15', '2015-07-20', '2015-07-25', '2015-07-28', '2015-07-30']}
-          scrollEnabled={true}
-          showControls={true}
-          dayHeadings={customDayHeadings}
-          titleFormat={'MMMM YYYY'}
-          prevButtonText={'Prev'}
-          nextButtonText={'Next'}
-          onDateSelect={(date) => this.setState({selectedDate: date})}
-          onTouchPrev={() => console.log('Back TOUCH')}
-          onTouchNext={() => console.log('Forward TOUCH')}
-          onSwipePrev={() => console.log('Back SWIPE')}
-          onSwipeNext={() => console.log('Forward SWIPE')}/>
-        <Text>Selected Date: {moment(this.state.selectedDate).format('MMMM DD YYYY')}</Text>
-      </View>
-
-    );
-  }
-});
-
-var styles = StyleSheet.create({
+const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingTop: 20,
@@ -60,5 +29,40 @@ var styles = StyleSheet.create({
     marginBottom: 5,
   },
 });
+
+class CalendarExample extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      selectedDate: moment().format(),
+    };
+  }
+
+  render() {
+    return (
+      <View style={styles.container}>
+        <Calendar
+          ref="calendar"
+          eventDates={['2015-07-03', '2015-07-05', '2015-07-28', '2015-07-30']}
+          scrollEnabled
+          showControls
+          dayHeadings={customDayHeadings}
+          monthNames={customMonthNames}
+          titleFormat={'MMMM YYYY'}
+          prevButtonText={'Prev'}
+          nextButtonText={'Next'}
+          onDateSelect={(date) => this.setState({ selectedDate: date })}
+          onTouchPrev={() => console.log('Back TOUCH')}     // eslint-disable-line no-console
+          onTouchNext={() => console.log('Forward TOUCH')}  // eslint-disable-line no-console
+          onSwipePrev={() => console.log('Back SWIPE')}     // eslint-disable-line no-console
+          onSwipeNext={() => console.log('Forward SWIPE')}  // eslint-disable-line no-console
+          weekStart={1}
+        />
+        <Text>Selected Date: {moment(this.state.selectedDate).format('MMMM DD YYYY')}</Text>
+      </View>
+
+    );
+  }
+}
 
 AppRegistry.registerComponent('CalendarExample', () => CalendarExample);
