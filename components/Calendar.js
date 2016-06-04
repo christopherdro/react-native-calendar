@@ -104,13 +104,13 @@ export default class Calendar extends Component {
     this.props.onDateSelect && this.props.onDateSelect(date.format()); // eslint-disable-line no-unused-expressions, max-len
   }
 
-  onPrev() {
+  onPrev = () => {
     const newMoment = moment(this.state.currentMonthMoment).subtract(1, 'month');
     this.setState({ currentMonthMoment: newMoment });
     this.props.onTouchPrev && this.props.onTouchPrev(newMoment); // eslint-disable-line no-unused-expressions, max-len
   }
 
-  onNext() {
+  onNext = () => {
     const newMoment = moment(this.state.currentMonthMoment).add(1, 'month');
     this.setState({ currentMonthMoment: newMoment });
     this.props.onTouchNext && this.props.onTouchNext(newMoment); // eslint-disable-line no-unused-expressions, max-len
