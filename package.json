@@ -1,8 +1,8 @@
 {
   "name": "react-native-calendar",
-  "version": "0.8.0",
+  "version": "0.7.0",
   "description": "Simple Calendar Component for React Native",
-  "main": "CalendarIOS.js",
+  "main": "index.js",
   "repository": {
     "type": "git",
     "url": "git@github.com:christopherdro/react-native-calendar.git"
@@ -10,10 +10,6 @@
   "scripts": {
     "eslint": "eslint ."
   },
-  "files": [
-    "CalendarIOS.js",
-    "README.md"
-  ],
   "author": "Christopher Dro <casheghian@gmail.com> (https://github.com/christopherdro)",
   "contributors": [
     {
@@ -33,9 +29,6 @@
     "moment": ">=2.10.3"
   },
   "devDependencies": {
-    "react-native": ">=0.18.0"
-  },
-  "peerDependencies": {
     "react-native": ">=0.18.0"
   }
 }
