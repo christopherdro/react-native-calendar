@@ -99,22 +99,20 @@ export default class Calendar extends Component {
   }
 
   selectDate(date) {
-    this.setState({
-      selectedMoment: date,
-    });
-    this.props.onDateSelect && this.props.onDateSelect(date.format()); // eslint-disable-line no-unused-expressions, max-len
+    this.setState({ selectedMoment: date });
+    this.props.onDateSelect && this.props.onDateSelect(date.format());
   }
 
   onPrev = () => {
     const newMoment = moment(this.state.currentMonthMoment).subtract(1, 'month');
     this.setState({ currentMonthMoment: newMoment });
-    this.props.onTouchPrev && this.props.onTouchPrev(newMoment); // eslint-disable-line no-unused-expressions, max-len
+    this.props.onTouchPrev && this.props.onTouchPrev(newMoment);
   }
 
   onNext = () => {
     const newMoment = moment(this.state.currentMonthMoment).add(1, 'month');
     this.setState({ currentMonthMoment: newMoment });
-    this.props.onTouchNext && this.props.onTouchNext(newMoment); // eslint-disable-line no-unused-expressions, max-len
+    this.props.onTouchNext && this.props.onTouchNext(newMoment);
   }
 
   scrollToItem(itemIndex) {
@@ -140,10 +138,10 @@ export default class Calendar extends Component {
   renderMonthView(argMoment, eventDatesMap) {
 
     let
-      days = [],
       renderIndex = 0,
-      startOfArgMonthMoment = argMoment.startOf('month');
       weekRows = [],
+      days = [],
+      startOfArgMonthMoment = argMoment.startOf('month');
 
     const
       selectedMoment = moment(this.state.selectedMoment),
@@ -199,7 +197,6 @@ export default class Calendar extends Component {
       }
       renderIndex += 1;
     } while (true)
-
     return <View key={argMoment.month()} style={styles.monthContainer}>{weekRows}</View>;
   }
 
@@ -262,9 +259,9 @@ export default class Calendar extends Component {
   }
 
   render() {
-    console.log('Rendering')
     const calendarDates = this.getMonthStack(this.state.currentMonthMoment);
     const eventDatesMap = this.prepareEventDates(this.props.eventDates);
+
     return (
       <View style={[styles.calendarContainer, this.props.customStyle.calendarContainer]}>
         {this.renderTopBar()}
