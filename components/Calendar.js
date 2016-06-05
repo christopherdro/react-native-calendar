@@ -18,51 +18,45 @@ const VIEW_INDEX = 2;
 export default class Calendar extends Component {
 
   state = {
-    selectedMoment: moment(this.props.selectedDate),
     currentMonthMoment: moment(this.props.startDate),
-  };
-
-  static defaultProps = {
-    scrollEnabled: false,
-    showControls: false,
-    prevButtonText: 'Prev',
-    nextButtonText: 'Next',
-    titleFormat: 'MMMM YYYY',
-    dayHeadings: ['S', 'M', 'T', 'W', 'T', 'F', 'S'],
-    monthNames: ['January', 'February', 'March', 'April', 'May', 'June',
-      'July', 'August', 'September', 'October', 'November', 'December'],
-    startDate: moment().format('YYYY-MM-DD'),
-    eventDates: [],
-    customStyle: {},
-    weekStart: 1,
-    today: moment(),
+    selectedMoment: moment(this.props.selectedDate),
   };
 
   static propTypes = {
-    onDateSelect: PropTypes.func,
-    scrollEnabled: PropTypes.bool,
-    showControls: PropTypes.bool,
-    prevButtonText: PropTypes.string,
+    customStyle: PropTypes.object,
+    dayHeadings: PropTypes.array,
+    eventDates: PropTypes.array,
+    monthNames: PropTypes.array,
     nextButtonText: PropTypes.string,
-    titleFormat: PropTypes.string,
+    onDateSelect: PropTypes.func,
     onSwipeNext: PropTypes.func,
     onSwipePrev: PropTypes.func,
     onTouchNext: PropTypes.func,
     onTouchPrev: PropTypes.func,
-    // all Date types can be anything that moment.js can parse to a proper moment.
-    // Most common cases are: Date object, date string, Moment object.
-    startDate: PropTypes.any,
+    prevButtonText: PropTypes.string,
+    scrollEnabled: PropTypes.bool,
     selectedDate: PropTypes.any,
-    // defaults to, well, today. The moment of rendering.
+    showControls: PropTypes.bool,
+    startDate: PropTypes.any,
+    titleFormat: PropTypes.string,
     today: PropTypes.any,
-    eventDates: PropTypes.array, // array of anythng date-like, see comment above
-    customStyle: PropTypes.object,
-    // 0 - Sunday, 1 - Monday, 2 - Tuesday, etc (typically 0 or 1)
     weekStart: PropTypes.number,
-    // array of weekday labels, starting with Sunday
-    dayHeadings: PropTypes.array,
-    // array of 12 month names, defaults to English
-    monthNames: PropTypes.array,
+  };
+
+  static defaultProps = {
+    customStyle: {},
+    dayHeadings: ['S', 'M', 'T', 'W', 'T', 'F', 'S'],
+    eventDates: [],
+    monthNames: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+      'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+    nextButtonText: 'Next',
+    prevButtonText: 'Prev',
+    scrollEnabled: false,
+    showControls: false,
+    startDate: moment().format('YYYY-MM-DD'),
+    titleFormat: 'MMMM YYYY',
+    today: moment(),
+    weekStart: 1,
   };
 
   componentDidMount() {
