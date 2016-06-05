@@ -1,7 +1,4 @@
-import {
-  Dimensions,
-  StyleSheet,
-} from 'react-native';
+import { Dimensions, StyleSheet } from 'react-native';
 
 const DEVICE_WIDTH = Dimensions.get('window').width;
 
@@ -19,14 +16,14 @@ const styles = StyleSheet.create({
   controlButton: {
   },
   controlButtonText: {
-    padding: 15,
+    margin: 10,
     fontSize: 15,
   },
   title: {
     flex: 1,
     textAlign: 'center',
     fontSize: 15,
-    margin: 15,
+    margin: 10,
   },
   calendarHeading: {
     flexDirection: 'row',
@@ -37,13 +34,13 @@ const styles = StyleSheet.create({
     flex: 1,
     fontSize: 15,
     textAlign: 'center',
-    paddingVertical: 5,
+    marginVertical: 5,
   },
   weekendHeading: {
     flex: 1,
     fontSize: 15,
     textAlign: 'center',
-    paddingVertical: 5,
+    marginVertical: 5,
     color: '#cccccc',
   },
   weekRow: {
