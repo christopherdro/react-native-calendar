@@ -2,14 +2,15 @@
 
 A `<Calendar>` component for React Native
 
-Supports iPhone4+ (Portrait only)
-
-Suggestions and PR's are welcome!
-
+Portrait mode only
 
 ## Installation
 
 `npm install react-native-calendar --save`
+
+[![Build Status](https://travis-ci.org/christopherdro/react-native-calendar.svg?branch=master)](https://travis-ci.org/christopherdro/react-native-calendar)
+[![npm](https://img.shields.io/npm/v/npm.svg?maxAge=2592000)](https://www.npmjs.com/package/react-native-calendar)
+[![PyPI](https://img.shields.io/pypi/dm/Django.svg?maxAge=2592000)](https://www.npmjs.com/package/react-native-calendar)
 
 ## Usage
 ```javascript
@@ -68,6 +69,3 @@ Suggestions and PR's are welcome!
 
 ## DEMO
 ![Demo gif](https://github.com/christopherdro/react-native-calendar-swiper/blob/master/demo.gif)
-
-Thanks to @dsibiski and the React Native community for the assistance.
-**MIT Licensed**
