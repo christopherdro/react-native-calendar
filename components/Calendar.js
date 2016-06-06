@@ -123,9 +123,9 @@ export default class Calendar extends Component {
     this.setState({ currentMonthMoment: newMoment });
 
     if (currentPage < VIEW_INDEX) {
-      this.props.onSwipePrev && this.props.onSwipePrev();
+      this.props.onSwipePrev && this.props.onSwipePrev(newMoment);
     } else if (currentPage > VIEW_INDEX) {
-      this.props.onSwipeNext && this.props.onSwipeNext();
+      this.props.onSwipeNext && this.props.onSwipeNext(newMoment);
     }
   }
 
