@@ -26,6 +26,7 @@ export default class Calendar extends Component {
     customStyle: PropTypes.object,
     dayHeadings: PropTypes.array,
     eventDates: PropTypes.array,
+    hasEventForDate: PropTypes.func,
     monthNames: PropTypes.array,
     nextButtonText: PropTypes.string,
     onDateSelect: PropTypes.func,
@@ -168,8 +169,10 @@ export default class Calendar extends Component {
             caption={`${dayIndex + 1}`}
             isToday={argMonthIsToday && (dayIndex === todayIndex)}
             isSelected={selectedMonthIsArg && (dayIndex === selectedIndex)}
-            hasEvent={events && events[dayIndex] === true}
-            usingEvents={this.props.eventDates.length > 0}
+            hasEvent={
+              (this.props.hasEventForDate && this.props.hasEventForDate(moment(startOfArgMonthMoment).set('date', dayIndex + 1)))
+              || (events && events[dayIndex] === true)}
+            usingEvents={!!this.props.hasEventForDate || this.props.eventDates.length > 0}
             customStyle={this.props.customStyle}
           />
         ));
