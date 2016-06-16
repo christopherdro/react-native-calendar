@@ -14,6 +14,7 @@ import styles from './styles';
 
 const DEVICE_WIDTH = Dimensions.get('window').width;
 const VIEW_INDEX = 2;
+const DATE_FORMAT = 'YYYY-MM-DD';
 
 export default class Calendar extends Component {
 
@@ -28,6 +29,7 @@ export default class Calendar extends Component {
     eventDates: PropTypes.array,
     monthNames: PropTypes.array,
     nextButtonText: PropTypes.string,
+    onDateIsEnabled: PropTypes.func,
     onDateSelect: PropTypes.func,
     onSwipeNext: PropTypes.func,
     onSwipePrev: PropTypes.func,
@@ -53,7 +55,7 @@ export default class Calendar extends Component {
     prevButtonText: 'Prev',
     scrollEnabled: false,
     showControls: false,
-    startDate: moment().format('YYYY-MM-DD'),
+    startDate: moment().format(DATE_FORMAT),
     titleFormat: 'MMMM YYYY',
     today: moment(),
     weekStart: 1,
@@ -135,7 +137,8 @@ export default class Calendar extends Component {
       renderIndex = 0,
       weekRows = [],
       days = [],
-      startOfArgMonthMoment = argMoment.startOf('month');
+      startOfArgMonthMoment = argMoment.startOf('month')
+      hasIsEnabledCallback = 'function' === typeof this.props.onDateIsEnabled;
 
     const
       selectedMoment = moment(this.state.selectedMoment),
@@ -157,6 +160,10 @@ export default class Calendar extends Component {
       const isoWeekday = (renderIndex + weekStart) % 7;
 
       if (dayIndex >= 0 && dayIndex < argMonthDaysCount) {
+        const isEnabled = hasIsEnabledCallback
+          ? this.props.onDateIsEnabled(moment(startOfArgMonthMoment).set('date', dayIndex + 1).format(DATE_FORMAT))
+          : true;
+
         days.push((
           <Day
             startOfMonth={startOfArgMonthMoment}
@@ -168,6 +175,7 @@ export default class Calendar extends Component {
             caption={`${dayIndex + 1}`}
             isToday={argMonthIsToday && (dayIndex === todayIndex)}
             isSelected={selectedMonthIsArg && (dayIndex === selectedIndex)}
+            isEnabled={isEnabled}
             hasEvent={events && events[dayIndex] === true}
             usingEvents={this.props.eventDates.length > 0}
             customStyle={this.props.customStyle}

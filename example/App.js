@@ -51,6 +51,7 @@ class App extends Component {
           titleFormat={'MMMM YYYY'}
           prevButtonText={'Prev'}
           nextButtonText={'Next'}
+          onDateIsEnabled={(date) => !/\d{4}-\d{2}-15/.test(date)} // disable 15th of the month
           onDateSelect={(date) => this.setState({ selectedDate: date })}
           onTouchPrev={() => console.log('Back TOUCH')}     // eslint-disable-line no-console
           onTouchNext={() => console.log('Forward TOUCH')}  // eslint-disable-line no-console

@@ -7,7 +7,7 @@
   },
   "dependencies": {
     "react": "^15.1.0",
-    "react-native": "^0.27.0-rc2",
-    "react-native-calendar": "github:christopherdro/react-native-calendar#revamp"
+    "react-native": "^0.27.0",
+    "react-native-calendar": "file:../"
   }
 }
