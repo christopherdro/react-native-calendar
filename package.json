@@ -20,15 +20,15 @@
   ],
   "license": "MIT",
   "dependencies": {
+    "moment": ">=2.10.3"
+  },
+  "devDependencies": {
     "babel-eslint": "^4.1.6",
     "eslint": "^2.9.0",
     "eslint-config-airbnb": "7.0.0",
     "eslint-plugin-jsx-a11y": "^0.6.2",
     "eslint-plugin-react": "^4.3.0",
-    "lodash": ">=3.10.1",
-    "moment": ">=2.10.3"
-  },
-  "devDependencies": {
-    "react-native": ">=0.18.0"
+    "react": "^15.1.0",
+    "react-native": "^0.27.0"
   }
 }
