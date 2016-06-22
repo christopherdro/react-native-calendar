@@ -174,7 +174,7 @@ export default class Calendar extends Component {
           />
         ));
       } else {
-        days.push(<Day key={`${renderIndex}`} filler />);
+        days.push(<Day key={`${renderIndex}`} filler customStyle={this.props.customStyle} />);
       }
       if (renderIndex % 7 === 6) {
         weekRows.push(
