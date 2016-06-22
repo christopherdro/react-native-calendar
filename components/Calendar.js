@@ -191,7 +191,8 @@ export default class Calendar extends Component {
       }
       renderIndex += 1;
     } while (true)
-    return <View key={argMoment.month()} style={styles.monthContainer}>{weekRows}</View>;
+    const containerStyle = [styles.monthContainer, this.props.customStyle.monthContainer];
+    return <View key={argMoment.month()} style={containerStyle}>{weekRows}</View>;
   }
 
   renderHeading() {
