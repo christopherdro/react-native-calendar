@@ -87,6 +87,8 @@ const styles = StyleSheet.create({
   selectedDayCircle: {
     backgroundColor: 'black',
   },
+  hasEvent: {
+  },
   selectedDayText: {
     color: 'white',
     fontWeight: 'bold',
