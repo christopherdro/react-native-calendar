@@ -18,6 +18,7 @@ export default class Day extends Component {
     customStyle: PropTypes.object,
     filler: PropTypes.bool,
     hasEvent: PropTypes.bool,
+    isEnabled: PropTypes.bool,
     isSelected: PropTypes.bool,
     isToday: PropTypes.bool,
     isWeekend: PropTypes.bool,
@@ -27,26 +28,28 @@ export default class Day extends Component {
 
   dayCircleStyle = (isWeekend, isSelected, isToday) => {
     const { customStyle } = this.props;
-    const dayCircleStyle = [styles.dayCircleFiller, customStyle.dayCircleFiller && customStyle.dayCircleFiller];
+    const dayCircleStyle = [styles.dayCircleFiller, customStyle.dayCircleFiller];
 
     if (isSelected && !isToday) {
-      dayCircleStyle.push(styles.selectedDayCircle, customStyle.selectedDayCircle && customStyle.selectedDayCircle);
+      dayCircleStyle.push(styles.selectedDayCircle, customStyle.selectedDayCircle);
     } else if (isSelected && isToday) {
-      dayCircleStyle.push(styles.currentDayCircle, customStyle.currentDayCircle && customStyle.currentDayCircle);
+      dayCircleStyle.push(styles.currentDayCircle, customStyle.currentDayCircle);
     }
     return dayCircleStyle;
   }
 
-  dayTextStyle = (isWeekend, isSelected, isToday) => {
+  dayTextStyle = (isWeekend, isSelected, isToday, isEnabled) => {
     const { customStyle } = this.props;
     const dayTextStyle = [styles.day, customStyle.day];
 
-    if (isToday && !isSelected) {
-      dayTextStyle.push(styles.currentDayText, customStyle.currentDayText && customStyle.currentDayText);
+    if (!isEnabled) {
+      dayTextStyle.push(styles.disabledDayText, customStyle.disabledDayText);
+    } else if (isToday && !isSelected) {
+      dayTextStyle.push(styles.currentDayText, customStyle.currentDayText);
     } else if (isToday || isSelected) {
-      dayTextStyle.push(styles.selectedDayText, customStyle.selectedDayText && customStyle.selectedDayText);
+      dayTextStyle.push(styles.selectedDayText, customStyle.selectedDayText);
     } else if (isWeekend) {
-      dayTextStyle.push(styles.weekendDayText, customStyle.weekendDayText && customStyle.weekendDayText);
+      dayTextStyle.push(styles.weekendDayText, customStyle.weekendDayText);
     }
     return dayTextStyle;
   }
@@ -56,9 +59,10 @@ export default class Day extends Component {
     const {
       filler,
       hasEvent,
-      isWeekend,
+      isEnabled,
       isSelected,
       isToday,
+      isWeekend,
       usingEvents,
     } = this.props;
 
@@ -71,10 +75,10 @@ export default class Day extends Component {
         </TouchableWithoutFeedback>
       )
     : (
-      <TouchableOpacity onPress={this.props.onPress}>
+      <TouchableOpacity disabled={!isEnabled} onPress={this.props.onPress}>
         <View style={[styles.dayButton, customStyle.dayButton]}>
           <View style={this.dayCircleStyle(isWeekend, isSelected, isToday)}>
-            <Text style={this.dayTextStyle(isWeekend, isSelected, isToday)}>{caption}</Text>
+            <Text style={this.dayTextStyle(isWeekend, isSelected, isToday, isEnabled)}>{caption}</Text>
           </View>
           {usingEvents &&
             <View style={[
