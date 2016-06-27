@@ -10,7 +10,6 @@ const styles = StyleSheet.create({
     width: DEVICE_WIDTH,
   },
   calendarControls: {
-    flex: 1,
     flexDirection: 'row',
   },
   controlButton: {
