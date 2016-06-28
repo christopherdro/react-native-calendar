@@ -25,7 +25,7 @@ export default class Day extends Component {
     usingEvents: PropTypes.bool,
   }
 
-  dayCircleStyle = (isWeekend, isSelected, isToday) => {
+  dayCircleStyle = (isWeekend, isSelected, isToday, hasEvent) => {
     const { customStyle } = this.props;
     const dayCircleStyle = [styles.dayCircleFiller, customStyle.dayCircleFiller && customStyle.dayCircleFiller];
 
@@ -34,10 +34,14 @@ export default class Day extends Component {
     } else if (isSelected && isToday) {
       dayCircleStyle.push(styles.currentDayCircle, customStyle.currentDayCircle && customStyle.currentDayCircle);
     }
+
+    if (hasEvent) {
+      dayCircleStyle.push(styles.hasEventCircle, customStyle.hasEventCircle && customStyle.hasEventCircle)
+    }
     return dayCircleStyle;
   }
 
-  dayTextStyle = (isWeekend, isSelected, isToday) => {
+  dayTextStyle = (isWeekend, isSelected, isToday, hasEvent) => {
     const { customStyle } = this.props;
     const dayTextStyle = [styles.day, customStyle.day];
 
@@ -47,6 +51,10 @@ export default class Day extends Component {
       dayTextStyle.push(styles.selectedDayText, customStyle.selectedDayText && customStyle.selectedDayText);
     } else if (isWeekend) {
       dayTextStyle.push(styles.weekendDayText, customStyle.weekendDayText && customStyle.weekendDayText);
+    }
+
+    if (hasEvent) {
+      dayTextStyle.push(styles.hasEventText, customStyle.hasEventText && customStyle.hasEventText)
     }
     return dayTextStyle;
   }
@@ -73,8 +81,8 @@ export default class Day extends Component {
     : (
       <TouchableOpacity onPress={this.props.onPress}>
         <View style={[styles.dayButton, customStyle.dayButton]}>
-          <View style={this.dayCircleStyle(isWeekend, isSelected, isToday)}>
-            <Text style={this.dayTextStyle(isWeekend, isSelected, isToday)}>{caption}</Text>
+          <View style={this.dayCircleStyle(isWeekend, isSelected, isToday, hasEvent)}>
+            <Text style={this.dayTextStyle(isWeekend, isSelected, isToday, hasEvent)}>{caption}</Text>
           </View>
           {usingEvents &&
             <View style={[
