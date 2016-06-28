@@ -58,7 +58,9 @@ Portrait mode only
 - currentDayText
 - selectedDayCircle
 - selectedDayText
-- weekendDayText
+- weekendDayText  
+- hasEventCircle
+- hasEventText
 
 
 ## TODOS
