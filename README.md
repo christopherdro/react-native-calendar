@@ -8,10 +8,6 @@ Portrait mode only
 
 `npm install react-native-calendar --save`
 
-[![Build Status](https://travis-ci.org/christopherdro/react-native-calendar.svg?branch=master)](https://travis-ci.org/christopherdro/react-native-calendar)
-[![npm](https://img.shields.io/npm/v/npm.svg?maxAge=2592000)](https://www.npmjs.com/package/react-native-calendar)
-[![PyPI](https://img.shields.io/pypi/dm/Django.svg?maxAge=2592000)](https://www.npmjs.com/package/react-native-calendar)
-
 ## Usage
 ```javascript
 <Calendar
