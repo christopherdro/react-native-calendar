@@ -78,17 +78,28 @@ export default class Calendar extends Component {
     return [moment(currentMonth)];
   }
 
- prepareEventDates(eventDates) {
+ prepareEventDates(eventDates, events) {
     const parsedDates = {};
 
+    // Dates without any custom properties
     eventDates.forEach(event => {
       const date = moment(event);
       const month = moment(date).startOf('month').format();
-      if (!parsedDates[month]) {
-        parsedDates[month] = {};
-      }
-      parsedDates[month][date.date() - 1] = true;
-    })
+      parsedDates[month] = parsedDates[month] || {};
+      parsedDates[month][date.date() - 1] = {};
+    });
+
+    // Dates with custom properties
+    if (events) {
+      events.forEach(event => {
+        if (event.date) {
+            const date = moment(event.date);
+            const month = moment(date).startOf('month').format();
+            parsedDates[month] = parsedDates[month] || {};
+            parsedDates[month][date.date() - 1] = event;
+        }
+      });
+    }
     return parsedDates;
   }
 
@@ -129,7 +140,7 @@ export default class Calendar extends Component {
     }
   }
 
-  renderMonthView(argMoment, eventDatesMap) {
+  renderMonthView(argMoment, eventsMap) {
 
     let
       renderIndex = 0,
@@ -148,8 +159,8 @@ export default class Calendar extends Component {
       selectedIndex = moment(selectedMoment).date() - 1,
       selectedMonthIsArg = selectedMoment.isSame(argMoment, 'month');
 
-    const events = (eventDatesMap !== null)
-      ? eventDatesMap[argMoment.startOf('month').format()]
+    const events = (eventsMap !== null)
+      ? eventsMap[argMoment.startOf('month').format()]
       : null;
 
     do {
@@ -168,7 +179,7 @@ export default class Calendar extends Component {
             caption={`${dayIndex + 1}`}
             isToday={argMonthIsToday && (dayIndex === todayIndex)}
             isSelected={selectedMonthIsArg && (dayIndex === selectedIndex)}
-            hasEvent={events && events[dayIndex] === true}
+            event={events && events[dayIndex]}
             usingEvents={this.props.eventDates.length > 0}
             customStyle={this.props.customStyle}
           />
@@ -255,7 +266,7 @@ export default class Calendar extends Component {
 
   render() {
     const calendarDates = this.getMonthStack(this.state.currentMonthMoment);
-    const eventDatesMap = this.prepareEventDates(this.props.eventDates);
+    const eventDatesMap = this.prepareEventDates(this.props.eventDates, this.props.events);
 
     return (
       <View style={[styles.calendarContainer, this.props.customStyle.calendarContainer]}>
