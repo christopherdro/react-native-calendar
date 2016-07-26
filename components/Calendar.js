@@ -28,8 +28,8 @@ export default class Calendar extends Component {
     eventDates: PropTypes.array,
     monthNames: PropTypes.array,
     nextButtonText: PropTypes.oneOfType([
-      Proptypes.string,
-      Proptypes.object
+      PropTypes.string,
+      PropTypes.object
     ]),
     onDateSelect: PropTypes.func,
     onSwipeNext: PropTypes.func,
@@ -37,8 +37,8 @@ export default class Calendar extends Component {
     onTouchNext: PropTypes.func,
     onTouchPrev: PropTypes.func,
     prevButtonText: PropTypes.oneOfType([
-      Proptypes.string,
-      Proptypes.object
+      PropTypes.string,
+      PropTypes.object
     ]),
     scrollEnabled: PropTypes.bool,
     selectedDate: PropTypes.any,
