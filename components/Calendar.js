@@ -51,6 +51,7 @@ export default class Calendar extends Component {
 
   static defaultProps = {
     customStyle: {},
+    width: DEVICE_WIDTH,
     dayHeadings: ['S', 'M', 'T', 'W', 'T', 'F', 'S'],
     eventDates: [],
     monthNames: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
@@ -127,7 +128,7 @@ export default class Calendar extends Component {
   }
 
   scrollToItem(itemIndex) {
-    const scrollToX = itemIndex * DEVICE_WIDTH;
+    const scrollToX = itemIndex * this.props.width;
     if (this.props.scrollEnabled) {
       this._calendar.scrollTo({ y: 0, x: scrollToX, animated: false });
     }
@@ -135,7 +136,7 @@ export default class Calendar extends Component {
 
   scrollEnded(event) {
     const position = event.nativeEvent.contentOffset.x;
-    const currentPage = position / DEVICE_WIDTH;
+    const currentPage = position / this.props.width;
     const newMoment = moment(this.state.currentMonthMoment).add(currentPage - VIEW_INDEX, 'month');
     this.setState({ currentMonthMoment: newMoment });
 
