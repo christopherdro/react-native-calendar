@@ -24,6 +24,7 @@ Portrait mode only
   onSwipePrev={this.onSwipePrev}    // Callback for back swipe event
   onSwipeNext={this.onSwipeNext}    // Callback for forward swipe event
   eventDates={['2015-07-01']}       // Optional array of moment() parseable dates that will show an event indicator
+  events={[{date:'2015-07-01', ..}]}// Optional array of event objects with a date property and custom styles for the event indicator
   today={'2016-16-05'}              // Defaults to today
   startDate={'2015-08-01'}          // The first month that will display. Default: current month
   selectedDate={'2015-08-15'}       // Day to be selected
