@@ -27,13 +27,19 @@ export default class Calendar extends Component {
     dayHeadings: PropTypes.array,
     eventDates: PropTypes.array,
     monthNames: PropTypes.array,
-    nextButtonText: PropTypes.string,
+    nextButtonText: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.object
+    ]),
     onDateSelect: PropTypes.func,
     onSwipeNext: PropTypes.func,
     onSwipePrev: PropTypes.func,
     onTouchNext: PropTypes.func,
     onTouchPrev: PropTypes.func,
-    prevButtonText: PropTypes.string,
+    prevButtonText: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.object
+    ]),
     scrollEnabled: PropTypes.bool,
     selectedDate: PropTypes.any,
     showControls: PropTypes.bool,
