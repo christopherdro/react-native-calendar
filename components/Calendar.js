@@ -67,7 +67,8 @@ export default class Calendar extends Component {
   };
 
   componentDidMount() {
-    this.scrollToItem(VIEW_INDEX);
+    // fixes initial scrolling bug on Android
+    setTimeout(() => this.scrollToItem(VIEW_INDEX), 0)
   }
 
   componentDidUpdate() {
