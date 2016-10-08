@@ -73,6 +73,12 @@ export default class Calendar extends Component {
   componentDidUpdate() {
     this.scrollToItem(VIEW_INDEX);
   }
+  
+  componentWillReceiveProps(props) {
+    if (props.selectedDate) {
+      this.setState({selectedMoment: props.selectedDate});
+    }
+  }
 
   getMonthStack(currentMonth) {
     if (this.props.scrollEnabled) {
