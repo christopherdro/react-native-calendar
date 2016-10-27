@@ -194,7 +194,6 @@ export default class Calendar extends Component {
             isToday={argMonthIsToday && (dayIndex === todayIndex)}
             isSelected={selectedMonthIsArg && (dayIndex === selectedIndex)}
             event={events && events[dayIndex]}
-            usingEvents={this.props.eventDates.length > 0}
             customStyle={this.props.customStyle}
           />
         ));
