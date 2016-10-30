@@ -43,6 +43,7 @@ export default class Calendar extends Component {
     scrollEnabled: PropTypes.bool,
     selectedDate: PropTypes.any,
     showControls: PropTypes.bool,
+    showEventIndicators: PropTypes.bool,
     startDate: PropTypes.any,
     titleFormat: PropTypes.string,
     today: PropTypes.any,
@@ -60,6 +61,7 @@ export default class Calendar extends Component {
     prevButtonText: 'Prev',
     scrollEnabled: false,
     showControls: false,
+    showEventIndicators: false,
     startDate: moment().format('YYYY-MM-DD'),
     titleFormat: 'MMMM YYYY',
     today: moment(),
@@ -194,7 +196,7 @@ export default class Calendar extends Component {
             isToday={argMonthIsToday && (dayIndex === todayIndex)}
             isSelected={selectedMonthIsArg && (dayIndex === selectedIndex)}
             event={events && events[dayIndex]}
-            usingEvents={this.props.eventDates.length > 0}
+            showEventIndicators={this.props.showEventIndicators}
             customStyle={this.props.customStyle}
           />
         ));
