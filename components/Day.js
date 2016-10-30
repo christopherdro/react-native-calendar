@@ -22,7 +22,7 @@ export default class Day extends Component {
     isToday: PropTypes.bool,
     isWeekend: PropTypes.bool,
     onPress: PropTypes.func,
-    usingEvents: PropTypes.bool,
+    showEventIndicators: PropTypes.bool,
   }
 
   dayCircleStyle = (isWeekend, isSelected, isToday, event) => {
@@ -67,7 +67,7 @@ export default class Day extends Component {
       isWeekend,
       isSelected,
       isToday,
-      usingEvents,
+      showEventIndicators,
     } = this.props;
 
     return filler
@@ -84,7 +84,7 @@ export default class Day extends Component {
           <View style={this.dayCircleStyle(isWeekend, isSelected, isToday, event)}>
             <Text style={this.dayTextStyle(isWeekend, isSelected, isToday, event)}>{caption}</Text>
           </View>
-          {usingEvents &&
+          {showEventIndicators &&
             <View style={[
               styles.eventIndicatorFiller,
               customStyle.eventIndicatorFiller,

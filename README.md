@@ -13,6 +13,7 @@ Portrait mode only
 <Calendar
   scrollEnabled={true}              // False disables swiping. Default: False
   showControls={true}               // False hides prev/next buttons. Default: False
+  showEventIndicators={true}        // False hides event indicators. Default:False
   titleFormat={'MMMM YYYY'}         // Format for displaying current month. Default: 'MMMM YYYY'
   dayHeadings={Array}               // Default: ['S', 'M', 'T', 'W', 'T', 'F', 'S']
   monthNames={Array}                // Defaults to english names of months
