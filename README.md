@@ -53,6 +53,8 @@ const Schedule = () => {
 }
 ```
 
+![calendarContainer](images/calendarContainer.png)
+
 ### calendarControls
 
 `calendarControls` changes only the bar on the top that contains the month and year by default, but can also contain controls for changing the month.
@@ -68,6 +70,8 @@ const Schedule = () => {
 }
 ```
 
+![calendarControls](images/calendarControls.png)
+
 ### calendarHeading
 
 `calendarHeading` changes the bar that contains the days of the week.
@@ -82,6 +86,8 @@ const Schedule = () => {
   return <Calendar customStyle={customStyle} />
 }
 ```
+
+![calendarHeading](images/calendarHeading.png)
 
 ### controlButton
 
@@ -102,6 +108,8 @@ const Schedule = () => {
 }
 ```
 
+![controlButton](images/controlButton.png)
+
 ### controlButtonText
 
 `controlButtonText` applies styles to the text that is rendered when the `showControls` prop is `true`. The text can also be changed using the `prevButtonText` and `nextButtonText` props.
@@ -121,6 +129,8 @@ const Schedule = () => {
 }
 ```
 
+![controlButtonText](images/controlButtonText.png)
+
 ### currentDayCircle
 
 `currentDayCircle` changes the style of the background behind the currently-selected day *when the currently-selected day is today*.
@@ -135,6 +145,8 @@ const Schedule = () => {
   return <Calendar customStyle={customStyle} />
 }
 ```
+
+![currentDayCircle](images/currentDayCircle.png)
 
 ### currentDayText
 
@@ -151,6 +163,8 @@ const Schedule = () => {
 }
 ```
 
+![currentDayText](images/currentDayText.png)
+
 ### day
 
 `day` changes the text of every day other than today and weekend days.
@@ -165,6 +179,8 @@ const Schedule = () => {
   return <Calendar customStyle={customStyle} />
 }
 ```
+
+![day](images/day.png)
 
 ### dayButton
 
@@ -181,6 +197,8 @@ const Schedule = () => {
 }
 ```
 
+![dayButton](images/dayButton.png)
+
 ### dayButtonFiller
 
 `dayButtonFiller` styles the background behind all invalid days.
@@ -196,6 +214,8 @@ const Schedule = () => {
 }
 ```
 
+![dayButtonFiller](images/dayButtonFiller.png)
+
 ### dayCircleFiller
 
 `dayCircleFiller` styles a circle around all days other than the active day.
@@ -210,6 +230,8 @@ const Schedule = () => {
   return <Calendar customStyle={customStyle} />
 }
 ```
+
+![dayCircleFiller](images/dayCircleFiller.png)
 
 ### dayHeading
 
@@ -229,6 +251,8 @@ const Schedule = () => {
   )
 }
 ```
+
+![dayHeading](images/dayHeading.png)
 
 ### eventIndicator
 
@@ -252,6 +276,8 @@ const Schedule = () => {
 }
 ```
 
+![eventIndicator](images/eventIndicator.png)
+
 ### eventIndicatorFiller
 
 `eventIndicatorFiller` styles the event indicator space for days that do not have events. Must pass `showEventIndicators` as `true` for the event indicators to display.
@@ -274,6 +300,8 @@ const Schedule = () => {
 }
 ```
 
+![eventIndicatorFiller](images/eventIndicatorFiller.png)
+
 ### hasEventCircle
 
 `hasEventCircle` styles the circle around the days that have events associated with them. Must pass either an `events` array or `eventDates` array and have `showEventIndicators` passed as `true` for the event indicators to display.
@@ -293,6 +321,8 @@ const Schedule = () => {
   )
 }
 ```
+
+![hasEventCircle](images/hasEventCircle.png)
 
 ### hasEventText
 
@@ -314,6 +344,8 @@ const Schedule = () => {
 }
 ```
 
+![hasEventText](images/hasEventText.png)
+
 ### monthContainer
 
 `monthContainer` styles the background behind the month.
@@ -328,6 +360,8 @@ const Schedule = () => {
   return <Calendar customStyle={customStyle} />
 }
 ```
+
+![monthContainer](images/monthContainer.png)
 
 ### selectedDayCircle
 
@@ -344,6 +378,8 @@ const Schedule = () => {
 }
 ```
 
+![selectedDayCircle](images/selectedDayCircle.png)
+
 ### selectedDayText
 
 `selectedDayText` styles the text of the currently-selected day.
@@ -358,6 +394,8 @@ const Schedule = () => {
   return <Calendar customStyle={customStyle} />
 }
 ```
+
+![selectedDayText](images/selectedDayText.png)
 
 ### title
 
@@ -374,6 +412,8 @@ const Schedule = () => {
 }
 ```
 
+![title](images/title.png)
+
 ### weekendDayText
 
 `weekendDayText` styles the text of weekends.
@@ -388,6 +428,8 @@ const Schedule = () => {
   return <Calendar customStyle={customStyle} />
 }
 ```
+
+![weekendDayText](images/weekendDayText.png)
 
 ### weekendHeading
 
@@ -404,6 +446,8 @@ const Schedule = () => {
 }
 ```
 
+![weekendHeading](images/weekendHeading.png)
+
 ### weekRow
 
 `weekRow` styles the background of the row associated with each week.
@@ -419,11 +463,13 @@ const Schedule = () => {
 }
 ```
 
+![weekRow](images/weekRow.png)
+
 ## TODOS
 
 - [ ] Improve swipe feature
 - [ ] Landscape support
-- [ ] Language Support
+- [ ] Language support
 
 ## DEMO
 ![Demo gif](images/demo.gif)
