@@ -426,4 +426,4 @@ const Schedule = () => {
 - [ ] Language Support
 
 ## DEMO
-![Demo gif](https://github.com/christopherdro/react-native-calendar-swiper/blob/master/demo.gif)
+![Demo gif](images/demo.gif)
