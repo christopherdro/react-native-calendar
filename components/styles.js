@@ -76,6 +76,7 @@ const styles = StyleSheet.create({
     width: 28,
     height: 28,
     borderRadius: 14,
+    alignSelf: 'center'
   },
   currentDayCircle: {
     backgroundColor: 'red',
