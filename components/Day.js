@@ -73,30 +73,30 @@ export default class Day extends Component {
     return filler
     ? (
       <View style={[styles.dayButtonFiller, customStyle.dayButtonFiller]}>
-      <TouchableWithoutFeedback style={{flex:1}}>
-      <View style={{flex: 1, alignSelf: 'center'}}>
-      <Text style={[styles.day, customStyle.day]} />
-      </View>
-      </TouchableWithoutFeedback>
+        <TouchableWithoutFeedback style={{flex:1}}>
+          <View style={{flex: 1, alignSelf: 'center'}}>
+            <Text style={[styles.day, customStyle.day]} />
+          </View>
+        </TouchableWithoutFeedback>
       </View>
       )
     : (
       <View style={[styles.dayButton, customStyle.dayButton]}>
-      <TouchableOpacity onPress={this.props.onPress} style={{flex:1}}>
-      <View style={this.dayCircleStyle(isWeekend, isSelected, isToday, event)}>
-      <Text style={this.dayTextStyle(isWeekend, isSelected, isToday, event)}>{caption}</Text>
-      </View>
-      {showEventIndicators &&
-        <View style={[
-          styles.eventIndicatorFiller,
-          customStyle.eventIndicatorFiller,
-          event && styles.eventIndicator,
-          event && customStyle.eventIndicator,
-          event && event.eventIndicator]}
-          />
+        <TouchableOpacity onPress={this.props.onPress} style={{flex:1}}>
+          <View style={this.dayCircleStyle(isWeekend, isSelected, isToday, event)}>
+            <Text style={this.dayTextStyle(isWeekend, isSelected, isToday, event)}>{caption}</Text>
+          </View>
+        {showEventIndicators &&
+          <View style={[
+            styles.eventIndicatorFiller,
+            customStyle.eventIndicatorFiller,
+            event && styles.eventIndicator,
+            event && customStyle.eventIndicator,
+            event && event.eventIndicator]}
+            />
         }
         </TouchableOpacity>
-        </View>
-        );
+      </View>
+      );
   }
 }

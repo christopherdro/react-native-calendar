@@ -72,6 +72,7 @@ const styles = StyleSheet.create({
   },
   dayCircleFiller: {
     justifyContent: 'center',
+    paddingTop: 3,
     backgroundColor: 'transparent',
     width: 28,
     height: 28,
@@ -96,7 +97,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   weekendDayText: {
-    color: '#cccccc',
+    color: '#808080',
   },
 });
 
