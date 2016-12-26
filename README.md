@@ -324,6 +324,31 @@ const Schedule = () => {
 
 ![hasEventCircle](images/hasEventCircle.png)
 
+### hasEventDaySelectedCircle
+
+`hasEventDaySelectedCircle` styles the circle around the selected day that have events associated with them. Must pass either an `events` array or `eventDates` array and have `showEventIndicators` passed as `true` for the event indicators to display.
+
+```js
+const Schedule = () => {
+  const customStyle = {
+    hasEventCircle: {
+      backgroundColor: 'blue',
+    },
+    hasEventDaySelectedCircle: {
+      backgroundColor: 'red',
+  	},
+  }
+  return (
+    <Calendar
+      showEventIndicators
+      eventDates={['2016-12-03', '2016-12-21', '2016-12-22', '2016-12-30']}
+      customStyle={customStyle} />
+  )
+}
+```
+
+<img src="images/hasEventDaySelectedCircle.png" width="300em" />
+
 ### hasEventText
 
 `hasEventText` styles the text of the days that have events associated with them. Must pass either an `events` array or `eventDates` array and have `showEventIndicators` passed as `true` for the event indicators to display.

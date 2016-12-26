@@ -88,6 +88,8 @@ const styles = StyleSheet.create({
   },
   hasEventCircle: {
   },
+  hasEventDaySelectedCircle: {
+  },
   hasEventText: {
   },
   selectedDayText: {
