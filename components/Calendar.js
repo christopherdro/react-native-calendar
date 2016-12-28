@@ -214,10 +214,7 @@ export default class Calendar extends Component {
     offset = calFormat == "monthly" ?
       (startOfArgMoment.isoWeekday() - weekStart + 7) % 7: 0,
     argIsToday = calFormat == "monthly" ? argMoment.isSame(todayMoment, 'month') : argMoment.isSame(todayMoment, 'week'),
-    selectedIndex = moment(selectedMoment).date() - 1,
-    selectedIsArg = calFormat == "monthly" ?
-      selectedMoment.isSame(argMoment, 'month'):
-      selectedMoment.isSame(argMoment, 'week');
+    selectedIndex = moment(selectedMoment).date() - 1;
 
     const events = (eventsMap !== null)
             ? eventsMap[argMoment.startOf('month').format()]
@@ -239,11 +236,12 @@ export default class Calendar extends Component {
              isWeekend={isoWeekday === 0 || isoWeekday === 6}
              key={`${renderIndex}`}
              onPress={() => {
-               this.selectDate(moment(startOfArgMoment).set('date', dayIndex + 1));
+               // this.selectDate(moment(startOfArgMoment).set('date', dayIndex + 1));
+               this.selectDate(moment(startOfArgMoment).add(dayIndex, 'day'));
             }}
             caption={`${moment(startOfArgMoment).add(dayIndex, 'day').format('D')}`}
             isToday={argIsToday && (dayIndex === todayIndex)}
-            isSelected={selectedIsArg && (dayIndex === selectedIndex)}
+            isSelected={selectedMoment.isSame(moment(startOfArgMoment).add(dayIndex, 'day'))}
             event={events && events[dayIndex]}
             showEventIndicators={this.props.showEventIndicators}
             customStyle={this.props.customStyle}
