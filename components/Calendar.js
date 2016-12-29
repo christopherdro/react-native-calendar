@@ -188,8 +188,6 @@ export default class Calendar extends Component {
       let sundayMoment = moment(currMoment).startOf('week');
       if (weekStart > 0) {
         r = moment(currMoment).isoWeekday(weekStart);
-        // console.log("currMoment: " + currMoment.format('YYYY-MM-DD')); //xxx
-        // console.log("rMoment: " + r.format('YYYY-MM-DD')); //xxx
         if (r.diff(currMoment) > 0) {
           r = moment(currMoment).subtract(7, 'day').isoWeekday(weekStart);
         }
@@ -201,23 +199,10 @@ export default class Calendar extends Component {
   }
 
   renderMonthView(calFormat, argMoment, eventsMap) {
-
-    // console.log("before argMoment: "  + argMoment.format('YYYY-MM-DD')); //xxx
-    // console.log("before argMoment weekly: "  + argMoment.startOf('week').format('YYYY-MM-DD')); //xxx
-
     let renderIndex = 0,
         weekRows = [],
         days = [],
         startOfArgMoment = this.getStartMoment(calFormat, argMoment);
-        // startOfArgMoment = calFormat == "monthly" ?
-        //   moment(argMoment).startOf('month'):
-        //   moment(argMoment).startOf('week');
-
-    // console.log("argMoment: "  + argMoment.format('YYYY-MM-DD')); //xxx
-    // console.log("startOfArgMoment: "  + startOfArgMoment.format('YYYY-MM-DD')); //xxx
-    // // 1 == monday ; 7 == sunday
-    // console.log("argMoment.isoWeekday: " + moment(argMoment).isoWeekday(7).format('YYYY-MM-DD'));
-    // console.log("isoWeekday: " + moment(startOfArgMoment).isoWeekday(1).format('YYYY-MM-DD')); //xxx
 
     const
     selectedMoment = moment(this.state.selectedMoment),
@@ -227,24 +212,12 @@ export default class Calendar extends Component {
     argDaysCount = calFormat == "monthly" ? argMoment.daysInMonth(): 7,
     offset = calFormat == "monthly" ?
       (startOfArgMoment.isoWeekday() - weekStart + 7) % 7: 0,
-    argIsToday = calFormat == "monthly" ? argMoment.isSame(todayMoment, 'month') : argMoment.isSame(todayMoment, 'week'),
     selectedIndex = moment(selectedMoment).date() - 1;
-
-    // const events = (eventsMap !== null)
-    //         ? eventsMap[argMoment.startOf('month').format()]
-    //         : null;
-
-    console.log(eventsMap); //xxx
-    // console.log(events); //xxx
-
-
-    // console.log("startOfArgMoment (plus one day): " + startOfArgMoment.add(10, 'day').format('YYYY-MM-DD'));
-    console.log("dayNum: " + (parseInt(startOfArgMoment.format('D')) + 1));
-    // caption={`${parseInt(startOfArgMoment.format('D')) + dayIndex + 1}`}
 
     do {
       const dayIndex = renderIndex - offset;
       const isoWeekday = (renderIndex + weekStart) % 7;
+      const thisMoment = moment(startOfArgMoment).add(dayIndex, 'day');
 
       if (dayIndex >= 0 && dayIndex < argDaysCount) {
         days.push((
@@ -253,16 +226,12 @@ export default class Calendar extends Component {
              isWeekend={isoWeekday === 0 || isoWeekday === 6}
              key={`${renderIndex}`}
              onPress={() => {
-               // this.selectDate(moment(startOfArgMoment).set('date', dayIndex + 1));
-               this.selectDate(moment(startOfArgMoment).add(dayIndex, 'day'));
+               this.selectDate(thisMoment);
             }}
-            caption={`${moment(startOfArgMoment).add(dayIndex, 'day').format('D')}`}
-            isToday={argIsToday && (dayIndex === todayIndex)}
-            isSelected={selectedMoment.isSame(moment(startOfArgMoment).add(dayIndex, 'day'))}
-            event={
-              eventsMap[moment(startOfArgMoment).add(dayIndex, 'day').format('YYYY-MM-DD')]
-              // events && events[dayIndex]
-            }
+            caption={`${thisMoment.format('D')}`}
+            isToday={todayMoment.format('YYYY-MM-DD') == thisMoment.format('YYYY-MM-DD')}
+            isSelected={selectedMoment.isSame(thisMoment)}
+            event={eventsMap[thisMoment.format('YYYY-MM-DD')]}
             showEventIndicators={this.props.showEventIndicators}
             customStyle={this.props.customStyle}
             />
@@ -349,19 +318,7 @@ export default class Calendar extends Component {
 
   render() {
     const calendarDates = this.getMonthStack(this.state.currentMonthMoment);
-    // console.log("this.props.startDate: " + this.props.startDate);
-    console.log("this.state.currentMonthMoment: " + this.state.currentMonthMoment.format('YYYY-MM-DD')); //xxx
-    console.log("calendarDates[0]: " + calendarDates[0].format('YYYY-MM-DD')); //xxx
-    console.log("calendarDates.length : " + calendarDates.length); //xxx
-    console.log("eventDates: " + this.props.eventDates); //xxx
-    console.log("events: " + this.props.events); //xxx
-
     const eventDatesMap = this.prepareEventDates(this.props.eventDates, this.props.events);
-    console.log("eventDates: " + this.props.eventDates); //xxx
-    console.log("events: " + this.props.events); //xxx
-
-
-    calendarDates.map((date) => console.log("inside map: " + moment(date).format('YYYY-MM-DD')));
 
     return (
       <View style={[styles.calendarContainer, this.props.customStyle.calendarContainer]}>
