@@ -113,32 +113,13 @@ export default class Calendar extends Component {
     }
 
     return parsedDates;
-
-    // // Dates without any custom properties
-    // eventDates.forEach(event => {
-    //   const date = moment(event);
-    //   const month = moment(date).startOf('month').format();
-    //   parsedDates[month] = parsedDates[month] || {};
-    //   parsedDates[month][date.date() - 1] = {};
-    // });
-
-    // Dates with custom properties
-    // if (events) {
-    //   events.forEach(event => {
-    //     if (event.date) {
-    //       const date = moment(event.date);
-    //       const month = moment(date).startOf('month').format();
-    //       parsedDates[month] = parsedDates[month] || {};
-    //       parsedDates[month][date.date() - 1] = event;
-    //     }
-    //   });
-    // }
-    // return parsedDates;
   }
 
   selectDate(date) {
-    this.setState({ selectedMoment: date });
+    this.setState({ selectedMoment: date,
+                    currentMonthMoment: date});
     this.props.onDateSelect && this.props.onDateSelect(date ? date.format(): null );
+    // this.setState({calendarFormat: 'weekly'});
   }
 
   onPrev = () => {
@@ -198,13 +179,14 @@ export default class Calendar extends Component {
     return r;
   }
 
-  renderMonthView(calFormat, argMoment, eventsMap) {
+  renderCalendarView(calFormat, argMoment, eventsMap) {
     let renderIndex = 0,
         weekRows = [],
-        days = [],
-        startOfArgMoment = this.getStartMoment(calFormat, argMoment);
+        days = [];
+        // startOfArgMoment = this.getStartMoment(calFormat, argMoment);
 
     const
+    startOfArgMoment = this.getStartMoment(calFormat, argMoment),
     selectedMoment = moment(this.state.selectedMoment),
     weekStart = this.props.weekStart,
     todayMoment = moment(this.props.today),
@@ -336,11 +318,11 @@ export default class Calendar extends Component {
               automaticallyAdjustContentInsets
               onMomentumScrollEnd={(event) => this.scrollEnded(event)}
               >
-              {calendarDates.map((date) => this.renderMonthView(this.state.calendarFormat, moment(date), eventDatesMap))}
+              {calendarDates.map((date) => this.renderCalendarView(this.state.calendarFormat, moment(date), eventDatesMap))}
          </ScrollView>
          :
          <View ref={calendar => this._calendar = calendar}>
-             {calendarDates.map((date) => this.renderMonthView(this.state.calendarFormat, moment(date), eventDatesMap))}
+             {calendarDates.map((date) => this.renderCalendarView(this.state.calendarFormat, moment(date), eventDatesMap))}
            </View>
          }
 </View>
