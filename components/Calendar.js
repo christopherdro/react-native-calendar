@@ -100,26 +100,40 @@ export default class Calendar extends Component {
   prepareEventDates(eventDates, events) {
     const parsedDates = {};
 
-    // Dates without any custom properties
-    eventDates.forEach(event => {
-      const date = moment(event);
-      const month = moment(date).startOf('month').format();
-      parsedDates[month] = parsedDates[month] || {};
-      parsedDates[month][date.date() - 1] = {};
-    });
-
-    // Dates with custom properties
     if (events) {
       events.forEach(event => {
         if (event.date) {
-          const date = moment(event.date);
-          const month = moment(date).startOf('month').format();
-          parsedDates[month] = parsedDates[month] || {};
-          parsedDates[month][date.date() - 1] = event;
+          parsedDates[event.date] = event;
         }
       });
+    } else {
+      eventDates.forEach(event => {
+        parsedDates[event] = {};
+      });
     }
+
     return parsedDates;
+
+    // // Dates without any custom properties
+    // eventDates.forEach(event => {
+    //   const date = moment(event);
+    //   const month = moment(date).startOf('month').format();
+    //   parsedDates[month] = parsedDates[month] || {};
+    //   parsedDates[month][date.date() - 1] = {};
+    // });
+
+    // Dates with custom properties
+    // if (events) {
+    //   events.forEach(event => {
+    //     if (event.date) {
+    //       const date = moment(event.date);
+    //       const month = moment(date).startOf('month').format();
+    //       parsedDates[month] = parsedDates[month] || {};
+    //       parsedDates[month][date.date() - 1] = event;
+    //     }
+    //   });
+    // }
+    // return parsedDates;
   }
 
   selectDate(date) {
@@ -216,9 +230,12 @@ export default class Calendar extends Component {
     argIsToday = calFormat == "monthly" ? argMoment.isSame(todayMoment, 'month') : argMoment.isSame(todayMoment, 'week'),
     selectedIndex = moment(selectedMoment).date() - 1;
 
-    const events = (eventsMap !== null)
-            ? eventsMap[argMoment.startOf('month').format()]
-            : null;
+    // const events = (eventsMap !== null)
+    //         ? eventsMap[argMoment.startOf('month').format()]
+    //         : null;
+
+    console.log(eventsMap); //xxx
+    // console.log(events); //xxx
 
 
     // console.log("startOfArgMoment (plus one day): " + startOfArgMoment.add(10, 'day').format('YYYY-MM-DD'));
@@ -242,7 +259,10 @@ export default class Calendar extends Component {
             caption={`${moment(startOfArgMoment).add(dayIndex, 'day').format('D')}`}
             isToday={argIsToday && (dayIndex === todayIndex)}
             isSelected={selectedMoment.isSame(moment(startOfArgMoment).add(dayIndex, 'day'))}
-            event={events && events[dayIndex]}
+            event={
+              eventsMap[moment(startOfArgMoment).add(dayIndex, 'day').format('YYYY-MM-DD')]
+              // events && events[dayIndex]
+            }
             showEventIndicators={this.props.showEventIndicators}
             customStyle={this.props.customStyle}
             />
@@ -333,8 +353,14 @@ export default class Calendar extends Component {
     console.log("this.state.currentMonthMoment: " + this.state.currentMonthMoment.format('YYYY-MM-DD')); //xxx
     console.log("calendarDates[0]: " + calendarDates[0].format('YYYY-MM-DD')); //xxx
     console.log("calendarDates.length : " + calendarDates.length); //xxx
+    console.log("eventDates: " + this.props.eventDates); //xxx
+    console.log("events: " + this.props.events); //xxx
 
     const eventDatesMap = this.prepareEventDates(this.props.eventDates, this.props.events);
+    console.log("eventDates: " + this.props.eventDates); //xxx
+    console.log("events: " + this.props.events); //xxx
+
+
     calendarDates.map((date) => console.log("inside map: " + moment(date).format('YYYY-MM-DD')));
 
     return (
