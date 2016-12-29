@@ -213,7 +213,8 @@ export default class Calendar extends Component {
             caption={`${thisMoment.format('D')}`}
             isToday={todayMoment.format('YYYY-MM-DD') == thisMoment.format('YYYY-MM-DD')}
             isSelected={selectedMoment.isSame(thisMoment)}
-            event={eventsMap[thisMoment.format('YYYY-MM-DD')]}
+            event={eventsMap[thisMoment.format('YYYY-MM-DD')] ||
+                   eventsMap[thisMoment.format('YYYYMMDD')]}
             showEventIndicators={this.props.showEventIndicators}
             customStyle={this.props.customStyle}
             />
