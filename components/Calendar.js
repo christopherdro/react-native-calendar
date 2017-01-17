@@ -320,7 +320,7 @@ export default class Calendar extends Component {
               removeClippedSubviews
               scrollEventThrottle={1000}
               showsHorizontalScrollIndicator={false}
-              automaticallyAdjustContentInsets
+              automaticallyAdjustContentInsets={false}
               onMomentumScrollEnd={(event) => this.scrollEnded(event)}
               >
               {calendarDates.map((date) => this.renderCalendarView(this.props.calendarFormat, moment(date), eventDatesMap))}
