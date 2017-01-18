@@ -294,7 +294,7 @@ export default class Calendar extends Component {
             horizontal
             scrollEnabled
             pagingEnabled
-            removeClippedSubviews
+            removeClippedSubviews={false}
             scrollEventThrottle={1000}
             showsHorizontalScrollIndicator={false}
             automaticallyAdjustContentInsets
