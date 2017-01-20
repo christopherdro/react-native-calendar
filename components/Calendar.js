@@ -76,10 +76,10 @@ export default class Calendar extends Component {
   componentDidUpdate() {
     this.scrollToItem(VIEW_INDEX);
   }
-  
-  componentWillReceiveProps(props) {
-    if (props.selectedDate) {
-      this.setState({selectedMoment: props.selectedDate});
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.selectedDate && this.props.selectedDate !== nextProps.selectedDate) {
+      this.setState({selectedMoment: nextProps.selectedDate});
     }
   }
 
@@ -120,7 +120,9 @@ export default class Calendar extends Component {
   }
 
   selectDate(date) {
-    this.setState({ selectedMoment: date });
+    if (this.props.selectedDate === undefined) {
+      this.setState({ selectedMoment: date });
+    }
     this.props.onDateSelect && this.props.onDateSelect(date ? date.format(): null );
   }
 
