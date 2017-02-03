@@ -20,6 +20,7 @@ export default class Calendar extends Component {
   state = {
     currentMonthMoment: moment(this.props.startDate),
     selectedMoment: moment(this.props.selectedDate),
+    rowHeight: null,
   };
 
   static propTypes = {
@@ -68,6 +69,19 @@ export default class Calendar extends Component {
     weekStart: 1,
   };
 
+  static getNumberOfWeeks(month) {
+    const firstWeek = moment(month).startOf('month').week();
+    const lastWeek = moment(month).endOf('month').week();
+    return lastWeek - firstWeek + 1;
+  }
+
+  constructor(props) {
+    super(props);
+
+    this.onWeekRowLayout = this.onWeekRowLayout.bind(this);
+    this.shouldUpdateHeight = true;
+  }
+
   componentDidMount() {
     // fixes initial scrolling bug on Android
     setTimeout(() => this.scrollToItem(VIEW_INDEX), 0)
@@ -76,7 +90,7 @@ export default class Calendar extends Component {
   componentDidUpdate() {
     this.scrollToItem(VIEW_INDEX);
   }
-  
+
   componentWillReceiveProps(props) {
     if (props.selectedDate) {
       this.setState({selectedMoment: props.selectedDate});
@@ -156,6 +170,14 @@ export default class Calendar extends Component {
     }
   }
 
+  onWeekRowLayout(event) {
+    if (this.state.rowHeight !== event.nativeEvent.layout.height && this.shouldUpdateHeight) {
+      this.shouldUpdateHeight = false;
+      this.setState({ rowHeight: event.nativeEvent.layout.height });
+      setTimeout(() => { this.shouldUpdateHeight = true; }, 200);
+    }
+  }
+
   renderMonthView(argMoment, eventsMap) {
 
     let
@@ -207,6 +229,7 @@ export default class Calendar extends Component {
         weekRows.push(
           <View
             key={weekRows.length}
+            onLayout={this.onWeekRowLayout}
             style={[styles.weekRow, this.props.customStyle.weekRow]}
           >
             {days}
@@ -283,6 +306,7 @@ export default class Calendar extends Component {
   render() {
     const calendarDates = this.getMonthStack(this.state.currentMonthMoment);
     const eventDatesMap = this.prepareEventDates(this.props.eventDates, this.props.events);
+    const numOfWeeks = Calendar.getNumberOfWeeks(this.state.currentMonthMoment);
 
     return (
       <View style={[styles.calendarContainer, this.props.customStyle.calendarContainer]}>
@@ -299,6 +323,9 @@ export default class Calendar extends Component {
             showsHorizontalScrollIndicator={false}
             automaticallyAdjustContentInsets
             onMomentumScrollEnd={(event) => this.scrollEnded(event)}
+            style={{
+              height: this.state.rowHeight ? this.state.rowHeight * numOfWeeks : null,
+            }}
           >
             {calendarDates.map((date) => this.renderMonthView(moment(date), eventDatesMap))}
           </ScrollView>
