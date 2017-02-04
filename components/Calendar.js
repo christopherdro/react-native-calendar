@@ -15,6 +15,12 @@ import styles from './styles';
 const DEVICE_WIDTH = Dimensions.get('window').width;
 const VIEW_INDEX = 2;
 
+function getNumberOfWeeks(month) {
+  const firstWeek = moment(month).startOf('month').week();
+  const lastWeek = moment(month).endOf('month').week();
+  return lastWeek - firstWeek + 1;
+}
+
 export default class Calendar extends Component {
 
   state = {
@@ -69,17 +75,10 @@ export default class Calendar extends Component {
     weekStart: 1,
   };
 
-  static getNumberOfWeeks(month) {
-    const firstWeek = moment(month).startOf('month').week();
-    const lastWeek = moment(month).endOf('month').week();
-    return lastWeek - firstWeek + 1;
-  }
-
   constructor(props) {
     super(props);
 
     this.onWeekRowLayout = this.onWeekRowLayout.bind(this);
-    this.shouldUpdateHeight = true;
   }
 
   componentDidMount() {
@@ -171,10 +170,8 @@ export default class Calendar extends Component {
   }
 
   onWeekRowLayout(event) {
-    if (this.state.rowHeight !== event.nativeEvent.layout.height && this.shouldUpdateHeight) {
-      this.shouldUpdateHeight = false;
+    if (this.state.rowHeight !== event.nativeEvent.layout.height) {
       this.setState({ rowHeight: event.nativeEvent.layout.height });
-      setTimeout(() => { this.shouldUpdateHeight = true; }, 200);
     }
   }
 
@@ -229,7 +226,7 @@ export default class Calendar extends Component {
         weekRows.push(
           <View
             key={weekRows.length}
-            onLayout={this.onWeekRowLayout}
+            onLayout={weekRows.length ? undefined : this.onWeekRowLayout}
             style={[styles.weekRow, this.props.customStyle.weekRow]}
           >
             {days}
@@ -306,7 +303,7 @@ export default class Calendar extends Component {
   render() {
     const calendarDates = this.getMonthStack(this.state.currentMonthMoment);
     const eventDatesMap = this.prepareEventDates(this.props.eventDates, this.props.events);
-    const numOfWeeks = Calendar.getNumberOfWeeks(this.state.currentMonthMoment);
+    const numOfWeeks = getNumberOfWeeks(this.state.currentMonthMoment);
 
     return (
       <View style={[styles.calendarContainer, this.props.customStyle.calendarContainer]}>
