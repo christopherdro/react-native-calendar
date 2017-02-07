@@ -75,12 +75,6 @@ export default class Calendar extends Component {
     weekStart: 1,
   };
 
-  constructor(props) {
-    super(props);
-
-    this.onWeekRowLayout = this.onWeekRowLayout.bind(this);
-  }
-
   componentDidMount() {
     // fixes initial scrolling bug on Android
     setTimeout(() => this.scrollToItem(VIEW_INDEX), 0)
@@ -169,7 +163,7 @@ export default class Calendar extends Component {
     }
   }
 
-  onWeekRowLayout(event) {
+  onWeekRowLayout = (event) => {
     if (this.state.rowHeight !== event.nativeEvent.layout.height) {
       this.setState({ rowHeight: event.nativeEvent.layout.height });
     }
