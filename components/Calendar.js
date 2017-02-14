@@ -186,8 +186,8 @@ export default class Calendar extends Component {
 
   onWeekRowLayout = (event) => {
     if (this.state.rowHeight !== event.nativeEvent.layout.height) {
-		this.setState({ rowHeight: event.nativeEvent.layout.height });
-	}
+	  this.setState({ rowHeight: event.nativeEvent.layout.height });
+    }
   }
 
   renderMonthView(argMoment, eventsMap, disabledDatesMap) {
