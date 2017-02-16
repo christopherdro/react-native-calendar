@@ -74,30 +74,30 @@ export default class Day extends Component {
       isSelected,
       isToday,
       showEventIndicators,
-      } = this.props;
+    } = this.props;
 
     return filler
-      ? (
-      <TouchableWithoutFeedback>
-        <View style={[styles.dayButtonFiller, customStyle.dayButtonFiller]}>
-          <Text style={[styles.day, customStyle.day]} />
-        </View>
-      </TouchableWithoutFeedback>
-    )
-      : (
+    ? (
+        <TouchableWithoutFeedback>
+          <View style={[styles.dayButtonFiller, customStyle.dayButtonFiller]}>
+            <Text style={[styles.day, customStyle.day]} />
+          </View>
+        </TouchableWithoutFeedback>
+      )
+    : (
       <TouchableOpacity onPress={this.props.onPress}>
         <View style={[styles.dayButton, customStyle.dayButton]}>
           <View style={this.dayCircleStyle(isWeekend, isSelected, isToday, event)}>
             <Text style={this.dayTextStyle(isWeekend, isSelected, isToday, event)}>{caption}</Text>
           </View>
           {showEventIndicators &&
-          <View style={[
+            <View style={[
               styles.eventIndicatorFiller,
               customStyle.eventIndicatorFiller,
               event && styles.eventIndicator,
               event && customStyle.eventIndicator,
               event && event.eventIndicator]}
-          />
+            />
           }
         </View>
       </TouchableOpacity>
