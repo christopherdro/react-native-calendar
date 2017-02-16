@@ -92,7 +92,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   weekendDayText: {
-    color: '#000000',
+    color: 'black',
   },
 });
 
