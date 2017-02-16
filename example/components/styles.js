@@ -15,14 +15,14 @@ const styles = StyleSheet.create({
   controlButton: {
   },
   controlButtonText: {
-    margin: 10,
+    margin: 20,
     fontSize: 15,
   },
   title: {
     flex: 1,
     textAlign: 'center',
-    fontSize: 15,
-    margin: 10,
+    fontSize: 20,
+    margin: 15,
   },
   calendarHeading: {
     flexDirection: 'row',
@@ -44,11 +44,11 @@ const styles = StyleSheet.create({
   },
   dayButton: {
     alignItems: 'center',
-    padding: 5,
+    padding: 7,
     width: DEVICE_WIDTH / 7,
   },
   dayButtonFiller: {
-    padding: 5,
+    padding: 7,
     width: DEVICE_WIDTH / 7,
   },
   day: {
