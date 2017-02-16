@@ -15,11 +15,18 @@ import styles from './styles';
 const DEVICE_WIDTH = Dimensions.get('window').width;
 const VIEW_INDEX = 2;
 
+function getNumberOfWeeks(month) {
+  const firstWeek = moment(month).startOf('month').week();
+  const lastWeek = moment(month).endOf('month').week();
+  return lastWeek - firstWeek + 1;
+}
+
 export default class Calendar extends Component {
 
   state = {
     currentMonthMoment: moment(this.props.startDate),
     selectedMoment: moment(this.props.selectedDate),
+    rowHeight: null,
   };
 
   static propTypes = {
@@ -78,12 +85,12 @@ export default class Calendar extends Component {
     this.scrollToItem(VIEW_INDEX);
   }
 
-  componentWillReceiveProps(props) {
-    if (props.selectedDate) {
-      this.setState({selectedMoment: props.selectedDate});
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.selectedDate && this.props.selectedDate !== nextProps.selectedDate) {
+      this.setState({selectedMoment: nextProps.selectedDate});
     }
-    if (props.currentMonth) {
-      this.setState({currentMonthMoment: moment(props.currentMonth)});
+    if (nextProps.currentMonth) {
+      this.setState({currentMonthMoment: moment(nextProps.currentMonth)});
     }
   }
 
@@ -124,7 +131,9 @@ export default class Calendar extends Component {
   }
 
   selectDate(date) {
-    this.setState({ selectedMoment: date });
+    if (this.props.selectedDate === undefined) {
+      this.setState({ selectedMoment: date });
+    }
     this.props.onDateSelect && this.props.onDateSelect(date ? date.format(): null );
   }
 
@@ -157,6 +166,12 @@ export default class Calendar extends Component {
       this.props.onSwipePrev && this.props.onSwipePrev(newMoment);
     } else if (currentPage > VIEW_INDEX) {
       this.props.onSwipeNext && this.props.onSwipeNext(newMoment);
+    }
+  }
+
+  onWeekRowLayout = (event) => {
+    if (this.state.rowHeight !== event.nativeEvent.layout.height) {
+      this.setState({ rowHeight: event.nativeEvent.layout.height });
     }
   }
 
@@ -211,6 +226,7 @@ export default class Calendar extends Component {
         weekRows.push(
           <View
             key={weekRows.length}
+            onLayout={weekRows.length ? undefined : this.onWeekRowLayout}
             style={[styles.weekRow, this.props.customStyle.weekRow]}
           >
             {days}
@@ -263,7 +279,7 @@ export default class Calendar extends Component {
             </Text>
           </TouchableOpacity>
           <Text style={[styles.title, this.props.customStyle.title]}>
-            {localizedMonth} {this.state.currentMonthMoment.year()}
+            {this.state.currentMonthMoment.format(this.props.titleFormat)}
           </Text>
           <TouchableOpacity
             style={[styles.controlButton, this.props.customStyle.controlButton]}
@@ -287,6 +303,7 @@ export default class Calendar extends Component {
   render() {
     const calendarDates = this.getMonthStack(this.state.currentMonthMoment);
     const eventDatesMap = this.prepareEventDates(this.props.eventDates, this.props.events);
+    const numOfWeeks = getNumberOfWeeks(this.state.currentMonthMoment);
 
     return (
       <View style={[styles.calendarContainer, this.props.customStyle.calendarContainer]}>
@@ -303,6 +320,9 @@ export default class Calendar extends Component {
             showsHorizontalScrollIndicator={false}
             automaticallyAdjustContentInsets
             onMomentumScrollEnd={(event) => this.scrollEnded(event)}
+            style={{
+              height: this.state.rowHeight ? this.state.rowHeight * numOfWeeks : null,
+            }}
           >
             {calendarDates.map((date) => this.renderMonthView(moment(date), eventDatesMap))}
           </ScrollView>
