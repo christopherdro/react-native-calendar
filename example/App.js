@@ -35,6 +35,8 @@ class App extends Component {
     super(props);
     this.state = {
       selectedDate: moment().format(),
+      selectedRangeStart: moment().format(),
+      selectedRangeEnd: moment().format(),
     };
   }
 
@@ -82,10 +84,17 @@ class App extends Component {
           customStyle={customStyle}
           titleFormat={'MMMM'}
           dayHeadings={['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']}
+          onDateSelect={(date, rangeStart, rangeEnd) => this.setState({
+          selectedDate: date,
+          selectedRangeStart: rangeStart,
+          selectedRangeEnd: rangeEnd,
+          })}
           scrollEnabled={true}
           rangeEnabled={true}
         />
         <Text>Selected Date: {moment(this.state.selectedDate).format('MMMM DD YYYY')}</Text>
+        <Text>Selected Range Start: {moment(this.state.selectedRangeStart).format('MMMM DD YYYY')}</Text>
+        <Text>Selected Range End: {moment(this.state.selectedRangeEnd).format('MMMM DD YYYY')}</Text>
       </View>
 
     );

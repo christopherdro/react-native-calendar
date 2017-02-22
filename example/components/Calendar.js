@@ -135,30 +135,28 @@ export default class Calendar extends Component {
     if (this.props.selectedDate === undefined) {
       this.setState({ selectedMoment: date });
     }
+    let state = {
+      rangeStart: this.state.rangeStart,
+      rangeEnd: this.state.rangeEnd,
+    };
     if (this.props.rangeEnabled) {
       if (date < this.state.rangeStart) {
-        this.setState({
-          rangeStart: date,
-        });
+        state.rangeStart = date;
       } else if (date > this.state.rangeEnd) {
-        this.setState({
-          rangeEnd: date,
-        });
+        state.rangeEnd = date;
       } else {
         if (this.state.selectStartMode) {
-          this.setState({
-            rangeStart: date,
-            selectStartMode: false,
-          });
+          state.rangeStart = date;
         } else {
-          this.setState({
-            rangeEnd: date,
-            selectStartMode: true,
-          });
+          state.rangeEnd = date;
         }
+        state.selectStartMode = !this.state.selectStartMode;
       }
+      this.setState(state);
     }
-    this.props.onDateSelect && this.props.onDateSelect(date ? date.format(): null );
+    this.props.onDateSelect && this.props.onDateSelect(date ? date.format() : null,
+      state.rangeStart ? state.rangeStart.format() : null,
+      state.rangeEnd ? state.rangeEnd.format() : null );
   }
 
   onPrev = () => {
