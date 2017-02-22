@@ -131,32 +131,46 @@ export default class Calendar extends Component {
     return parsedDates;
   }
 
-  selectDate(date) {
+  selectDate(date, argMoment) {
     if (this.props.selectedDate === undefined) {
       this.setState({ selectedMoment: date });
     }
-    let state = {
-      rangeStart: this.state.rangeStart,
-      rangeEnd: this.state.rangeEnd,
-    };
+    let rangeStart = this.state.rangeStart,
+      rangeEnd = this.state.rangeEnd,
+      selectStartMode = this.state.selectStartMode;
+
     if (this.props.rangeEnabled) {
-      if (date < this.state.rangeStart) {
-        state.rangeStart = date;
-      } else if (date > this.state.rangeEnd) {
-        state.rangeEnd = date;
-      } else {
+      let argBeforeStartMonth = argMoment.isBefore(rangeStart, 'month'),
+        argAfterStartMonth = argMoment.isAfter(rangeStart, 'month'),
+        argIsStartMonth = argMoment.isSame(rangeStart, 'month'),
+        argBeforeEndMonth = argMoment.isBefore(rangeEnd, 'month'),
+        argAfterEndMonth = argMoment.isAfter(rangeEnd, 'month'),
+        argIsEndMonth = argMoment.isSame(rangeEnd, 'month');
+      if (argBeforeStartMonth || argIsStartMonth && date < this.state.rangeStart) {
+        rangeStart = date;
+      } else if (argAfterEndMonth || argIsEndMonth && date > this.state.rangeEnd) {
+        rangeEnd = date;
+      } else if (argBeforeEndMonth && argAfterStartMonth
+        || argAfterStartMonth && argIsEndMonth && date < this.state.rangeEnd
+        || argBeforeEndMonth && argIsStartMonth && date > this.state.rangeStart
+        || argIsEndMonth && argIsStartMonth && date > this.state.rangeStart && date < this.state.rangeEnd) {
+
         if (this.state.selectStartMode) {
-          state.rangeStart = date;
+          rangeStart = date;
         } else {
-          state.rangeEnd = date;
+          rangeEnd = date;
         }
-        state.selectStartMode = !this.state.selectStartMode;
+        selectStartMode = !this.state.selectStartMode;
       }
-      this.setState(state);
+      this.setState({
+        rangeStart,
+        rangeEnd,
+        selectStartMode,
+      });
     }
     this.props.onDateSelect && this.props.onDateSelect(date ? date.format() : null,
-      state.rangeStart ? state.rangeStart.format() : null,
-      state.rangeEnd ? state.rangeEnd.format() : null );
+      rangeStart ? rangeStart.format() : null,
+      rangeEnd ? rangeEnd.format() : null );
   }
 
   onPrev = () => {
@@ -198,7 +212,6 @@ export default class Calendar extends Component {
   }
 
   renderMonthView(argMoment, eventsMap) {
-
     let
       renderIndex = 0,
       weekRows = [],
@@ -216,6 +229,10 @@ export default class Calendar extends Component {
       argMonthDaysCount = argMoment.daysInMonth(),
       offset = (startOfArgMonthMoment.isoWeekday() - weekStart + 7) % 7,
       argMonthIsToday = argMoment.isSame(todayMoment, 'month'),
+      argAfterStartMonth = argMoment.isAfter(rangeStart, 'month'),
+      argIsStartMonth = argMoment.isSame(rangeStart, 'month'),
+      argBeforeEndMonth = argMoment.isBefore(rangeEnd, 'month'),
+      argIsEndMonth = argMoment.isSame(rangeEnd, 'month'),
       selectedIndex = moment(selectedMoment).date() - 1,
       rangeStartIndex = moment(rangeStart).date() - 1,
       rangeEndIndex = moment(rangeEnd).date() - 1,
@@ -237,13 +254,17 @@ export default class Calendar extends Component {
             isThurs={isoWeekday === 4}
             key={`${renderIndex}`}
             onPress={() => {
-              this.selectDate(moment(startOfArgMonthMoment).set('date', dayIndex + 1));
+              this.selectDate(moment(startOfArgMonthMoment).set('date', dayIndex + 1), argMoment);
             }}
             caption={`${dayIndex + 1}`}
             isToday={argMonthIsToday && (dayIndex === todayIndex)}
             isSelected={selectedMonthIsArg && (dayIndex === selectedIndex)}
-            isInRange={rangeEnabled && dayIndex >= rangeStartIndex && dayIndex <= rangeEndIndex}
-            isEndRange={rangeEnabled && (dayIndex === rangeStartIndex || dayIndex === rangeEndIndex)}
+            isInRange={rangeEnabled &&
+            (argAfterStartMonth || argIsStartMonth && dayIndex >= rangeStartIndex) &&
+            (argBeforeEndMonth || argIsEndMonth && dayIndex <= rangeEndIndex)}
+            isEndRange={rangeEnabled &&
+              (argIsStartMonth && dayIndex === rangeStartIndex ||
+              argIsEndMonth && dayIndex === rangeEndIndex)}
             event={events && events[dayIndex]}
             showEventIndicators={this.props.showEventIndicators}
             customStyle={this.props.customStyle}
