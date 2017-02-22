@@ -83,6 +83,7 @@ class App extends Component {
           titleFormat={'MMMM'}
           dayHeadings={['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']}
           scrollEnabled={true}
+          rangeEnabled={true}
         />
         <Text>Selected Date: {moment(this.state.selectedDate).format('MMMM DD YYYY')}</Text>
       </View>

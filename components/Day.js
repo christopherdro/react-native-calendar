@@ -19,13 +19,32 @@ export default class Day extends Component {
     filler: PropTypes.bool,
     event: PropTypes.object,
     isSelected: PropTypes.bool,
+    isThurs: PropTypes.bool,
     isToday: PropTypes.bool,
     isWeekend: PropTypes.bool,
+    isInRange: PropTypes.bool,
+    isEndRange: PropTypes.bool,
     onPress: PropTypes.func,
     showEventIndicators: PropTypes.bool,
   }
 
-  dayCircleStyle = (isWeekend, isSelected, isToday, event) => {
+  dayButtonStyle = (isInRange, isThurs) => {
+    const { customStyle } = this.props;
+    const dayButtonStyle = [styles.dayButton, customStyle.dayButton];
+
+    if (isInRange) {
+      dayButtonStyle.push(styles.dayButtonInRange, customStyle.dayButtonInRange);
+    }
+
+    if (isThurs) {
+      dayButtonStyle.push(styles.thursButton);
+    }
+
+    return dayButtonStyle;
+
+  }
+
+  dayCircleStyle = (isWeekend, isSelected, isToday, isEndRange, event) => {
     const { customStyle } = this.props;
     const dayCircleStyle = [styles.dayCircleFiller, customStyle.dayCircleFiller];
 
@@ -35,6 +54,10 @@ export default class Day extends Component {
       } else {
         dayCircleStyle.push(styles.selectedDayCircle, customStyle.selectedDayCircle);
       }
+    }
+
+    if (isEndRange) {
+      dayCircleStyle.push(styles.selectedDayCircle, customStyle.selectedDayCircle);
     }
 
     if (event) {
@@ -71,8 +94,11 @@ export default class Day extends Component {
       filler,
       event,
       isWeekend,
+      isThurs,
       isSelected,
       isToday,
+      isInRange,
+      isEndRange,
       showEventIndicators,
       } = this.props;
 
@@ -86,8 +112,8 @@ export default class Day extends Component {
     )
       : (
       <TouchableOpacity onPress={this.props.onPress}>
-        <View style={[styles.dayButton, customStyle.dayButton]}>
-          <View style={this.dayCircleStyle(isWeekend, isSelected, isToday, event)}>
+        <View style={this.dayButtonStyle(isInRange, isThurs)}>
+          <View style={this.dayCircleStyle(isWeekend, isSelected, isToday, isEndRange, event)}>
             <Text style={this.dayTextStyle(isWeekend, isSelected, isToday, event)}>{caption}</Text>
           </View>
           {showEventIndicators &&

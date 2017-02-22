@@ -47,6 +47,12 @@ const styles = StyleSheet.create({
     padding: 7,
     width: DEVICE_WIDTH / 7,
   },
+  thursButton: {
+    width: Math.round(DEVICE_WIDTH / 7 * 4 ) - DEVICE_WIDTH / 7 * 3 , //dumb hack to fix irrational number spacing
+  },
+  dayButtonInRange: {
+    backgroundColor: '#FDBAD1',
+  },
   dayButtonFiller: {
     padding: 7,
     width: DEVICE_WIDTH / 7,

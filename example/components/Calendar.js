@@ -26,6 +26,9 @@ export default class Calendar extends Component {
   state = {
     currentMonthMoment: moment(this.props.startDate),
     selectedMoment: moment(this.props.selectedDate),
+    rangeStart: moment(this.props.startDate),
+    rangeEnd: moment(this.props.startDate),
+    selectStartMode: true,
     rowHeight: null,
   };
 
@@ -55,6 +58,7 @@ export default class Calendar extends Component {
     titleFormat: PropTypes.string,
     today: PropTypes.any,
     weekStart: PropTypes.number,
+    rangeEnabled: PropTypes.bool,
   };
 
   static defaultProps = {
@@ -73,6 +77,7 @@ export default class Calendar extends Component {
     titleFormat: 'MMMM YYYY',
     today: moment(),
     weekStart: 1,
+    rangeEnabled: false,
   };
 
   componentDidMount() {
@@ -101,7 +106,7 @@ export default class Calendar extends Component {
     return [moment(currentMonth)];
   }
 
- prepareEventDates(eventDates, events) {
+  prepareEventDates(eventDates, events) {
     const parsedDates = {};
 
     // Dates without any custom properties
@@ -116,10 +121,10 @@ export default class Calendar extends Component {
     if (events) {
       events.forEach(event => {
         if (event.date) {
-            const date = moment(event.date);
-            const month = moment(date).startOf('month').format();
-            parsedDates[month] = parsedDates[month] || {};
-            parsedDates[month][date.date() - 1] = event;
+          const date = moment(event.date);
+          const month = moment(date).startOf('month').format();
+          parsedDates[month] = parsedDates[month] || {};
+          parsedDates[month][date.date() - 1] = event;
         }
       });
     }
@@ -129,6 +134,29 @@ export default class Calendar extends Component {
   selectDate(date) {
     if (this.props.selectedDate === undefined) {
       this.setState({ selectedMoment: date });
+    }
+    if (this.props.rangeEnabled) {
+      if (date < this.state.rangeStart) {
+        this.setState({
+          rangeStart: date,
+        });
+      } else if (date > this.state.rangeEnd) {
+        this.setState({
+          rangeEnd: date,
+        });
+      } else {
+        if (this.state.selectStartMode) {
+          this.setState({
+            rangeStart: date,
+            selectStartMode: false,
+          });
+        } else {
+          this.setState({
+            rangeEnd: date,
+            selectStartMode: true,
+          });
+        }
+      }
     }
     this.props.onDateSelect && this.props.onDateSelect(date ? date.format(): null );
   }
@@ -181,6 +209,9 @@ export default class Calendar extends Component {
 
     const
       selectedMoment = moment(this.state.selectedMoment),
+      rangeEnabled = this.props.rangeEnabled,
+      rangeStart = moment(this.state.rangeStart),
+      rangeEnd = moment(this.state.rangeEnd),
       weekStart = this.props.weekStart,
       todayMoment = moment(this.props.today),
       todayIndex = todayMoment.date() - 1,
@@ -188,6 +219,8 @@ export default class Calendar extends Component {
       offset = (startOfArgMonthMoment.isoWeekday() - weekStart + 7) % 7,
       argMonthIsToday = argMoment.isSame(todayMoment, 'month'),
       selectedIndex = moment(selectedMoment).date() - 1,
+      rangeStartIndex = moment(rangeStart).date() - 1,
+      rangeEndIndex = moment(rangeEnd).date() - 1,
       selectedMonthIsArg = selectedMoment.isSame(argMoment, 'month');
 
     const events = (eventsMap !== null)
@@ -203,6 +236,7 @@ export default class Calendar extends Component {
           <Day
             startOfMonth={startOfArgMonthMoment}
             isWeekend={isoWeekday === 0 || isoWeekday === 6}
+            isThurs={isoWeekday === 4}
             key={`${renderIndex}`}
             onPress={() => {
               this.selectDate(moment(startOfArgMonthMoment).set('date', dayIndex + 1));
@@ -210,6 +244,8 @@ export default class Calendar extends Component {
             caption={`${dayIndex + 1}`}
             isToday={argMonthIsToday && (dayIndex === todayIndex)}
             isSelected={selectedMonthIsArg && (dayIndex === selectedIndex)}
+            isInRange={rangeEnabled && dayIndex >= rangeStartIndex && dayIndex <= rangeEndIndex}
+            isEndRange={rangeEnabled && (dayIndex === rangeStartIndex || dayIndex === rangeEndIndex)}
             event={events && events[dayIndex]}
             showEventIndicators={this.props.showEventIndicators}
             customStyle={this.props.customStyle}
@@ -264,30 +300,30 @@ export default class Calendar extends Component {
   renderTopBar() {
     let localizedMonth = this.props.monthNames[this.state.currentMonthMoment.month()];
     return this.props.showControls
-    ? (
-        <View style={[styles.calendarControls, this.props.customStyle.calendarControls]}>
-          <TouchableOpacity
-            style={[styles.controlButton, this.props.customStyle.controlButton]}
-            onPress={this.onPrev}
-          >
-            <Text style={[styles.controlButtonText, this.props.customStyle.controlButtonText]}>
-              {this.props.prevButtonText}
-            </Text>
-          </TouchableOpacity>
-          <Text style={[styles.title, this.props.customStyle.title]}>
-            {this.state.currentMonthMoment.format(this.props.titleFormat)}
+      ? (
+      <View style={[styles.calendarControls, this.props.customStyle.calendarControls]}>
+        <TouchableOpacity
+          style={[styles.controlButton, this.props.customStyle.controlButton]}
+          onPress={this.onPrev}
+        >
+          <Text style={[styles.controlButtonText, this.props.customStyle.controlButtonText]}>
+            {this.props.prevButtonText}
           </Text>
-          <TouchableOpacity
-            style={[styles.controlButton, this.props.customStyle.controlButton]}
-            onPress={this.onNext}
-          >
-            <Text style={[styles.controlButtonText, this.props.customStyle.controlButtonText]}>
-              {this.props.nextButtonText}
-            </Text>
-          </TouchableOpacity>
-        </View>
-      )
-    : (
+        </TouchableOpacity>
+        <Text style={[styles.title, this.props.customStyle.title]}>
+          {this.state.currentMonthMoment.format(this.props.titleFormat)}
+        </Text>
+        <TouchableOpacity
+          style={[styles.controlButton, this.props.customStyle.controlButton]}
+          onPress={this.onNext}
+        >
+          <Text style={[styles.controlButtonText, this.props.customStyle.controlButtonText]}>
+            {this.props.nextButtonText}
+          </Text>
+        </TouchableOpacity>
+      </View>
+    )
+      : (
       <View style={[styles.calendarControls, this.props.customStyle.calendarControls]}>
         <Text style={[styles.title, this.props.customStyle.title]}>
           {this.state.currentMonthMoment.format(this.props.titleFormat)}
