@@ -375,6 +375,7 @@ export default class Calendar extends Component {
     const eventDatesMap = this.prepareEventDates(this.props.eventDates, this.props.events);
     const numOfWeeks = getNumberOfWeeks(this.state.currentMonthMoment);
     const disabledDatesMap = this.prepareDisabledDates(this.props.disabledDates);
+    const rowHeight = this.state.rowHeight || this.state.containerWidth / 7;
 
     return (
       <View onLayout={this.onContainerLayout} style={containerStyle}>
@@ -391,10 +392,7 @@ export default class Calendar extends Component {
             showsHorizontalScrollIndicator={false}
             automaticallyAdjustContentInsets
             onMomentumScrollEnd={(event) => this.scrollEnded(event)}
-            style={{
-              height: this.state.rowHeight ? this.state.rowHeight * numOfWeeks : null,
-            }}
-          >
+            style={{height: rowHeight * numOfWeeks}}>
             {calendarDates.map((date) => this.renderMonthView(moment(date), eventDatesMap, disabledDatesMap))}
           </ScrollView>
           :
