@@ -141,7 +141,7 @@ export default class Calendar extends Component {
       const date = moment(disabled);
       const month = moment(date).startOf('month').format();
       parsedDates[month] = parsedDates[month] || {};
-      parsedDates[month][date.date() - 1] = {};
+      parsedDates[month][date.date() - 1] = true;
     });
 
     return parsedDates;
@@ -217,14 +217,8 @@ export default class Calendar extends Component {
       selectedIndex = moment(selectedMoment).date() - 1,
       selectedMonthIsArg = selectedMoment.isSame(argMoment, 'month');
 
-    const events = (eventsMap !== null)
-      ? eventsMap[argMoment.startOf('month').format()]
-      : null;
-
-    const disabledDates = (disabledDatesMap !== null)
-      ? disabledDatesMap[argMoment.startOf('month').format()]
-      : null;
-
+    const events = eventsMap[argMoment.startOf('month').format()] || {};
+    const disabledDates = disabledDatesMap[argMoment.startOf('month').format()] || {};
     const minDate = moment(this.props.minDate);
     const maxDate =  moment(this.props.maxDate);
 
@@ -232,50 +226,39 @@ export default class Calendar extends Component {
       const dayIndex = renderIndex - offset;
       const isoWeekday = (renderIndex + weekStart) % 7;
       const currentDate = moment(startOfArgMonthMoment).set('date', dayIndex + 1);
+      const caption = String(dayIndex + 1);
 
       if (dayIndex >= 0 && dayIndex < argMonthDaysCount) {
-        if(currentDate.isBetween(minDate, maxDate, 'day', '[]'))
+        const dayEnabled = !this.props.disabledDays.includes(isoWeekday);
+        const dateEnabled = currentDate.isBetween(minDate, maxDate, 'day', '[]') && !disabledDates[dayIndex];
+        if(dayEnabled && dateEnabled)
         {
-          const dayDisabled = this.props.disabledDays.includes(isoWeekday);
-          const dateDisabled = !!(disabledDates && disabledDates[dayIndex]);
-          if( !dayDisabled && !dateDisabled )
-          {
-            days.push((
-              <Day
-                startOfMonth={startOfArgMonthMoment}
-                key={`${renderIndex}`}
-                onPress={() => this.selectDate(currentDate)}
-                onLongPress={() => this.longPress(currentDate)}
-                caption={`${dayIndex + 1}`}
-                isToday={argMonthIsToday && (dayIndex === todayIndex)}
-                isSelected={selectedMonthIsArg && (dayIndex === selectedIndex)}
-                event={events && events[dayIndex]}
-                showEventIndicators={this.props.showEventIndicators}
-                customStyle={this.props.customStyle}
-              />
-            ));
-          } else {
-            days.push(<Day
-                        key={`${renderIndex}`}
-                        caption={`${dayIndex + 1}`}
-                        isToday={argMonthIsToday && (dayIndex === todayIndex)}
-                        showEventIndicators={this.props.showEventIndicators}
-                        disabled
-                        customStyle={this.props.customStyle}
-                        />);
-          }
+          days.push((
+            <Day
+              key={renderIndex}
+              onPress={() => this.selectDate(currentDate)}
+              onLongPress={() => this.longPress(currentDate)}
+              caption={caption}
+              isToday={argMonthIsToday && (dayIndex === todayIndex)}
+              isSelected={selectedMonthIsArg && (dayIndex === selectedIndex)}
+              event={events[dayIndex]}
+              showEventIndicators={this.props.showEventIndicators}
+              customStyle={this.props.customStyle}
+            />
+          ));
         } else {
-           days.push(<Day
-                        key={`${renderIndex}`}
-                        caption={`${dayIndex + 1}`}
-                        isToday={argMonthIsToday && (dayIndex === todayIndex)}
-                        showEventIndicators={this.props.showEventIndicators}
-                        disabled
-                        customStyle={this.props.customStyle}
-                        />);
+          days.push(
+            <Day
+              key={renderIndex}
+              caption={caption}
+              isToday={argMonthIsToday && (dayIndex === todayIndex)}
+              showEventIndicators={this.props.showEventIndicators}
+              disabled
+              customStyle={this.props.customStyle} />
+          );
         }
       } else {
-        days.push(<Day key={`${renderIndex}`} filler customStyle={this.props.customStyle} />);
+        days.push(<Day key={renderIndex} filler customStyle={this.props.customStyle} />);
       }
       if (renderIndex % 7 === 6) {
         weekRows.push(
