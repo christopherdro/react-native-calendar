@@ -53,12 +53,12 @@ export default class Day extends Component {
     const { customStyle } = this.props;
     const dayTextStyle = [styles.day, customStyle.day];
 
-    if (isToday && !isSelected) {
+    if (isDisabled) {
+      dayTextStyle.push(styles.disabledDayText, customStyle.disabledDayText);
+    } else if (isToday && !isSelected) {
       dayTextStyle.push(styles.currentDayText, customStyle.currentDayText);
     } else if (isToday || isSelected) {
       dayTextStyle.push(styles.selectedDayText, customStyle.selectedDayText);
-    } else if (isDisabled) {
-      dayTextStyle.push(styles.disabledDayText, customStyle.disabledDayText);
     }
 
     if (event) {
@@ -80,11 +80,9 @@ export default class Day extends Component {
 
     if(filler) {
       return (
-        <TouchableWithoutFeedback>
-          <View style={[styles.dayButtonFiller, customStyle.dayButtonFiller]}>
-            <Text style={[styles.day, customStyle.day]} />
-          </View>
-        </TouchableWithoutFeedback>
+        <View style={[styles.dayButtonFiller, customStyle.dayButtonFiller]}>
+          <Text style={[styles.day, customStyle.day]} />
+        </View>
       );
     } else {
       if(disabled) {
@@ -106,27 +104,25 @@ export default class Day extends Component {
         );
       } else {
         return (
-         <TouchableOpacity 
+         <TouchableOpacity
           onPress={this.props.onPress}
-          onLongPress={this.props.onLongPress}>
-          <View style={[styles.dayButton, customStyle.dayButton]}>
-            <View style={this.dayCircleStyle(isSelected, isToday, event)}>
-              <Text style={this.dayTextStyle(disabled, isSelected, isToday, event)}>{caption}</Text>
-            </View>
-            {showEventIndicators &&
-              <View style={[
-                styles.eventIndicatorFiller,
-                customStyle.eventIndicatorFiller,
-                event && styles.eventIndicator,
-                event && customStyle.eventIndicator,
-                event && event.eventIndicator]}
-              />
-            }
-            </View>
+          onLongPress={this.props.onLongPress}
+          style={[styles.dayButton, customStyle.dayButton]}>
+          <View style={this.dayCircleStyle(isSelected, isToday, event)}>
+            <Text style={this.dayTextStyle(disabled, isSelected, isToday, event)}>{caption}</Text>
+          </View>
+          {showEventIndicators &&
+            <View style={[
+              styles.eventIndicatorFiller,
+              customStyle.eventIndicatorFiller,
+              event && styles.eventIndicator,
+              event && customStyle.eventIndicator,
+              event && event.eventIndicator]}
+            />
+          }
           </TouchableOpacity>
         );
       }
     }
-    
   }
 }
