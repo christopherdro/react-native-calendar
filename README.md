@@ -11,6 +11,7 @@ Portrait mode only
 ## Usage
 ```javascript
 <Calendar
+  currentMonth={'2015-08-01'}       // Optional date to set the currently displayed month after initialization
   customStyle={{day: {fontSize: 15, textAlign: 'center'}}} // Customize any pre-defined styles
   dayHeadings={Array}               // Default: ['S', 'M', 'T', 'W', 'T', 'F', 'S']
   eventDates={['2015-07-01']}       // Optional array of moment() parseable dates that will show an event indicator
