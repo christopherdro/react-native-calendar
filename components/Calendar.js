@@ -15,10 +15,11 @@ import styles from './styles';
 const DEVICE_WIDTH = Dimensions.get('window').width;
 const VIEW_INDEX = 2;
 
-function getNumberOfWeeks(month) {
-  const firstWeek = moment(month).startOf('month').week();
-  const lastWeek = moment(month).endOf('month').week();
-  return lastWeek - firstWeek + 1;
+function getNumberOfWeeks(month, weekStart) {
+  const firstDay = moment(month).startOf('month').day();
+  const offset = (firstDay - weekStart + 7) % 7;
+  const days = moment(month).daysInMonth();
+  return Math.ceil((offset + days) / 7);
 }
 
 export default class Calendar extends Component {
@@ -299,7 +300,7 @@ export default class Calendar extends Component {
   render() {
     const calendarDates = this.getMonthStack(this.state.currentMonthMoment);
     const eventDatesMap = this.prepareEventDates(this.props.eventDates, this.props.events);
-    const numOfWeeks = getNumberOfWeeks(this.state.currentMonthMoment);
+    const numOfWeeks = getNumberOfWeeks(this.state.currentMonthMoment, this.props.weekStart);
 
     return (
       <View style={[styles.calendarContainer, this.props.customStyle.calendarContainer]}>
