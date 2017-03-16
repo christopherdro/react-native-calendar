@@ -44,17 +44,16 @@ const styles = StyleSheet.create({
   },
   dayButton: {
     alignItems: 'center',
-    padding: 7,
+    padding: 0,
     width: DEVICE_WIDTH / 7,
+    height: DEVICE_WIDTH / 7,
+    flexDirection: 'row',
   },
   thursButton: {
     width: Math.round(DEVICE_WIDTH / 7 * 4 ) - DEVICE_WIDTH / 7 * 3 , //dumb hack to fix irrational number spacing
   },
-  dayButtonInRange: {
-    backgroundColor: '#FDBAD1',
-  },
   dayButtonFiller: {
-    padding: 7,
+    padding: 0,
     width: DEVICE_WIDTH / 7,
   },
   day: {
@@ -66,7 +65,7 @@ const styles = StyleSheet.create({
     borderColor: 'transparent',
     width: 4,
     height: 4,
-    borderRadius: 2,
+    borderRadius: 0,
   },
   eventIndicator: {
     backgroundColor: '#cccccc',
@@ -76,16 +75,19 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
     width: 28,
     height: 28,
+    left: 13,
+    top: 13,
     borderRadius: 14,
+    position: 'absolute',
   },
   currentDayCircle: {
-    backgroundColor: 'red',
+    backgroundColor: 'pink',
   },
   currentDayText: {
     color: 'red',
   },
   selectedDayCircle: {
-    backgroundColor: 'black',
+    backgroundColor: '#F22169',
   },
   hasEventCircle: {
   },
@@ -99,6 +101,19 @@ const styles = StyleSheet.create({
   },
   weekendDayText: {
     color: 'black',
+  },
+  selectedRangeBarWrapper: {
+    flexDirection: 'row',
+  },
+  selectedRangeBar: {
+    width: DEVICE_WIDTH / 14,
+    height: 28,
+    backgroundColor: '#F22169',
+  },
+  emptyRangeBar: {
+    width: DEVICE_WIDTH / 14,
+    height: 28,
+    backgroundColor: 'transparent',
   },
 });
 

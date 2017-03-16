@@ -21,7 +21,7 @@ function getNumberOfWeeks(month) {
   return lastWeek - firstWeek + 1;
 }
 
-export default class Calendar extends Component {
+class Calendar extends Component {
 
   state = {
     currentMonthMoment: moment(this.props.startDate),
@@ -260,11 +260,12 @@ export default class Calendar extends Component {
             isToday={argMonthIsToday && (dayIndex === todayIndex)}
             isSelected={selectedMonthIsArg && (dayIndex === selectedIndex)}
             isInRange={rangeEnabled &&
-            (argAfterStartMonth || argIsStartMonth && dayIndex >= rangeStartIndex) &&
-            (argBeforeEndMonth || argIsEndMonth && dayIndex <= rangeEndIndex)}
+            (argAfterStartMonth || argIsStartMonth && dayIndex > rangeStartIndex) &&
+            (argBeforeEndMonth || argIsEndMonth && dayIndex < rangeEndIndex)}
+            isStartRange={rangeEnabled &&
+              (argIsStartMonth && dayIndex === rangeStartIndex)}
             isEndRange={rangeEnabled &&
-              (argIsStartMonth && dayIndex === rangeStartIndex ||
-              argIsEndMonth && dayIndex === rangeEndIndex)}
+              (argIsEndMonth && dayIndex === rangeEndIndex)}
             event={events && events[dayIndex]}
             showEventIndicators={this.props.showEventIndicators}
             customStyle={this.props.customStyle}
@@ -386,3 +387,5 @@ export default class Calendar extends Component {
     );
   }
 }
+
+export default Calendar;
