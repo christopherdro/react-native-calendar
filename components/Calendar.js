@@ -98,7 +98,9 @@ export default class Calendar extends Component {
   getMonthStack(currentMonth) {
     if (this.props.scrollEnabled) {
       const res = [];
-      for (let i = -VIEW_INDEX; i <= VIEW_INDEX; i++) {
+      let i = -VIEW_INDEX;
+
+      for (i; i <= VIEW_INDEX; i = i + 1) {
         res.push(moment(currentMonth).add(i, 'month'));
       }
       return res;
@@ -245,7 +247,9 @@ export default class Calendar extends Component {
 
   renderHeading() {
     const headings = [];
-    for (let i = 0; i < 7; i++) {
+    let i = 0;
+
+    for (i; i < 7; i = i + 1) {
       const j = (i + this.props.weekStart) % 7;
       headings.push(
         <Text
@@ -267,7 +271,8 @@ export default class Calendar extends Component {
   }
 
   renderTopBar() {
-    let localizedMonth = this.props.monthNames[this.state.currentMonthMoment.month()];
+    const localizedMonth = this.props.monthNames[this.state.currentMonthMoment.month()];
+
     return this.props.showControls
     ? (
         <View style={[styles.calendarControls, this.props.customStyle.calendarControls]}>
@@ -280,7 +285,7 @@ export default class Calendar extends Component {
             </Text>
           </TouchableOpacity>
           <Text style={[styles.title, this.props.customStyle.title]}>
-            {this.state.currentMonthMoment.format(this.props.titleFormat)}
+            {localizedMonth} {this.state.currentMonthMoment.year()}
           </Text>
           <TouchableOpacity
             style={[styles.controlButton, this.props.customStyle.controlButton]}
