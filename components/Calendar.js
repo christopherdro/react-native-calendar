@@ -73,7 +73,6 @@ export default class Calendar extends Component {
     showEventIndicators: false,
     startDate: moment().format('YYYY-MM-DD'),
     titleFormat: 'MMMM YYYY',
-    today: moment(),
     weekStart: 1,
   };
 
@@ -187,7 +186,7 @@ export default class Calendar extends Component {
     const
       selectedMoment = moment(this.state.selectedMoment),
       weekStart = this.props.weekStart,
-      todayMoment = moment(this.props.today),
+      todayMoment = this.props.today ? moment(this.props.today) : moment(),
       todayIndex = todayMoment.date() - 1,
       argMonthDaysCount = argMoment.daysInMonth(),
       offset = (startOfArgMonthMoment.isoWeekday() - weekStart + 7) % 7,
