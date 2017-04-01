@@ -19,13 +19,28 @@ export default class Day extends Component {
     filler: PropTypes.bool,
     event: PropTypes.object,
     isSelected: PropTypes.bool,
+    isThurs: PropTypes.bool,
     isToday: PropTypes.bool,
     isWeekend: PropTypes.bool,
+    isInRange: PropTypes.bool,
+    isStartRange: PropTypes.bool,
+    isEndRange: PropTypes.bool,
     onPress: PropTypes.func,
     showEventIndicators: PropTypes.bool,
   }
 
-  dayCircleStyle = (isWeekend, isSelected, isToday, event) => {
+  dayButtonStyle = (isInRange, isThurs) => {
+    const { customStyle } = this.props;
+    const dayButtonStyle = [styles.dayButton, customStyle.dayButton];
+
+    // if (isThurs) {
+    //  dayButtonStyle.push(styles.thursButton);
+    // }
+
+    return dayButtonStyle;
+  }
+
+  dayCircleStyle = (isWeekend, isSelected, isToday, isStartRange, isEndRange, event) => {
     const { customStyle } = this.props;
     const dayCircleStyle = [styles.dayCircleFiller, customStyle.dayCircleFiller];
 
@@ -37,17 +52,23 @@ export default class Day extends Component {
       }
     }
 
+    if (isStartRange || isEndRange) {
+      dayCircleStyle.push(styles.selectedDayCircle, customStyle.selectedDayCircle);
+    }
+
     if (event) {
       if (isSelected) {
-        dayCircleStyle.push(styles.hasEventDaySelectedCircle, customStyle.hasEventDaySelectedCircle, event.hasEventDaySelectedCircle);
+        dayCircleStyle.push(styles.hasEventDaySelectedCircle,
+          customStyle.hasEventDaySelectedCircle, event.hasEventDaySelectedCircle);
       } else {
-        dayCircleStyle.push(styles.hasEventCircle, customStyle.hasEventCircle, event.hasEventCircle);
+        dayCircleStyle.push(styles.hasEventCircle,
+          customStyle.hasEventCircle, event.hasEventCircle);
       }
     }
     return dayCircleStyle;
   }
 
-  dayTextStyle = (isWeekend, isSelected, isToday, event) => {
+  dayTextStyle = (isWeekend, isSelected, isToday, isInRange, isStartRange, isEndRange, event) => {
     const { customStyle } = this.props;
     const dayTextStyle = [styles.day, customStyle.day];
 
@@ -55,12 +76,15 @@ export default class Day extends Component {
       dayTextStyle.push(styles.currentDayText, customStyle.currentDayText);
     } else if (isToday || isSelected) {
       dayTextStyle.push(styles.selectedDayText, customStyle.selectedDayText);
-    } else if (isWeekend) {
-      dayTextStyle.push(styles.weekendDayText, customStyle.weekendDayText);
+    // } else if (isWeekend) {
+    //  dayTextStyle.push(styles.weekendDayText, customStyle.weekendDayText);
+    }
+    if (isInRange || isStartRange || isEndRange) {
+      dayTextStyle.push(styles.selectedDayText, customStyle.selectedDayText);
     }
 
     if (event) {
-      dayTextStyle.push(styles.hasEventText, customStyle.hasEventText, event.hasEventText)
+      dayTextStyle.push(styles.hasEventText, customStyle.hasEventText, event.hasEventText);
     }
     return dayTextStyle;
   }
@@ -71,36 +95,55 @@ export default class Day extends Component {
       filler,
       event,
       isWeekend,
+      isThurs,
       isSelected,
       isToday,
+      isInRange,
+      isStartRange,
+      isEndRange,
       showEventIndicators,
-    } = this.props;
+      } = this.props;
 
     return filler
-    ? (
+      ? (
         <TouchableWithoutFeedback>
           <View style={[styles.dayButtonFiller, customStyle.dayButtonFiller]}>
             <Text style={[styles.day, customStyle.day]} />
           </View>
         </TouchableWithoutFeedback>
       )
-    : (
-      <TouchableOpacity onPress={this.props.onPress}>
-        <View style={[styles.dayButton, customStyle.dayButton]}>
-          <View style={this.dayCircleStyle(isWeekend, isSelected, isToday, event)}>
-            <Text style={this.dayTextStyle(isWeekend, isSelected, isToday, event)}>{caption}</Text>
-          </View>
-          {showEventIndicators &&
+      : (
+        <TouchableOpacity onPress={this.props.onPress}>
+          <View style={this.dayButtonStyle(isInRange, isThurs)}>
+            {
+              (isInRange || isEndRange) && !isStartRange ?
+                <View style={styles.selectedRangeBar} /> :
+                <View style={styles.emptyRangeBar} />
+            }
+            {
+              (isInRange || isStartRange) && !isEndRange ?
+                <View style={styles.selectedRangeBar} /> :
+                <View style={styles.emptyRangeBar} />
+            }
+            <View
+              style={this.dayCircleStyle(isWeekend, isSelected,
+              isToday, isStartRange, isEndRange, event)}
+            >
+              <Text style={this.dayTextStyle(isWeekend, isSelected, isToday, isInRange, event)}>
+                {caption}
+              </Text>
+            </View>
+            {showEventIndicators &&
             <View style={[
-              styles.eventIndicatorFiller,
-              customStyle.eventIndicatorFiller,
-              event && styles.eventIndicator,
-              event && customStyle.eventIndicator,
-              event && event.eventIndicator]}
+                styles.eventIndicatorFiller,
+                customStyle.eventIndicatorFiller,
+                event && styles.eventIndicator,
+                event && customStyle.eventIndicator,
+                event && event.eventIndicator]}
             />
-          }
-        </View>
-      </TouchableOpacity>
+            }
+          </View>
+        </TouchableOpacity>
     );
   }
 }

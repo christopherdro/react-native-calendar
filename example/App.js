@@ -5,7 +5,7 @@ import {
   View,
 } from 'react-native';
 
-import Calendar from 'react-native-calendar';
+import Calendar from './components/Calendar';
 import moment from 'moment';
 
 const customDayHeadings = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
@@ -35,30 +35,66 @@ class App extends Component {
     super(props);
     this.state = {
       selectedDate: moment().format(),
+      selectedRangeStart: moment().format(),
+      selectedRangeEnd: moment().format(),
     };
   }
 
   render() {
+    const AppColors = {
+      luql: {
+        pink: '#F22169',
+        grey: '#DAE0E3',
+        white: '#FFFFFF',
+        black: '#000000'
+      }
+    };
+
+    const customStyle = {
+      title: {
+        fontSize: 20,
+      },
+      day: {
+        fontSize: 12,
+        textAlign: 'center',
+      },
+      currentDayText: {
+        color: AppColors.luql.black,
+      },
+      calendarControls: {
+        backgroundColor: AppColors.luql.white,
+      },
+      calendarHeading: {
+        backgroundColor: AppColors.luql.grey,
+      },
+      selectedDayCircle: {
+        backgroundColor: AppColors.luql.pink,
+      },
+      currentDayCircle: {
+        backgroundColor: AppColors.luql.pink,
+      },
+      monthContainer: {
+        backgroundColor: AppColors.luql.white,
+      },
+    };
+
     return (
       <View style={styles.container}>
         <Calendar
-          ref="calendar"
-          eventDates={['2016-07-03', '2016-07-05', '2016-07-28', '2016-07-30']}
-          events={[{date: '2016-07-04', hasEventCircle: {backgroundColor: 'powderblue'}}]}
-          scrollEnabled
-          showControls
-          dayHeadings={customDayHeadings}
-          monthNames={customMonthNames}
-          titleFormat={'MMMM YYYY'}
-          prevButtonText={'Prev'}
-          nextButtonText={'Next'}
-          onDateSelect={(date) => this.setState({ selectedDate: date })}
-          onTouchPrev={(e) => console.log('onTouchPrev: ', e)}
-          onTouchNext={(e) => console.log('onTouchNext: ', e)}
-          onSwipePrev={(e) => console.log('onSwipePrev: ', e)}
-          onSwipeNext={(e) => console.log('onSwipeNext', e)}
+          customStyle={customStyle}
+          titleFormat={'MMMM'}
+          dayHeadings={['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']}
+          onDateSelect={(date, rangeStart, rangeEnd) => this.setState({
+          selectedDate: date,
+          selectedRangeStart: rangeStart,
+          selectedRangeEnd: rangeEnd,
+          })}
+          scrollEnabled={true}
+          rangeEnabled={true}
         />
         <Text>Selected Date: {moment(this.state.selectedDate).format('MMMM DD YYYY')}</Text>
+        <Text>Selected Range Start: {moment(this.state.selectedRangeStart).format('MMMM DD YYYY')}</Text>
+        <Text>Selected Range End: {moment(this.state.selectedRangeEnd).format('MMMM DD YYYY')}</Text>
       </View>
 
     );

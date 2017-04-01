@@ -15,14 +15,13 @@ import styles from './styles';
 const DEVICE_WIDTH = Dimensions.get('window').width;
 const VIEW_INDEX = 2;
 
-function getNumberOfWeeks(month, weekStart) {
-  const firstDay = moment(month).startOf('month').day();
-  const offset = (firstDay - weekStart + 7) % 7;
-  const days = moment(month).daysInMonth();
-  return Math.ceil((offset + days) / 7);
+function getNumberOfWeeks(month) {
+  const firstWeek = moment(month).startOf('month').week();
+  const lastWeek = moment(month).endOf('month').week();
+  return lastWeek - firstWeek + 1;
 }
 
-class Calendar extends Component {
+export default class Calendar extends Component {
 
   state = {
     currentMonthMoment: moment(this.props.startDate),
@@ -34,7 +33,6 @@ class Calendar extends Component {
   };
 
   static propTypes = {
-    currentMonth: PropTypes.any,
     customStyle: PropTypes.object,
     dayHeadings: PropTypes.array,
     eventDates: PropTypes.array,
@@ -77,6 +75,7 @@ class Calendar extends Component {
     showEventIndicators: false,
     startDate: moment().format('YYYY-MM-DD'),
     titleFormat: 'MMMM YYYY',
+    today: moment(),
     weekStart: 1,
     rangeEnabled: false,
   };
@@ -93,9 +92,6 @@ class Calendar extends Component {
   componentWillReceiveProps(nextProps) {
     if (nextProps.selectedDate && this.props.selectedDate !== nextProps.selectedDate) {
       this.setState({selectedMoment: nextProps.selectedDate});
-    }
-    if (nextProps.currentMonth) {
-      this.setState({currentMonthMoment: moment(nextProps.currentMonth)});
     }
   }
 
@@ -191,7 +187,7 @@ class Calendar extends Component {
 
   scrollToItem(itemIndex) {
     const scrollToX = itemIndex * this.props.width;
-    if (this.props.scrollEnabled && this._calendar) {
+    if (this.props.scrollEnabled) {
       this._calendar.scrollTo({ y: 0, x: scrollToX, animated: false });
     }
   }
@@ -228,7 +224,7 @@ class Calendar extends Component {
       rangeStart = moment(this.state.rangeStart),
       rangeEnd = moment(this.state.rangeEnd),
       weekStart = this.props.weekStart,
-      todayMoment = this.props.today ? moment(this.props.today) : moment(),
+      todayMoment = moment(this.props.today),
       todayIndex = todayMoment.date() - 1,
       argMonthDaysCount = argMoment.daysInMonth(),
       offset = (startOfArgMonthMoment.isoWeekday() - weekStart + 7) % 7,
@@ -264,12 +260,11 @@ class Calendar extends Component {
             isToday={argMonthIsToday && (dayIndex === todayIndex)}
             isSelected={selectedMonthIsArg && (dayIndex === selectedIndex)}
             isInRange={rangeEnabled &&
-            (argAfterStartMonth || argIsStartMonth && dayIndex > rangeStartIndex) &&
-            (argBeforeEndMonth || argIsEndMonth && dayIndex < rangeEndIndex)}
-            isStartRange={rangeEnabled &&
-              (argIsStartMonth && dayIndex === rangeStartIndex)}
+            (argAfterStartMonth || argIsStartMonth && dayIndex >= rangeStartIndex) &&
+            (argBeforeEndMonth || argIsEndMonth && dayIndex <= rangeEndIndex)}
             isEndRange={rangeEnabled &&
-              (argIsEndMonth && dayIndex === rangeEndIndex)}
+              (argIsStartMonth && dayIndex === rangeStartIndex ||
+              argIsEndMonth && dayIndex === rangeEndIndex)}
             event={events && events[dayIndex]}
             showEventIndicators={this.props.showEventIndicators}
             customStyle={this.props.customStyle}
@@ -359,7 +354,7 @@ class Calendar extends Component {
   render() {
     const calendarDates = this.getMonthStack(this.state.currentMonthMoment);
     const eventDatesMap = this.prepareEventDates(this.props.eventDates, this.props.events);
-    const numOfWeeks = getNumberOfWeeks(this.state.currentMonthMoment, this.props.weekStart);
+    const numOfWeeks = getNumberOfWeeks(this.state.currentMonthMoment);
 
     return (
       <View style={[styles.calendarContainer, this.props.customStyle.calendarContainer]}>
@@ -391,5 +386,3 @@ class Calendar extends Component {
     );
   }
 }
-
-export default Calendar;
