@@ -173,7 +173,7 @@ export default class Calendar extends Component {
       let sundayMoment = moment(currMoment).startOf('week');
       if (weekStart > 0) {
         res = moment(currMoment).isoWeekday(weekStart);
-        if (r.diff(currMoment) > 0) {
+        if (res.diff(currMoment) > 0) {
           res = moment(currMoment).subtract(7, 'day').isoWeekday(weekStart);
         }
       } else {
