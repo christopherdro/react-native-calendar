@@ -24,8 +24,8 @@ export default class Calendar extends Component {
 
   static propTypes = {
     currentMonth: PropTypes.any,
-    customStyle: PropTypes.object,
     customEventsIndicatorsViews: PropTypes.func,
+    customStyle: PropTypes.object,
     dayHeadings: PropTypes.array,
     eventDates: PropTypes.array,
     monthNames: PropTypes.array,
