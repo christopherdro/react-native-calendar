@@ -32,7 +32,7 @@ export default class Calendar extends Component {
 
   static propTypes = {
     currentMonth: PropTypes.any,
-    customEventsIndicatorsViews: PropTypes.func,
+    customEventIndicatorView: PropTypes.func,
     customStyle: PropTypes.object,
     dayHeadings: PropTypes.array,
     eventDates: PropTypes.array,
@@ -226,14 +226,14 @@ export default class Calendar extends Component {
               showEventIndicators={this.props.showEventIndicators}
               customStyle={this.props.customStyle}
             />
-            {events && events[dayIndex] ? this.renderCustomEventsIndicatorsView(events[dayIndex].events) : null}
+            {events && events[dayIndex] ? this.renderCustomEventIndicatorView(events[dayIndex].events) : null}
           </View>
         ));
       } else {
         days.push(
           <View key={`${renderIndex}`}>
             <Day key={`${renderIndex}`} filler customStyle={this.props.customStyle} />
-            {events && events[dayIndex] ? this.renderCustomEventsIndicatorsView(events[dayIndex].events) : null}
+            {events && events[dayIndex] ? this.renderCustomEventIndicatorView(events[dayIndex].events) : null}
           </View>
         );
       }
@@ -257,13 +257,13 @@ export default class Calendar extends Component {
     return <View key={argMoment.month()} style={containerStyle}>{weekRows}</View>;
   }
 
-  renderCustomEventsIndicatorsView(events) {
-    const { customEventsIndicatorsViews } = this.props;
-    if (!events || typeof customEventsIndicatorsViews !== 'function') {
+  renderCustomEventIndicatorView(events) {
+    const { customEventIndicatorView } = this.props;
+    if (!events || typeof customEventIndicatorView !== 'function') {
       return null;
     }
     else {
-      return customEventsIndicatorsViews(events);
+      return customEventIndicatorView(events);
     }
   }
 
