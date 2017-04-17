@@ -32,6 +32,7 @@ export default class Calendar extends Component {
 
   static propTypes = {
     currentMonth: PropTypes.any,
+    customEventIndicatorView: PropTypes.func,
     customStyle: PropTypes.object,
     dayHeadings: PropTypes.array,
     eventDates: PropTypes.array,
@@ -113,7 +114,10 @@ export default class Calendar extends Component {
       const date = moment(event);
       const month = moment(date).startOf('month').format();
       parsedDates[month] = parsedDates[month] || {};
-      parsedDates[month][date.date() - 1] = {};
+      if(!parsedDates[month][date.date() - 1]) {
+        parsedDates[month][date.date() - 1] = { events: [] };
+      }
+      parsedDates[month][date.date() - 1].events.push(event);
     });
 
     // Dates with custom properties
@@ -123,7 +127,10 @@ export default class Calendar extends Component {
             const date = moment(event.date);
             const month = moment(date).startOf('month').format();
             parsedDates[month] = parsedDates[month] || {};
-            parsedDates[month][date.date() - 1] = event;
+            if(!parsedDates[month][date.date() - 1]) {
+              parsedDates[month][date.date() - 1] = { events: [] };
+            }
+            parsedDates[month][date.date() - 1].events.push(event);
         }
       });
     }
@@ -204,23 +211,31 @@ export default class Calendar extends Component {
 
       if (dayIndex >= 0 && dayIndex < argMonthDaysCount) {
         days.push((
-          <Day
-            startOfMonth={startOfArgMonthMoment}
-            isWeekend={isoWeekday === 0 || isoWeekday === 6}
-            key={`${renderIndex}`}
-            onPress={() => {
-              this.selectDate(moment(startOfArgMonthMoment).set('date', dayIndex + 1));
-            }}
-            caption={`${dayIndex + 1}`}
-            isToday={argMonthIsToday && (dayIndex === todayIndex)}
-            isSelected={selectedMonthIsArg && (dayIndex === selectedIndex)}
-            event={events && events[dayIndex]}
-            showEventIndicators={this.props.showEventIndicators}
-            customStyle={this.props.customStyle}
-          />
+          <View key={`${renderIndex}`}>
+            <Day
+              startOfMonth={startOfArgMonthMoment}
+              isWeekend={isoWeekday === 0 || isoWeekday === 6}
+              key={`${renderIndex}`}
+              onPress={() => {
+                this.selectDate(moment(startOfArgMonthMoment).set('date', dayIndex + 1));
+              }}
+              caption={`${dayIndex + 1}`}
+              isToday={argMonthIsToday && (dayIndex === todayIndex)}
+              isSelected={selectedMonthIsArg && (dayIndex === selectedIndex)}
+              event={events && events[dayIndex]}
+              showEventIndicators={this.props.showEventIndicators}
+              customStyle={this.props.customStyle}
+            />
+            {events && events[dayIndex] ? this.renderCustomEventIndicatorView(events[dayIndex].events) : null}
+          </View>
         ));
       } else {
-        days.push(<Day key={`${renderIndex}`} filler customStyle={this.props.customStyle} />);
+        days.push(
+          <View key={`${renderIndex}`}>
+            <Day key={`${renderIndex}`} filler customStyle={this.props.customStyle} />
+            {events && events[dayIndex] ? this.renderCustomEventIndicatorView(events[dayIndex].events) : null}
+          </View>
+        );
       }
       if (renderIndex % 7 === 6) {
         weekRows.push(
@@ -240,6 +255,16 @@ export default class Calendar extends Component {
     } while (true)
     const containerStyle = [styles.monthContainer, this.props.customStyle.monthContainer];
     return <View key={argMoment.month()} style={containerStyle}>{weekRows}</View>;
+  }
+
+  renderCustomEventIndicatorView(events) {
+    const { customEventIndicatorView } = this.props;
+    if (!events || typeof customEventIndicatorView !== 'function') {
+      return null;
+    }
+    else {
+      return customEventIndicatorView(events);
+    }
   }
 
   renderHeading() {
