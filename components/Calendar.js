@@ -7,32 +7,25 @@ import {
   View,
 } from 'react-native';
 
+import moment from 'moment';
 import Day from './Day';
 
-import moment from 'moment';
 import styles from './styles';
 
 const DEVICE_WIDTH = Dimensions.get('window').width;
 const VIEW_INDEX = 2;
-
-function getNumberOfWeeks(month, weekStart) {
-  const firstDay = moment(month).startOf('month').day();
-  const offset = (firstDay - weekStart + 7) % 7;
-  const days = moment(month).daysInMonth();
-  return Math.ceil((offset + days) / 7);
-}
 
 export default class Calendar extends Component {
 
   state = {
     currentMonthMoment: moment(this.props.startDate),
     selectedMoment: moment(this.props.selectedDate),
-    rowHeight: null,
   };
 
   static propTypes = {
     currentMonth: PropTypes.any,
     customStyle: PropTypes.object,
+    customEventsIndicatorsViews: PropTypes.func,
     dayHeadings: PropTypes.array,
     eventDates: PropTypes.array,
     monthNames: PropTypes.array,
@@ -73,6 +66,7 @@ export default class Calendar extends Component {
     showEventIndicators: false,
     startDate: moment().format('YYYY-MM-DD'),
     titleFormat: 'MMMM YYYY',
+    today: moment(),
     weekStart: 1,
   };
 
@@ -85,12 +79,12 @@ export default class Calendar extends Component {
     this.scrollToItem(VIEW_INDEX);
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.selectedDate && this.props.selectedDate !== nextProps.selectedDate) {
-      this.setState({selectedMoment: nextProps.selectedDate});
+  componentWillReceiveProps(props) {
+    if (props.selectedDate) {
+      this.setState({selectedMoment: props.selectedDate});
     }
-    if (nextProps.currentMonth) {
-      this.setState({currentMonthMoment: moment(nextProps.currentMonth)});
+    if (props.currentMonth) {
+      this.setState({currentMonthMoment: moment(props.currentMonth)});
     }
   }
 
@@ -105,7 +99,7 @@ export default class Calendar extends Component {
     return [moment(currentMonth)];
   }
 
- prepareEventDates(eventDates, events) {
+  prepareEventDates(eventDates, events) {
     const parsedDates = {};
 
     // Dates without any custom properties
@@ -113,17 +107,23 @@ export default class Calendar extends Component {
       const date = moment(event);
       const month = moment(date).startOf('month').format();
       parsedDates[month] = parsedDates[month] || {};
-      parsedDates[month][date.date() - 1] = {};
+      if(!parsedDates[month][date.date() - 1]) {
+        parsedDates[month][date.date() - 1] = { events: [] };
+      }
+      parsedDates[month][date.date() - 1].events.push(event);
     });
 
     // Dates with custom properties
     if (events) {
       events.forEach(event => {
         if (event.date) {
-            const date = moment(event.date);
-            const month = moment(date).startOf('month').format();
-            parsedDates[month] = parsedDates[month] || {};
-            parsedDates[month][date.date() - 1] = event;
+          const date = moment(event.date);
+          const month = moment(date).startOf('month').format();
+          parsedDates[month] = parsedDates[month] || {};
+          if(!parsedDates[month][date.date() - 1]) {
+            parsedDates[month][date.date() - 1] = { events: [] };
+          }
+          parsedDates[month][date.date() - 1].events.push(event);
         }
       });
     }
@@ -131,9 +131,7 @@ export default class Calendar extends Component {
   }
 
   selectDate(date) {
-    if (this.props.selectedDate === undefined) {
-      this.setState({ selectedMoment: date });
-    }
+    this.setState({ selectedMoment: date });
     this.props.onDateSelect && this.props.onDateSelect(date ? date.format(): null );
   }
 
@@ -151,7 +149,7 @@ export default class Calendar extends Component {
 
   scrollToItem(itemIndex) {
     const scrollToX = itemIndex * this.props.width;
-    if (this.props.scrollEnabled && this._calendar) {
+    if (this.props.scrollEnabled) {
       this._calendar.scrollTo({ y: 0, x: scrollToX, animated: false });
     }
   }
@@ -169,12 +167,6 @@ export default class Calendar extends Component {
     }
   }
 
-  onWeekRowLayout = (event) => {
-    if (this.state.rowHeight !== event.nativeEvent.layout.height) {
-      this.setState({ rowHeight: event.nativeEvent.layout.height });
-    }
-  }
-
   renderMonthView(argMoment, eventsMap) {
 
     let
@@ -186,7 +178,7 @@ export default class Calendar extends Component {
     const
       selectedMoment = moment(this.state.selectedMoment),
       weekStart = this.props.weekStart,
-      todayMoment = this.props.today ? moment(this.props.today) : moment(),
+      todayMoment = moment(this.props.today),
       todayIndex = todayMoment.date() - 1,
       argMonthDaysCount = argMoment.daysInMonth(),
       offset = (startOfArgMonthMoment.isoWeekday() - weekStart + 7) % 7,
@@ -204,29 +196,36 @@ export default class Calendar extends Component {
 
       if (dayIndex >= 0 && dayIndex < argMonthDaysCount) {
         days.push((
-          <Day
-            startOfMonth={startOfArgMonthMoment}
-            isWeekend={isoWeekday === 0 || isoWeekday === 6}
-            key={`${renderIndex}`}
-            onPress={() => {
-              this.selectDate(moment(startOfArgMonthMoment).set('date', dayIndex + 1));
-            }}
-            caption={`${dayIndex + 1}`}
-            isToday={argMonthIsToday && (dayIndex === todayIndex)}
-            isSelected={selectedMonthIsArg && (dayIndex === selectedIndex)}
-            event={events && events[dayIndex]}
-            showEventIndicators={this.props.showEventIndicators}
-            customStyle={this.props.customStyle}
-          />
+          <View key={`${renderIndex}`}>
+            <Day
+              startOfMonth={startOfArgMonthMoment}
+              isWeekend={isoWeekday === 0 || isoWeekday === 6}
+              key={`${renderIndex}`}
+              onPress={() => {
+                this.selectDate(moment(startOfArgMonthMoment).set('date', dayIndex + 1));
+              }}
+              caption={`${dayIndex + 1}`}
+              isToday={argMonthIsToday && (dayIndex === todayIndex)}
+              isSelected={selectedMonthIsArg && (dayIndex === selectedIndex)}
+              event={events && events[dayIndex]}
+              showEventIndicators={this.props.showEventIndicators}
+              customStyle={this.props.customStyle}
+            />
+            {events && events[dayIndex] ? this.renderCustomEventsIndicatorsView(events[dayIndex].events) : null}
+          </View>
         ));
       } else {
-        days.push(<Day key={`${renderIndex}`} filler customStyle={this.props.customStyle} />);
+        days.push(
+          <View key={`${renderIndex}`}>
+            <Day key={`${renderIndex}`} filler customStyle={this.props.customStyle} />
+            {events && events[dayIndex] ? this.renderCustomEventsIndicatorsView(events[dayIndex].events) : null}
+          </View>
+        );
       }
       if (renderIndex % 7 === 6) {
         weekRows.push(
           <View
             key={weekRows.length}
-            onLayout={weekRows.length ? undefined : this.onWeekRowLayout}
             style={[styles.weekRow, this.props.customStyle.weekRow]}
           >
             {days}
@@ -240,6 +239,16 @@ export default class Calendar extends Component {
     } while (true)
     const containerStyle = [styles.monthContainer, this.props.customStyle.monthContainer];
     return <View key={argMoment.month()} style={containerStyle}>{weekRows}</View>;
+  }
+
+  renderCustomEventsIndicatorsView(events) {
+    const { customEventsIndicatorsViews } = this.props;
+    if (!events || typeof customEventsIndicatorsViews !== 'function') {
+      return null;
+    }
+    else {
+      return customEventsIndicatorsViews(events);
+    }
   }
 
   renderHeading() {
@@ -268,7 +277,7 @@ export default class Calendar extends Component {
   renderTopBar() {
     let localizedMonth = this.props.monthNames[this.state.currentMonthMoment.month()];
     return this.props.showControls
-    ? (
+      ? (
         <View style={[styles.calendarControls, this.props.customStyle.calendarControls]}>
           <TouchableOpacity
             style={[styles.controlButton, this.props.customStyle.controlButton]}
@@ -279,7 +288,7 @@ export default class Calendar extends Component {
             </Text>
           </TouchableOpacity>
           <Text style={[styles.title, this.props.customStyle.title]}>
-            {this.state.currentMonthMoment.format(this.props.titleFormat)}
+            {localizedMonth} {this.state.currentMonthMoment.year()}
           </Text>
           <TouchableOpacity
             style={[styles.controlButton, this.props.customStyle.controlButton]}
@@ -291,19 +300,18 @@ export default class Calendar extends Component {
           </TouchableOpacity>
         </View>
       )
-    : (
-      <View style={[styles.calendarControls, this.props.customStyle.calendarControls]}>
-        <Text style={[styles.title, this.props.customStyle.title]}>
-          {this.state.currentMonthMoment.format(this.props.titleFormat)}
-        </Text>
-      </View>
-    );
+      : (
+        <View style={[styles.calendarControls, this.props.customStyle.calendarControls]}>
+          <Text style={[styles.title, this.props.customStyle.title]}>
+            {this.state.currentMonthMoment.format(this.props.titleFormat)}
+          </Text>
+        </View>
+      );
   }
 
   render() {
     const calendarDates = this.getMonthStack(this.state.currentMonthMoment);
     const eventDatesMap = this.prepareEventDates(this.props.eventDates, this.props.events);
-    const numOfWeeks = getNumberOfWeeks(this.state.currentMonthMoment, this.props.weekStart);
 
     return (
       <View style={[styles.calendarContainer, this.props.customStyle.calendarContainer]}>
@@ -320,9 +328,6 @@ export default class Calendar extends Component {
             showsHorizontalScrollIndicator={false}
             automaticallyAdjustContentInsets
             onMomentumScrollEnd={(event) => this.scrollEnded(event)}
-            style={{
-              height: this.state.rowHeight ? this.state.rowHeight * numOfWeeks : null,
-            }}
           >
             {calendarDates.map((date) => this.renderMonthView(moment(date), eventDatesMap))}
           </ScrollView>
