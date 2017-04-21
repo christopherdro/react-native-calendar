@@ -440,6 +440,23 @@ const Schedule = () => {
 
 ![title](images/title.png)
 
+### weekendDayButton
+
+`weekendDayButton` styles the weekends background.
+
+```js
+const Schedule = () => {
+  const customStyle = {
+    weekendDayButton: {
+      backgroundColor: 'red',
+    },
+  }
+  return <Calendar customStyle={customStyle} />
+}
+```
+
+![weekendDayButton](images/weekendDayButton.png)
+
 ### weekendDayText
 
 `weekendDayText` styles the text of weekends.
