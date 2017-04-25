@@ -53,10 +53,10 @@ class App extends Component {
           prevButtonText={'Prev'}
           nextButtonText={'Next'}
           onDateSelect={(date) => this.setState({ selectedDate: date })}
-          onTouchPrev={() => console.log('Back TOUCH')}     // eslint-disable-line no-console
-          onTouchNext={() => console.log('Forward TOUCH')}  // eslint-disable-line no-console
-          onSwipePrev={() => console.log('Back SWIPE')}     // eslint-disable-line no-console
-          onSwipeNext={() => console.log('Forward SWIPE')}  // eslint-disable-line no-console
+          onTouchPrev={(e) => console.log('onTouchPrev: ', e)}
+          onTouchNext={(e) => console.log('onTouchNext: ', e)}
+          onSwipePrev={(e) => console.log('onSwipePrev: ', e)}
+          onSwipeNext={(e) => console.log('onSwipeNext', e)}
         />
         <Text>Selected Date: {moment(this.state.selectedDate).format('MMMM DD YYYY')}</Text>
       </View>
