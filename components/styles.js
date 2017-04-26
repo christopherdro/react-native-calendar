@@ -48,13 +48,13 @@ const styles = StyleSheet.create({
   dayButton: {
     alignItems: 'center',
     padding: 5,
-    width: 14.2 + '%',
+    width: 14.2857 + '%',
     borderTopWidth: 1,
     borderTopColor: '#e9e9e9',
   },
   dayButtonFiller: {
     padding: 5,
-    width: 14.2 + '%',
+    width: 14.2857 + '%',
   },
   day: {
     fontSize: 16,
