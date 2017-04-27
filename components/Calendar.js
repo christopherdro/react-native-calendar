@@ -136,6 +136,15 @@ export default class Calendar extends Component {
     }
     this.props.onDateSelect && this.props.onDateSelect(date ? date.format(): null );
   }
+  
+  selectAndJumpToToday() {
+    const today = new Date();
+    const newMoment = moment(this.state.currentMonthMoment).set('month', today.getMonth());
+    this.setState({
+      selectedMoment: today,
+      currentMonthMoment: newMoment
+    });
+  }
 
   onPrev = () => {
     const newMoment = moment(this.state.currentMonthMoment).subtract(1, 'month');
