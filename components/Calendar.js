@@ -49,6 +49,7 @@ export default class Calendar extends Component {
       PropTypes.string,
       PropTypes.object
     ]),
+    removeClippedSubviews: PropTypes.bool,
     scrollEnabled: PropTypes.bool,
     selectedDate: PropTypes.any,
     showControls: PropTypes.bool,
@@ -69,6 +70,7 @@ export default class Calendar extends Component {
                  'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
     nextButtonText: 'Next',
     prevButtonText: 'Prev',
+    removeClippedSubviews: true,
     scrollEnabled: false,
     showControls: false,
     showEventIndicators: false,
@@ -342,7 +344,7 @@ export default class Calendar extends Component {
               horizontal
               scrollEnabled
               pagingEnabled
-              removeClippedSubviews
+              removeClippedSubviews={this.props.removeClippedSubviews}
               scrollEventThrottle={1000}
               showsHorizontalScrollIndicator={false}
               automaticallyAdjustContentInsets={false}
