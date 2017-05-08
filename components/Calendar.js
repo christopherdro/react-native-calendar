@@ -73,6 +73,7 @@ export default class Calendar extends Component {
     showEventIndicators: false,
     startDate: moment().format('YYYY-MM-DD'),
     titleFormat: 'MMMM YYYY',
+    today: moment(),
     weekStart: 1,
   };
 
@@ -201,6 +202,7 @@ export default class Calendar extends Component {
     do {
       const dayIndex = renderIndex - offset;
       const isoWeekday = (renderIndex + weekStart) % 7;
+      const selectDate = moment(startOfArgMonthMoment).set('date', dayIndex + 1);
 
       if (dayIndex >= 0 && dayIndex < argMonthDaysCount) {
         days.push((
@@ -209,10 +211,11 @@ export default class Calendar extends Component {
             isWeekend={isoWeekday === 0 || isoWeekday === 6}
             key={`${renderIndex}`}
             onPress={() => {
-              this.selectDate(moment(startOfArgMonthMoment).set('date', dayIndex + 1));
+              this.selectDate(selectDate);
             }}
             caption={`${dayIndex + 1}`}
             isToday={argMonthIsToday && (dayIndex === todayIndex)}
+            isPast={selectDate < todayMoment}
             isSelected={selectedMonthIsArg && (dayIndex === selectedIndex)}
             event={events && events[dayIndex]}
             showEventIndicators={this.props.showEventIndicators}
