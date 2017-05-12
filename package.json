@@ -28,7 +28,5 @@
     "eslint-config-airbnb": "7.0.0",
     "eslint-plugin-jsx-a11y": "^0.6.2",
     "eslint-plugin-react": "^4.3.0",
-    "react": "^15.1.0",
-    "react-native": "^0.27.0"
   }
 }
