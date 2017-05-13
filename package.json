@@ -1,6 +1,6 @@
 {
   "name": "react-native-calendar",
-  "version": "0.11.0",
+  "version": "0.12.0",
   "description": "Simple Calendar Component for React Native",
   "main": "index.js",
   "repository": {
@@ -27,6 +27,6 @@
     "eslint": "^2.9.0",
     "eslint-config-airbnb": "7.0.0",
     "eslint-plugin-jsx-a11y": "^0.6.2",
-    "eslint-plugin-react": "^4.3.0",
+    "eslint-plugin-react": "^4.3.0"
   }
 }
