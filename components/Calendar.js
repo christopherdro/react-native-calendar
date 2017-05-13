@@ -41,6 +41,7 @@ export default class Calendar extends Component {
       PropTypes.object
     ]),
     onDateSelect: PropTypes.func,
+    onLongPressDay: PropTypes.func,
     onSwipeNext: PropTypes.func,
     onSwipePrev: PropTypes.func,
     onTouchNext: PropTypes.func,
@@ -211,6 +212,10 @@ export default class Calendar extends Component {
             key={`${renderIndex}`}
             onPress={() => {
               this.selectDate(moment(startOfArgMonthMoment).set('date', dayIndex + 1));
+            }}
+            onLongPress={() => {
+              if ( this.props.onLongPressDay )
+                this.props.onLongPressDay( moment(startOfArgMonthMoment).set('date', dayIndex + 1).format() );
             }}
             caption={`${dayIndex + 1}`}
             isToday={argMonthIsToday && (dayIndex === todayIndex)}

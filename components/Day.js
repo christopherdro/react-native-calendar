@@ -22,6 +22,7 @@ export default class Day extends Component {
     isToday: PropTypes.bool,
     isWeekend: PropTypes.bool,
     onPress: PropTypes.func,
+    onLongPress: PropTypes.func,
     showEventIndicators: PropTypes.bool,
   }
 
@@ -85,7 +86,10 @@ export default class Day extends Component {
         </TouchableWithoutFeedback>
       )
     : (
-      <TouchableOpacity onPress={this.props.onPress}>
+      <TouchableOpacity
+        onPress={this.props.onPress}
+        onLongPress={this.props.onLongPress}
+      >
         <View style={[styles.dayButton, customStyle.dayButton]}>
           <View style={this.dayCircleStyle(isWeekend, isSelected, isToday, event)}>
             <Text style={this.dayTextStyle(isWeekend, isSelected, isToday, event)}>{caption}</Text>
