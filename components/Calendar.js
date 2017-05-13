@@ -100,8 +100,10 @@ export default class Calendar extends Component {
 
   getStack(currentMoment) {
     if (this.props.scrollEnabled) {
+      let i = -VIEW_INDEX;
       const res = [];
-      for (let i = -VIEW_INDEX; i <= VIEW_INDEX; i++) {
+
+      for (i; i <= VIEW_INDEX; i++) {
         if (this.props.calendarFormat === 'monthly') {
           res.push(moment(currentMoment).add(i, 'month'));
         } else {
@@ -137,7 +139,7 @@ export default class Calendar extends Component {
                         currentMoment: date});
     }
   }
-  
+
   selectAndJumpToToday() {
     const today = new Date();
     const newMoment = moment(this.state.currentMonthMoment).set('month', today.getMonth());
@@ -280,8 +282,10 @@ export default class Calendar extends Component {
   }
 
   renderHeading() {
-    const headings = [];
-    for (let i = 0; i < 7; i++) {
+    let headings = [];
+    let i = 0;
+
+    for (i; i < 7; ++i) {
       const j = (i + this.props.weekStart) % 7;
       headings.push(
         <Text
@@ -316,8 +320,7 @@ export default class Calendar extends Component {
             </Text>
           </TouchableOpacity>
           <Text style={[styles.title, this.props.customStyle.title]}>
-              {/* {localizedMonth} {this.state.currentMoment.year()} */}
-            {this.state.currentMoment.format(this.props.titleFormat)}
+            {localizedMonth} {this.state.currentMoment.year()}
           </Text>
           <TouchableOpacity
              style={[styles.controlButton, this.props.customStyle.controlButton]}
