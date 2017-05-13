@@ -406,7 +406,25 @@ const Schedule = () => {
 }
 ```
 
-![selectedDayCircle](images/selectedDayCircle.png)
+### selectedPastDayCircle
+
+`selectedDayCircle` styles the circle behind any selected day other than today.
+
+```js
+const Schedule = () => {
+  const customStyle = {
+    pastDayButton: {
+      backgroundColor: 'red',
+    },
+    selectedPastDayCircle: {
+      backgroundColor: 'blue',
+    },
+  }
+  return <Calendar customStyle={customStyle} />
+}
+```
+
+![selectedDayCircle](images/selectedPastDayCircle.png)
 
 ### selectedDayText
 
@@ -446,7 +464,6 @@ const Schedule = () => {
 
 ![title](images/title.png)
 
-<<<<<<< HEAD
 ### pastDayButton
 
 `pastDayButton` styles the past days background.
@@ -464,8 +481,6 @@ const Schedule = () => {
 
 ![weekendDayButton](images/pastDayButton.png)
 
-=======
->>>>>>> christopherdro/master
 ### weekendDayButton
 
 `weekendDayButton` styles the weekends background.

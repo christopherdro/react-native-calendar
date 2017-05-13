@@ -20,18 +20,21 @@ export default class Day extends Component {
     event: PropTypes.object,
     isSelected: PropTypes.bool,
     isToday: PropTypes.bool,
+    isPast: PropTypes.bool,
     isWeekend: PropTypes.bool,
     onPress: PropTypes.func,
     showEventIndicators: PropTypes.bool,
   }
 
-  dayCircleStyle = (isWeekend, isSelected, isToday, event) => {
+  dayCircleStyle = (isWeekend, isSelected, isToday, isPast, event) => {
     const { customStyle } = this.props;
     const dayCircleStyle = [styles.dayCircleFiller, customStyle.dayCircleFiller];
 
     if (isSelected) {
       if (isToday) {
         dayCircleStyle.push(styles.currentDayCircle, customStyle.currentDayCircle);
+      } else if (isPast) {
+        dayCircleStyle.push(styles.currentDayCircle, customStyle.selectedPastDayCircle);
       } else {
         dayCircleStyle.push(styles.selectedDayCircle, customStyle.selectedDayCircle);
       }
@@ -72,8 +75,8 @@ export default class Day extends Component {
       event,
       isWeekend,
       isSelected,
-      isToday,
       isPast,
+      isToday,
       showEventIndicators,
     } = this.props;
 
@@ -86,15 +89,10 @@ export default class Day extends Component {
         </TouchableWithoutFeedback>
       )
     : (
-<<<<<<< HEAD
       <TouchableOpacity activeOpacity={1} onPress={this.props.onPress}>
-        <View style={[styles.dayButton, customStyle.dayButton, isWeekend ? customStyle.weekendDayButton : null, isPast ? customStyle.pastDayButton : null ]}>
-=======
-      <TouchableOpacity onPress={this.props.onPress}>
-        <View style={[styles.dayButton, customStyle.dayButton, isWeekend ? styles.weekendDayButton : null]}>
->>>>>>> christopherdro/master
-          <View style={this.dayCircleStyle(isWeekend, isSelected, isToday, event)}>
-            <Text style={this.dayTextStyle(isWeekend, isSelected, isToday, event)}>{caption}</Text>
+        <View style={[styles.dayButton, customStyle.dayButton, isWeekend ? customStyle.weekendDayButton : null, isPast ? customStyle.pastDayButton : null]}>
+          <View style={this.dayCircleStyle(isWeekend, isSelected, isToday, isPast, event)}>
+            <Text style={this.dayTextStyle(isWeekend, isSelected, isToday, isPast, event)}>{caption}</Text>
           </View>
           {showEventIndicators &&
             <View style={[
