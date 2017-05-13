@@ -86,8 +86,13 @@ export default class Day extends Component {
         </TouchableWithoutFeedback>
       )
     : (
+<<<<<<< HEAD
       <TouchableOpacity activeOpacity={1} onPress={this.props.onPress}>
         <View style={[styles.dayButton, customStyle.dayButton, isWeekend ? customStyle.weekendDayButton : null, isPast ? customStyle.pastDayButton : null ]}>
+=======
+      <TouchableOpacity onPress={this.props.onPress}>
+        <View style={[styles.dayButton, customStyle.dayButton, isWeekend ? styles.weekendDayButton : null]}>
+>>>>>>> christopherdro/master
           <View style={this.dayCircleStyle(isWeekend, isSelected, isToday, event)}>
             <Text style={this.dayTextStyle(isWeekend, isSelected, isToday, event)}>{caption}</Text>
           </View>

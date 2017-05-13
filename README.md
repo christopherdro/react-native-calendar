@@ -23,6 +23,7 @@ Portrait mode only
   onSwipePrev={this.onSwipePrev}    // Callback for back swipe event
   onTouchNext={this.onTouchNext}    // Callback for next touch event
   onTouchPrev={this.onTouchPrev}    // Callback for prev touch event
+  onTitlePress={this.onTitlePress}  // Callback on title press
   prevButtonText={'Prev'}           // Text for previous button. Default: 'Prev'
   removeClippedSubviews={false}     // Set to false for us within Modals. Default: true
   scrollEnabled={true}              // False disables swiping. Default: False
@@ -427,12 +428,16 @@ const Schedule = () => {
 ### title
 
 `title` styles the title at the top of the calendar.
+`titleText` styles text within title.
 
 ```js
 const Schedule = () => {
   const customStyle = {
     title: {
       color: 'blue',
+    },
+    titleText: {
+      fontSize: 12,
     },
   }
   return <Calendar customStyle={customStyle} />
@@ -441,6 +446,7 @@ const Schedule = () => {
 
 ![title](images/title.png)
 
+<<<<<<< HEAD
 ### pastDayButton
 
 `pastDayButton` styles the past days background.
@@ -458,6 +464,8 @@ const Schedule = () => {
 
 ![weekendDayButton](images/pastDayButton.png)
 
+=======
+>>>>>>> christopherdro/master
 ### weekendDayButton
 
 `weekendDayButton` styles the weekends background.
