@@ -232,10 +232,6 @@ export default class Calendar extends Component {
       (startOfArgMoment.isoWeekday() - weekStart + 7) % 7: 0,
     selectedIndex = moment(selectedMoment).date() - 1;
 
-    const events = (eventsMap !== null)
-      ? eventsMap[argMoment.startOf('month').format()]
-      : null;
-
     do {
       const dayIndex = renderIndex - offset;
       const isoWeekday = (renderIndex + weekStart) % 7;
@@ -254,7 +250,8 @@ export default class Calendar extends Component {
             caption={`${thisMoment.format('D')}`}
             isToday={todayMoment.format('YYYY-MM-DD') == thisMoment.format('YYYY-MM-DD')}
             isSelected={selectedMoment.isSame(thisMoment)}
-            event={events && events[dayIndex]}
+            event={eventsMap[thisMoment.format('YYYY-MM-DD')] ||
+                   eventsMap[thisMoment.format('YYYYMMDD')]}
             showEventIndicators={this.props.showEventIndicators}
             customStyle={this.props.customStyle}
             />
