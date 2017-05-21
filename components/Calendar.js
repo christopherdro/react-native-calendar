@@ -344,7 +344,8 @@ export default class Calendar extends Component {
   render() {
     const calendarDates = this.getStack(this.state.currentMoment);
     const eventDatesMap = this.prepareEventDates(this.props.eventDates, this.props.events);
-    const numOfWeeks = getNumberOfWeeks(this.state.currentMonthMoment, this.props.weekStart);
+    const numOfWeeks = this.props.calendarFormat === 'weekly' ? 1 :
+      getNumberOfWeeks(this.state.currentMonthMoment, this.props.weekStart);
 
     return (
       <View style={[styles.calendarContainer, this.props.customStyle.calendarContainer]}>
