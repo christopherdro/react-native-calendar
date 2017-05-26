@@ -149,6 +149,13 @@ export default class Calendar extends Component {
       currentMonthMoment: newMoment
     });
   }
+  
+  selectAndJumpToToday() {
+    const today = new Date();
+    const newMoment = moment(this.state.currentMonthMoment).set('month', today.getMonth());
+    this.setState({ selectedMoment: today });
+    this.setState({ currentMonthMoment: newMoment });
+  }
 
   onPrev = () => {
     const newMoment = this.props.calendarFormat === 'monthly' ?
