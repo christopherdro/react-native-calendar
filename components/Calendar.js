@@ -328,6 +328,26 @@ export default class Calendar extends Component {
 
     renderTopBar() {
         let localizedMonth = this.props.monthNames[this.state.currentMoment.month()];
+        const left = typeof prevButtonText === "string"
+            ? (
+                <Text style={[styles.controlButtonText, this.props.customStyle.controlButtonText]}>
+                    {this.props.prevButtonText}
+                </Text>
+            ) : (
+                <View style={[styles.controlButtonText, this.props.customStyle.controlButtonText]}>
+                    {this.props.prevButtonText}
+                </View>
+            );
+        const right = typeof nextButtonText === "string"
+            ? (
+                <Text style={[styles.controlButtonText, this.props.customStyle.controlButtonText]}>
+                    {this.props.nextButtonText}
+                </Text>
+            ) : (
+                <View style={[styles.controlButtonText, this.props.customStyle.controlButtonText]}>
+                    {this.props.nextButtonText}
+                </View>
+            );
 
         return this.props.showControls
             ? (
@@ -336,9 +356,7 @@ export default class Calendar extends Component {
                         style={[styles.controlButton, this.props.customStyle.controlButton]}
                         onPress={this.onPrev}
                     >
-                        <Text style={[styles.controlButtonText, this.props.customStyle.controlButtonText]}>
-                            {this.props.prevButtonText}
-                        </Text>
+                        {left}
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.title}
                                       onPress={() => this.props.onTitlePress && this.props.onTitlePress()}
@@ -351,9 +369,7 @@ export default class Calendar extends Component {
                         style={[styles.controlButton, this.props.customStyle.controlButton]}
                         onPress={this.onNext}
                     >
-                        <Text style={[styles.controlButtonText, this.props.customStyle.controlButtonText]}>
-                            {this.props.nextButtonText}
-                        </Text>
+                        {right}
                     </TouchableOpacity>
                 </View>
             )
@@ -390,7 +406,8 @@ export default class Calendar extends Component {
                 </ScrollView>
             )
             : (
-                <View ref={calendar => this._calendar = calendar} onLayout={(e) => this.setState({width: e.nativeEvent.layout.width})}>
+                <View ref={calendar => this._calendar = calendar}
+                      onLayout={(e) => this.setState({width: e.nativeEvent.layout.width})}>
                     {calendarDates.map((date) => this.renderCalendarView(this.props.calendarFormat, moment(date), eventDatesMap))}
                 </View>
             );
