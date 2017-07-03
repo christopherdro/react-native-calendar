@@ -26,6 +26,7 @@ Portrait mode only
   onTitlePress={this.onTitlePress}  // Callback on title press
   prevButtonText={'Prev'}           // Text for previous button. Default: 'Prev'
   removeClippedSubviews={false}     // Set to false for us within Modals. Default: true
+  renderDay={<CustomDay />}         // Optionally render a custom day component
   scrollEnabled={true}              // False disables swiping. Default: False
   selectedDate={'2015-08-15'}       // Day to be selected
   showControls={true}               // False hides prev/next buttons. Default: False

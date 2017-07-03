@@ -239,25 +239,31 @@ export default class Calendar extends Component {
 
       if (dayIndex >= 0 && dayIndex < argDaysCount) {
         days.push((
-          <Day
-             startOfMonth={startOfArgMoment}
-             isWeekend={isoWeekday === 0 || isoWeekday === 6}
-             key={`${renderIndex}`}
-             onPress={() => {
-               this.selectDate(thisMoment);
-               this.props.onDateSelect && this.props.onDateSelect(thisMoment ? thisMoment.format(): null );
-            }}
-            caption={`${thisMoment.format('D')}`}
-            isToday={todayMoment.format('YYYY-MM-DD') == thisMoment.format('YYYY-MM-DD')}
-            isSelected={selectedMoment.isSame(thisMoment)}
-            event={eventsMap[thisMoment.format('YYYY-MM-DD')] ||
-                   eventsMap[thisMoment.format('YYYYMMDD')]}
-            showEventIndicators={this.props.showEventIndicators}
-            customStyle={this.props.customStyle}
-            />
+          this.renderDay({
+            startOfMonth: startOfArgMoment,
+            isWeekend: isoWeekday === 0 || isoWeekday === 6,
+            key: renderIndex,
+            onPress: () => {
+              this.selectDate(thisMoment);
+              this.props.onDateSelect && this.props.onDateSelect(thisMoment ? thisMoment.format() : null );
+            },
+            caption: thisMoment.format('D'),
+            isToday: todayMoment.format('YYYY-MM-DD') === thisMoment.format('YYYY-MM-DD'),
+            isSelected: selectedMoment.isSame(thisMoment),
+            event: eventsMap[thisMoment.format('YYYY-MM-DD')] ||
+                   eventsMap[thisMoment.format('YYYYMMDD')],
+            showEventIndicators: this.props.showEventIndicators,
+            customStyle: this.props.customStyle
+          })
         ));
       } else {
-        days.push(<Day key={`${renderIndex}`} filler customStyle={this.props.customStyle} />);
+        days.push(
+          this.renderDay({
+            key: renderIndex,
+            filler: true,
+            customStyle: this.props.customStyle
+          })
+        );
       }
       if (renderIndex % 7 === 6) {
         weekRows.push(
@@ -277,6 +283,13 @@ export default class Calendar extends Component {
     } while (true)
     const containerStyle = [styles.monthContainer, this.props.customStyle.monthContainer];
     return <View key={`${startOfArgMoment.format('YYYY-MM-DD')}-${calFormat}`} style={containerStyle}>{weekRows}</View>;
+  }
+
+  renderDay (props) {
+    if (this.props.renderDay) {
+      return this.props.renderDay(props)
+    }
+    return <Day {...props} />
   }
 
   renderHeading() {
