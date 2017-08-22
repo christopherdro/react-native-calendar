@@ -19,6 +19,7 @@ Portrait mode only
   monthNames={Array}                // Defaults to english names of months
   nextButtonText={'Next'}           // Text for next button. Default: 'Next'
   onDateSelect={(date) => this.onDateSelect(date)} // Callback after date selection
+  onDateLongPress={(date) => this.onDateLongPress(date)} // Callback after date is long pressed
   onSwipeNext={this.onSwipeNext}    // Callback for forward swipe event
   onSwipePrev={this.onSwipePrev}    // Callback for back swipe event
   onTouchNext={this.onTouchNext}    // Callback for next touch event

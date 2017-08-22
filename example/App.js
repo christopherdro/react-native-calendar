@@ -44,7 +44,7 @@ class App extends Component {
         <Calendar
           ref="calendar"
           eventDates={['2016-07-03', '2016-07-05', '2016-07-28', '2016-07-30']}
-          events={[{date: '2016-07-04', hasEventCircle: {backgroundColor: 'powderblue'}}]}
+          events={[{ date: '2016-07-04', hasEventCircle: { backgroundColor: 'powderblue' } }]}
           scrollEnabled
           showControls
           dayHeadings={customDayHeadings}
@@ -53,6 +53,7 @@ class App extends Component {
           prevButtonText={'Prev'}
           nextButtonText={'Next'}
           onDateSelect={(date) => this.setState({ selectedDate: date })}
+          onDateLongPress={(date) => this.setState({ selectedDate: date })}
           onTouchPrev={(e) => console.log('onTouchPrev: ', e)}
           onTouchNext={(e) => console.log('onTouchNext: ', e)}
           onSwipePrev={(e) => console.log('onSwipePrev: ', e)}
