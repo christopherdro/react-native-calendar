@@ -24,7 +24,7 @@ function getNumberOfWeeks(month, weekStart) {
 export default class Calendar extends Component {
 
   state = {
-    currentMonthMoment: moment(this.props.startDate),
+    currentMoment: moment(this.props.startDate),
     selectedMoment: this.props.selectedDate && moment(this.props.selectedDate),
     rowHeight: null,
     containerWidth: null,
@@ -142,10 +142,10 @@ export default class Calendar extends Component {
 
   selectAndJumpToToday() {
     const today = new Date();
-    const newMoment = moment(this.state.currentMonthMoment).set('month', today.getMonth());
+    const newMoment = moment(this.state.currentMoment).set('month', today.getMonth());
     this.setState({
       selectedMoment: today,
-      currentMonthMoment: newMoment
+      currentMoment: newMoment
     });
   }
 
@@ -243,7 +243,6 @@ export default class Calendar extends Component {
       offset = calFormat === 'monthly' ?
         (startOfArgMoment.isoWeekday() - weekStart + 7) % 7 : 0,
       selectedIndex = moment(selectedMoment).date() - 1;
-      size = this.state.containerWidth / 7;
 
     do {
       const dayIndex = renderIndex - offset;
@@ -271,8 +270,6 @@ export default class Calendar extends Component {
             eventsMap[thisMoment.format('YYYYMMDD')],
             showEventIndicators: this.props.showEventIndicators,
             customStyle: this.props.customStyle,
-            width: size,
-            height: size,
           })
         ));
       } else {
@@ -281,8 +278,6 @@ export default class Calendar extends Component {
             key: renderIndex,
             filler: true,
             customStyle: this.props.customStyle,
-            width: size,
-            height: size,
           })
         );
       }
