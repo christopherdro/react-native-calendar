@@ -12,7 +12,6 @@ import Day from './Day';
 import moment from 'moment';
 import styles from './styles';
 
-const DEVICE_WIDTH = Dimensions.get('window').width;
 const VIEW_INDEX = 2;
 
 function getNumberOfWeeks(month, weekStart) {
@@ -25,9 +24,10 @@ function getNumberOfWeeks(month, weekStart) {
 export default class Calendar extends Component {
 
   state = {
-    currentMoment: moment(this.props.startDate),
-    selectedMoment: moment(this.props.selectedDate),
+    currentMonthMoment: moment(this.props.startDate),
+    selectedMoment: this.props.selectedDate && moment(this.props.selectedDate),
     rowHeight: null,
+    containerWidth: null,
   };
 
   static propTypes = {
@@ -65,7 +65,6 @@ export default class Calendar extends Component {
 
   static defaultProps = {
     customStyle: {},
-    width: DEVICE_WIDTH,
     dayHeadings: ['S', 'M', 'T', 'W', 'T', 'F', 'S'],
     eventDates: [],
     monthNames: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
@@ -167,15 +166,23 @@ export default class Calendar extends Component {
   }
 
   scrollToItem(itemIndex) {
-    const scrollToX = itemIndex * this.props.width;
+    const containerWidth = this.state.containerWidth;
+    if (containerWidth == null) {
+        return;
+    }
+    const scrollToX = itemIndex * containerWidth;
     if (this.props.scrollEnabled && this._calendar) {
       this._calendar.scrollTo({ y: 0, x: scrollToX, animated: false });
     }
   }
 
   scrollEnded(event) {
+    const containerWidth = this.state.containerWidth;
+    if (containerWidth == null) {
+        return;
+    }
     const position = event.nativeEvent.contentOffset.x;
-    const currentPage = position / this.props.width;
+    const currentPage = position / containerWidth;
     const newMoment = this.props.calendarFormat === 'monthly' ?
       moment(this.state.currentMoment).add(currentPage - VIEW_INDEX, 'month') :
       moment(this.state.currentMoment).add(currentPage - VIEW_INDEX, 'week');
@@ -216,6 +223,12 @@ export default class Calendar extends Component {
     return res;
   }
 
+  onContainerLayout = (event) => {
+    if (this.state.containerWidth !== event.nativeEvent.layout.width) {
+      this.setState({ containerWidth: event.nativeEvent.layout.width });
+    }
+  }
+
   renderCalendarView(calFormat, argMoment, eventsMap) {
     let renderIndex = 0,
       weekRows = [],
@@ -230,6 +243,7 @@ export default class Calendar extends Component {
       offset = calFormat === 'monthly' ?
         (startOfArgMoment.isoWeekday() - weekStart + 7) % 7 : 0,
       selectedIndex = moment(selectedMoment).date() - 1;
+      size = this.state.containerWidth / 7;
 
     do {
       const dayIndex = renderIndex - offset;
@@ -256,7 +270,9 @@ export default class Calendar extends Component {
             event: eventsMap[thisMoment.format('YYYY-MM-DD')] ||
             eventsMap[thisMoment.format('YYYYMMDD')],
             showEventIndicators: this.props.showEventIndicators,
-            customStyle: this.props.customStyle
+            customStyle: this.props.customStyle,
+            width: size,
+            height: size,
           })
         ));
       } else {
@@ -264,7 +280,9 @@ export default class Calendar extends Component {
           this.renderDay({
             key: renderIndex,
             filler: true,
-            customStyle: this.props.customStyle
+            customStyle: this.props.customStyle,
+            width: size,
+            height: size,
           })
         );
       }
@@ -273,8 +291,7 @@ export default class Calendar extends Component {
           <View
             key={weekRows.length}
             onLayout={weekRows.length ? undefined : this.onWeekRowLayout}
-            style={[styles.weekRow, this.props.customStyle.weekRow]}
-          >
+            style={[styles.weekRow, this.props.customStyle.weekRow]}>
             {days}
           </View>);
         days = [];
@@ -284,7 +301,11 @@ export default class Calendar extends Component {
       }
       renderIndex += 1;
     } while (true)
-    const containerStyle = [styles.monthContainer, this.props.customStyle.monthContainer];
+    const containerStyle = [
+        styles.monthContainer,
+        {width: this.state.containerWidth},
+        this.props.customStyle.monthContainer
+    ];
     return <View key={`${startOfArgMoment.format('YYYY-MM-DD')}-${calFormat}`} style={containerStyle}>{weekRows}</View>;
   }
 
@@ -358,13 +379,20 @@ export default class Calendar extends Component {
   }
 
   render() {
+    const containerStyle = [
+        styles.calendarContainer,
+        this.props.customStyle.calendarContainer
+    ];
+    if (this.state.containerWidth == null) {
+        return <View onLayout={this.onContainerLayout} style={containerStyle} />;
+    }
     const calendarDates = this.getStack(this.state.currentMoment);
     const eventDatesMap = this.prepareEventDates(this.props.eventDates, this.props.events);
     const numOfWeeks = this.props.calendarFormat === 'weekly' ? 1 :
       getNumberOfWeeks(this.state.currentMoment, this.props.weekStart);
 
     return (
-      <View style={[styles.calendarContainer, this.props.customStyle.calendarContainer]}>
+      <View onLayout={this.onContainerLayout} style={containerStyle}>
         {this.renderTopBar()}
         {this.renderHeading(this.props.titleFormat)}
         {this.props.scrollEnabled ?
