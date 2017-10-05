@@ -52,9 +52,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     borderTopWidth: 1,
     borderTopColor: '#e9e9e9',
+    padding: 5,
   },
   dayButtonFiller: {
-
+    padding: 5,
   },
   day: {
     fontSize: 16,
