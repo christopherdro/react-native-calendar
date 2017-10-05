@@ -4,6 +4,8 @@ import {
   TouchableOpacity,
   TouchableWithoutFeedback,
   View,
+  Dimensions,
+  StyleSheet,
 } from 'react-native';
 
 import styles from './styles';
@@ -68,7 +70,14 @@ export default class Day extends Component {
 
   dayButtonStyle = (isWeekend, isSelected, isToday, event) => {
     const { customStyle } = this.props;
-    const dayButtonStyle = [styles.dayButton, customStyle.dayButton];
+    let dayButtonStyle, dayWidth;
+
+    if (customStyle.hasOwnProperty('dayButton') && StyleSheet.flatten(customStyle.dayButton).hasOwnProperty('width')) {
+      dayButtonStyle = [styles.dayButton, customStyle.dayButton];
+    } else {
+      dayWidth = Dimensions.get('window').width / 7;
+      dayButtonStyle = [styles.dayButton, customStyle.dayButton, {width: dayWidth}];
+    }
 
     if (isWeekend) {
       dayButtonStyle.push(styles.weekendDayButton, customStyle.weekendDayButton);
@@ -87,10 +96,18 @@ export default class Day extends Component {
       showEventIndicators,
     } = this.props;
 
+    let dayButtonFillerStyle, dayWidth;
+    if (customStyle.hasOwnProperty('dayButtonFiller') && StyleSheet.flatten(customStyle.dayButtonFiller).hasOwnProperty('width')) {
+      dayButtonFillerStyle = [styles.dayButtonFiller, customStyle.dayButtonFiller];
+    } else {
+      dayWidth = Dimensions.get('window').width / 7;
+      dayButtonFillerStyle = [styles.dayButtonFiller, customStyle.dayButtonFiller, {width: dayWidth}];
+    }
+
     return filler
       ? (
         <TouchableWithoutFeedback>
-          <View style={[styles.dayButtonFiller, customStyle.dayButtonFiller]}>
+          <View style={dayButtonFillerStyle}>
             <Text style={[styles.day, customStyle.day]} />
           </View>
         </TouchableWithoutFeedback>
