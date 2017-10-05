@@ -30,21 +30,33 @@ const styles = StyleSheet.create({
   },
 });
 
+// use to test customStyles
+const customStyles = StyleSheet.create({
+  dayButton: {
+    padding: 10,
+  },
+  dayButtonFiller: {
+    padding: 10,
+  },
+});
+
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectedDate: moment().format(),
+      selectedDate: moment().format('YYYY-MM-DD'),
     };
   }
 
   render() {
+    let eventDates = [moment().format('YYYY-MM-DD'), moment().add(1, "day").format('YYYY-MM-DD'),
+      moment().add(14, "day").format('YYYY-MM-DD'), moment().add(1, "month").format('YYYY-MM-DD')];
+
     return (
       <View style={styles.container}>
         <Calendar
           ref="calendar"
-          eventDates={['2016-07-03', '2016-07-05', '2016-07-28', '2016-07-30']}
-          events={[{ date: '2016-07-04', hasEventCircle: { backgroundColor: 'powderblue' } }]}
+          eventDates={eventDates}
           scrollEnabled
           showControls
           dayHeadings={customDayHeadings}
@@ -58,6 +70,8 @@ class App extends Component {
           onTouchNext={(e) => console.log('onTouchNext: ', e)}
           onSwipePrev={(e) => console.log('onSwipePrev: ', e)}
           onSwipeNext={(e) => console.log('onSwipeNext', e)}
+          selectedDate={this.state.selectedDate}
+          showEventIndicators={true}
         />
         <Text>Selected Date: {moment(this.state.selectedDate).format('MMMM DD YYYY')}</Text>
       </View>
