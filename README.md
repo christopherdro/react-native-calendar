@@ -519,7 +519,6 @@ const Schedule = () => {
 ## TODOS
 
 - [ ] Improve swipe feature
-- [ ] Landscape support
 - [ ] Language support
 
 ## DEMO
