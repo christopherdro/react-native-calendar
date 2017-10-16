@@ -27,6 +27,7 @@ export default class Day extends Component {
     onPress: PropTypes.func,
     onLongPress: PropTypes.func,
     showEventIndicators: PropTypes.bool,
+    showFillerDay: PropTypes.bool,
   }
 
   dayCircleStyle = (isWeekend, isSelected, isToday, event) => {
@@ -90,6 +91,7 @@ export default class Day extends Component {
     let { caption, customStyle } = this.props;
     const {
       filler,
+      showFillerDay,
       event,
       isWeekend,
       isSelected,
@@ -105,11 +107,20 @@ export default class Day extends Component {
       dayButtonFillerStyle = [styles.dayButtonFiller, customStyle.dayButtonFiller, {width: dayWidth}];
     }
 
+    if (showFillerDay) {
+      dayButtonFillerStyle.unshift(styles.dayButton);
+    }
+
     return filler
       ? (
         <TouchableWithoutFeedback>
           <View style={dayButtonFillerStyle}>
-            <Text style={[styles.day, customStyle.day]} />
+            {showFillerDay &&
+            <Text style={[styles.day, styles.fillerDay, customStyle.fillerDay]}>
+              {caption}
+            </Text>
+            }
+            {showEventIndicators && <View style={styles.eventIndicatorFiller}/>}
           </View>
         </TouchableWithoutFeedback>
       )
