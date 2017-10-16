@@ -56,7 +56,7 @@ class App extends Component {
       <View style={styles.container}>
         <Calendar
           ref="calendar"
-          showFillerDay
+          showFillerDays
           eventDates={eventDates}
           scrollEnabled
           showControls
