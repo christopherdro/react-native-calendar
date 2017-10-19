@@ -117,18 +117,25 @@ export default class Calendar extends Component {
     return [moment(currentMoment)];
   }
 
+  formatEventDate({ date }) {
+    if ( typeof date === 'object' && date._isAMomentObject === true )
+      return date.format('YYYY-MM-DD')
+    else
+      return date
+  }
+
   prepareEventDates(eventDates, events) {
     const parsedDates = {};
 
     if (events) {
       events.forEach(event => {
         if (event.date) {
-          parsedDates[event.date] = event;
+          parsedDates[ this.formatEventDate({ date: event.date }) ] = event;
         }
       });
     } else {
-      eventDates.forEach(event => {
-        parsedDates[event] = {};
+      eventDates.forEach(date => {
+        parsedDates[ this.formatEventDate({ date }) ] = {};
       });
     }
 
