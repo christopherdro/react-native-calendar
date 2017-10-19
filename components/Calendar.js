@@ -265,8 +265,8 @@ export default class Calendar extends Component {
               this.props.onDateLongPress && this.props.onDateLongPress(thisMoment ? thisMoment.format() : null);
             },
             caption: thisMoment.format('D'),
-            isToday: todayMoment.format('YYYY-MM-DD') === thisMoment.format('YYYY-MM-DD'),
-            isSelected: selectedMoment.isSame(thisMoment),
+            isToday: todayMoment.isSame(thisMoment, 'day'),
+            isSelected: selectedMoment.isSame(thisMoment, 'day'),
             event: eventsMap[thisMoment.format('YYYY-MM-DD')] ||
             eventsMap[thisMoment.format('YYYYMMDD')],
             showEventIndicators: this.props.showEventIndicators,
