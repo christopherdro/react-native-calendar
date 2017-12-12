@@ -19,6 +19,7 @@ Portrait mode only
   monthNames={Array}                // Defaults to english names of months
   nextButtonText={'Next'}           // Text for next button. Default: 'Next'
   onDateSelect={(date) => this.onDateSelect(date)} // Callback after date selection
+  onDateLongPress={(date) => this.onDateLongPress(date)} // Callback after date is long pressed
   onSwipeNext={this.onSwipeNext}    // Callback for forward swipe event
   onSwipePrev={this.onSwipePrev}    // Callback for back swipe event
   onTouchNext={this.onTouchNext}    // Callback for next touch event
@@ -26,6 +27,7 @@ Portrait mode only
   onTitlePress={this.onTitlePress}  // Callback on title press
   prevButtonText={'Prev'}           // Text for previous button. Default: 'Prev'
   removeClippedSubviews={false}     // Set to false for us within Modals. Default: true
+  renderDay={<CustomDay />}         // Optionally render a custom day component
   scrollEnabled={true}              // False disables swiping. Default: False
   selectedDate={'2015-08-15'}       // Day to be selected
   showControls={true}               // False hides prev/next buttons. Default: False
@@ -552,7 +554,6 @@ const Schedule = () => {
 ## TODOS
 
 - [ ] Improve swipe feature
-- [ ] Landscape support
 - [ ] Language support
 
 ## DEMO

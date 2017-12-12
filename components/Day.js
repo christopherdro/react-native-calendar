@@ -1,10 +1,13 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
 import {
   Text,
   TouchableOpacity,
   TouchableWithoutFeedback,
   View,
+  Dimensions,
+  StyleSheet,
 } from 'react-native';
+import PropTypes from 'prop-types';
 
 import styles from './styles';
 
@@ -23,6 +26,7 @@ export default class Day extends Component {
     isPast: PropTypes.bool,
     isWeekend: PropTypes.bool,
     onPress: PropTypes.func,
+    onLongPress: PropTypes.func,
     showEventIndicators: PropTypes.bool,
   }
 
@@ -50,7 +54,7 @@ export default class Day extends Component {
     return dayCircleStyle;
   }
 
-  dayTextStyle = (isWeekend, isSelected, isToday, event) => {
+  dayTextStyle = (isWeekend, isSelected, isToday, isPast, event) => {
     const { customStyle } = this.props;
     const dayTextStyle = [styles.day, customStyle.day];
 
@@ -60,12 +64,35 @@ export default class Day extends Component {
       dayTextStyle.push(styles.selectedDayText, customStyle.selectedDayText);
     } else if (isWeekend) {
       dayTextStyle.push(styles.weekendDayText, customStyle.weekendDayText);
+    } else if (isPast) {
+      dayTextStyle.push(styles.weekendDayText, customStyle.pastDayText);
     }
 
     if (event) {
       dayTextStyle.push(styles.hasEventText, customStyle.hasEventText, event.hasEventText)
     }
     return dayTextStyle;
+  }
+
+  dayButtonStyle = (isWeekend, isSelected, isToday, isPast, event) => {
+    const { customStyle } = this.props;
+    let dayButtonStyle, dayWidth;
+
+    if (customStyle.hasOwnProperty('dayButton') && StyleSheet.flatten(customStyle.dayButton).hasOwnProperty('width')) {
+      dayButtonStyle = [styles.dayButton, customStyle.dayButton];
+    } else {
+      dayWidth = Dimensions.get('window').width / 7;
+      dayButtonStyle = [styles.dayButton, customStyle.dayButton, {width: dayWidth}];
+    }
+
+    if (isWeekend) {
+      dayButtonStyle.push(styles.weekendDayButton, customStyle.weekendDayButton);
+    }
+
+    if (isPast) {
+      dayButtonStyle.push(customStyle.pastDayButton);
+    }
+    return dayButtonStyle;
   }
 
   render() {
@@ -80,21 +107,32 @@ export default class Day extends Component {
       showEventIndicators,
     } = this.props;
 
+    let dayButtonFillerStyle, dayWidth;
+    if (customStyle.hasOwnProperty('dayButtonFiller') && StyleSheet.flatten(customStyle.dayButtonFiller).hasOwnProperty('width')) {
+      dayButtonFillerStyle = [styles.dayButtonFiller, customStyle.dayButtonFiller];
+    } else {
+      dayWidth = Dimensions.get('window').width / 7;
+      dayButtonFillerStyle = [styles.dayButtonFiller, customStyle.dayButtonFiller, {width: dayWidth}];
+    }
+
     return filler
-    ? (
+      ? (
         <TouchableWithoutFeedback>
-          <View style={[styles.dayButtonFiller, customStyle.dayButtonFiller]}>
+          <View style={dayButtonFillerStyle}>
             <Text style={[styles.day, customStyle.day]} />
           </View>
         </TouchableWithoutFeedback>
       )
-    : (
-      <TouchableOpacity activeOpacity={1} onPress={this.props.onPress}>
-        <View style={[styles.dayButton, customStyle.dayButton, isWeekend ? customStyle.weekendDayButton : null, isPast ? customStyle.pastDayButton : null]}>
-          <View style={this.dayCircleStyle(isWeekend, isSelected, isToday, isPast, event)}>
-            <Text style={this.dayTextStyle(isWeekend, isSelected, isToday, isPast, event)}>{caption}</Text>
-          </View>
-          {showEventIndicators &&
+      : (
+        <TouchableOpacity
+          onPress={this.props.onPress}
+          onLongPress={this.props.onLongPress}
+        >
+          <View style={this.dayButtonStyle(isWeekend, isSelected, isToday, isPast, event)}>
+            <View style={this.dayCircleStyle(isWeekend, isSelected, isToday, isPast, event)}>
+              <Text style={this.dayTextStyle(isWeekend, isSelected, isToday, isPast, event)}>{caption}</Text>
+            </View>
+            {showEventIndicators &&
             <View style={[
               styles.eventIndicatorFiller,
               customStyle.eventIndicatorFiller,
@@ -102,9 +140,9 @@ export default class Day extends Component {
               event && customStyle.eventIndicator,
               event && event.eventIndicator]}
             />
-          }
-        </View>
-      </TouchableOpacity>
-    );
+            }
+          </View>
+        </TouchableOpacity>
+      );
   }
 }

@@ -1,14 +1,10 @@
-import { Dimensions, StyleSheet } from 'react-native';
-
-const DEVICE_WIDTH = Dimensions.get('window').width;
-const DAY_WIDTH = Math.ceil( DEVICE_WIDTH / 7 );
+import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
   calendarContainer: {
     backgroundColor: '#f7f7f7',
   },
   monthContainer: {
-    width: DEVICE_WIDTH,
   },
   calendarControls: {
     flexDirection: 'row',
@@ -53,14 +49,13 @@ const styles = StyleSheet.create({
   },
   dayButton: {
     alignItems: 'center',
-    padding: 5,
-    width: DAY_WIDTH,
+    justifyContent: 'center',
     borderTopWidth: 1,
     borderTopColor: '#e9e9e9',
+    padding: 5,
   },
   dayButtonFiller: {
     padding: 5,
-    width: DAY_WIDTH,
   },
   day: {
     fontSize: 16,
