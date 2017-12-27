@@ -1,3 +1,8 @@
+
+# :warning: Deprecated :warning:
+This library is no longer being actively maintained.
+Try https://github.com/wix/react-native-calendars
+
 ## react-native-calendar
 
 A `<Calendar>` component for React Native
