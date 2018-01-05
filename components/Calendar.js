@@ -57,6 +57,7 @@ export default class Calendar extends Component {
     selectedDate: PropTypes.any,
     showControls: PropTypes.bool,
     showEventIndicators: PropTypes.bool,
+    showFillerDays: PropTypes.bool,
     startDate: PropTypes.any,
     titleFormat: PropTypes.string,
     today: PropTypes.any,
@@ -76,6 +77,7 @@ export default class Calendar extends Component {
     scrollEnabled: false,
     showControls: false,
     showEventIndicators: false,
+    showFillerDays: false,
     startDate: moment().format('YYYY-MM-DD'),
     titleFormat: 'MMMM YYYY',
     weekStart: 1,
@@ -279,6 +281,9 @@ export default class Calendar extends Component {
             key: renderIndex,
             filler: true,
             customStyle: this.props.customStyle,
+            caption: thisMoment.format('D'),
+            showFillerDays: this.props.showFillerDays,
+            showEventIndicators: this.props.showEventIndicators,
           })
         );
       }

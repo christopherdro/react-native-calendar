@@ -61,6 +61,9 @@ const styles = StyleSheet.create({
     fontSize: 16,
     alignSelf: 'center',
   },
+  fillerDay: {
+    color: '#cccccc',
+  },
   eventIndicatorFiller: {
     marginTop: 3,
     borderColor: 'transparent',

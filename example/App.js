@@ -56,6 +56,7 @@ class App extends Component {
       <View style={styles.container}>
         <Calendar
           ref="calendar"
+          showFillerDays
           eventDates={eventDates}
           scrollEnabled
           showControls
@@ -71,7 +72,7 @@ class App extends Component {
           onSwipePrev={(e) => console.log('onSwipePrev: ', e)}
           onSwipeNext={(e) => console.log('onSwipeNext', e)}
           selectedDate={this.state.selectedDate}
-          showEventIndicators={true}
+          showEventIndicators
         />
         <Text>Selected Date: {moment(this.state.selectedDate).format('MMMM DD YYYY')}</Text>
       </View>
