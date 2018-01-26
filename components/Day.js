@@ -23,19 +23,22 @@ export default class Day extends Component {
     event: PropTypes.object,
     isSelected: PropTypes.bool,
     isToday: PropTypes.bool,
+    isPast: PropTypes.bool,
     isWeekend: PropTypes.bool,
     onPress: PropTypes.func,
     onLongPress: PropTypes.func,
     showEventIndicators: PropTypes.bool,
   }
 
-  dayCircleStyle = (isWeekend, isSelected, isToday, event) => {
+  dayCircleStyle = (isWeekend, isSelected, isToday, isPast, event) => {
     const { customStyle } = this.props;
     const dayCircleStyle = [styles.dayCircleFiller, customStyle.dayCircleFiller];
 
     if (isSelected) {
       if (isToday) {
         dayCircleStyle.push(styles.currentDayCircle, customStyle.currentDayCircle);
+      } else if (isPast) {
+        dayCircleStyle.push(styles.currentDayCircle, customStyle.selectedPastDayCircle);
       } else {
         dayCircleStyle.push(styles.selectedDayCircle, customStyle.selectedDayCircle);
       }
@@ -51,7 +54,7 @@ export default class Day extends Component {
     return dayCircleStyle;
   }
 
-  dayTextStyle = (isWeekend, isSelected, isToday, event) => {
+  dayTextStyle = (isWeekend, isSelected, isToday, isPast, event) => {
     const { customStyle } = this.props;
     const dayTextStyle = [styles.day, customStyle.day];
 
@@ -61,6 +64,8 @@ export default class Day extends Component {
       dayTextStyle.push(styles.selectedDayText, customStyle.selectedDayText);
     } else if (isWeekend) {
       dayTextStyle.push(styles.weekendDayText, customStyle.weekendDayText);
+    } else if (isPast) {
+      dayTextStyle.push(styles.weekendDayText, customStyle.pastDayText);
     }
 
     if (event) {
@@ -69,7 +74,7 @@ export default class Day extends Component {
     return dayTextStyle;
   }
 
-  dayButtonStyle = (isWeekend, isSelected, isToday, event) => {
+  dayButtonStyle = (isWeekend, isSelected, isToday, isPast, event) => {
     const { customStyle } = this.props;
     let dayButtonStyle, dayWidth;
 
@@ -83,6 +88,10 @@ export default class Day extends Component {
     if (isWeekend) {
       dayButtonStyle.push(styles.weekendDayButton, customStyle.weekendDayButton);
     }
+
+    if (isPast) {
+      dayButtonStyle.push(customStyle.pastDayButton);
+    }
     return dayButtonStyle;
   }
 
@@ -93,6 +102,7 @@ export default class Day extends Component {
       event,
       isWeekend,
       isSelected,
+      isPast,
       isToday,
       showEventIndicators,
     } = this.props;
@@ -118,9 +128,9 @@ export default class Day extends Component {
           onPress={this.props.onPress}
           onLongPress={this.props.onLongPress}
         >
-          <View style={this.dayButtonStyle(isWeekend, isSelected, isToday, event)}>
-            <View style={this.dayCircleStyle(isWeekend, isSelected, isToday, event)}>
-              <Text style={this.dayTextStyle(isWeekend, isSelected, isToday, event)}>{caption}</Text>
+          <View style={this.dayButtonStyle(isWeekend, isSelected, isToday, isPast, event)}>
+            <View style={this.dayCircleStyle(isWeekend, isSelected, isToday, isPast, event)}>
+              <Text style={this.dayTextStyle(isWeekend, isSelected, isToday, isPast, event)}>{caption}</Text>
             </View>
             {showEventIndicators &&
             <View style={[

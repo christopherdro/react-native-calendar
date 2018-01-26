@@ -255,6 +255,7 @@ export default class Calendar extends Component {
           this.renderDay({
             startOfMonth: startOfArgMoment,
             isWeekend: isoWeekday === 0 || isoWeekday === 6,
+            isPast: thisMoment < todayMoment,
             key: renderIndex,
             onPress: () => {
               this.selectDate(thisMoment);
